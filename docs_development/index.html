@@ -615,7 +615,7 @@
 <h2 id="with-make">With <code>make</code></h2>
 <div class="admonition info">
 <p class="admonition-title">Makefile</p>
-<p>The following commands are encoded in a Makefie in this repository: <a href="./makefile"><code>makefile</code></a>.</p>
+<p>The following commands are encoded in a Makefie in this repository: <a href="https://github.com/niaid/cloudwatcher/blob/main/makefile"><code>makefile</code></a>.</p>
 </div>
 <h3 id="serve">Serve</h3>
 <p>To serve the documentation locally, you can the <code>serve_docs</code> target:</p>
@@ -639,22 +639,20 @@
 <p>The commands need to be run from the root of the repository, unless stated otherwise.</p>
 </div>
 <ol>
-<li>
-<p>Install the documentation-related dependancies and the Python package itself with <a href="https://poetry.org/">Poetry</a></p>
+<li>Install the documentation-related dependancies and the Python package itself with <a href="https://python-poetry.org/">Poetry</a></li>
+</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="go">poetry install</span>
 </code></pre></div>
-</li>
-<li>
-<p>Document the API of the package</p>
+<ol>
+<li>Document the API of the package</li>
+</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="go">lucidoc cloudwatcher --parse rst --outfile docs/API_documentation.md</span>
 </code></pre></div>
-</li>
-<li>
-<p>Run the following command in the project root</p>
+<ol>
+<li>Run the following command in the project root</li>
+</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>mkdocs serve
 </code></pre></div>
-</li>
-</ol>
 <h2 id="deploying-the-documentation">Deploying the documentation</h2>
 <p>In order to deploy the documentation run the following command:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>mkdocs gh-deploy
