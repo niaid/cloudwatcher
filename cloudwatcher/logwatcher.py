@@ -188,3 +188,16 @@ class LogWatcher(CloudWatcher):
                 fmt_str.format(time=_datestr(e["timestamp"]), message=msg.strip())
             )
         return formatted_log_list
+
+    def save_log_file(self, file_path: str) -> None:
+        """
+        Save the log file to the specified path
+
+        :param str log_file_path: The path to save the log file
+        """
+        logs, _ = self.return_formatted_logs()
+        with open(file_path, "w") as f:
+            f.write(logs)
+        _LOGGER.info(
+            f"Logs '{self.log_group_name}/{self.log_stream_name}' saved to: {file_path}"
+        )

@@ -123,6 +123,6 @@ def main():
         if args.save:
             log_watcher.save_log_file(
                 file_path=os.path.join(
-                    args.dir, f"{args.log_grop_name}-{args.log_stream_name}.log"
+                    args.dir, f"{args.log_group_name}-{args.log_stream_name}.log"
                 )
             )

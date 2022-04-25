@@ -28,12 +28,13 @@ markdown_extensions:
   - pymdownx.superfences
 nav:
   - Installation & Setup:
-    - Installation: installation.md
-    - EC2 intance setup: EC2_instance_setup.md
-    - AWS credentials: login_credentials.md
+      - Installation: installation.md
+      - EC2 intance setup: EC2_instance_setup.md
+      - AWS credentials: login_credentials.md
   - Usage & Features:
-    - Usage: usage.md
-    - Features: features.md
+      - Usage: usage.md
+      - Features: features.md
   - API documentation: API_documentation.md
   - Development:
-    - Docs development: docs_development.md
+      - Docs development: docs_development.md
+  - Release notes: changelog.md

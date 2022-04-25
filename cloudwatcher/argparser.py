@@ -31,9 +31,7 @@ def build_argparser():
     region = "us-east-1"
 
     # add argument parser
-    parser = _VersionInHelpParser(
-        description="CloudWatch metrics explorer. In order to use the tool a CloudWatchAgent process must be running on the EC2 instance to be monitored."
-    )
+    parser = _VersionInHelpParser(description="CloudWatch logs and metrics explorer.")
 
     subparsers = parser.add_subparsers(dest="command")
 
