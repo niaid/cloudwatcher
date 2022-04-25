@@ -580,6 +580,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parameters_16" class="md-nav__link">
+    Parameters:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#returns_5" class="md-nav__link">
     Returns:
   </a>
@@ -587,7 +594,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#parameters_16" class="md-nav__link">
+  <a href="#parameters_17" class="md-nav__link">
     Parameters:
   </a>
   
@@ -642,7 +649,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parameters_17" class="md-nav__link">
+  <a href="#parameters_18" class="md-nav__link">
     Parameters:
   </a>
   
@@ -931,6 +938,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parameters_16" class="md-nav__link">
+    Parameters:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#returns_5" class="md-nav__link">
     Returns:
   </a>
@@ -938,7 +952,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#parameters_16" class="md-nav__link">
+  <a href="#parameters_17" class="md-nav__link">
     Parameters:
   </a>
   
@@ -993,7 +1007,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parameters_17" class="md-nav__link">
+  <a href="#parameters_18" class="md-nav__link">
     Parameters:
   </a>
   
@@ -1230,10 +1244,17 @@ h4 .content {
 <ul>
 <li><code>Tuple[List[str], str]</code>:  formatted log events and the token to use for the next query</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="k">def</span> <span class="nf">stream_cloudwatch_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events_limit</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_retry_attempts</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="k">def</span> <span class="nf">save_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Save the log file to the specified path</p>
+<h4 id="parameters_15">Parameters:</h4>
+<ul>
+<li><code>log_file_path</code> (<code>str</code>):  The path to save the log file</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="k">def</span> <span class="nf">stream_cloudwatch_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events_limit</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_retry_attempts</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 </code></pre></div>
 <p>A generator that retrieves desired number of log events per iteration</p>
-<h4 id="parameters_15">Parameters:</h4>
+<h4 id="parameters_16">Parameters:</h4>
 <ul>
 <li><code>log_group_name</code> (<code>str</code>):  The name of the log group</li>
 <li><code>log_stream_name</code> (<code>str</code>):  The name of the log stream</li>
@@ -1243,10 +1264,10 @@ h4 .content {
 <ul>
 <li><code>List[Event]</code>:  The list of log events</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="k">def</span> <span class="nf">stream_formatted_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events_limit</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_retry_attempts</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="k">def</span> <span class="nf">stream_formatted_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events_limit</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_retry_attempts</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
 <p>A generator that yields formatted log events</p>
-<h4 id="parameters_16">Parameters:</h4>
+<h4 id="parameters_17">Parameters:</h4>
 <ul>
 <li><code>events_limit</code> (<code>Optional[int]</code>):  The number of events to retrieve per iteration. Defaults to 1000</li>
 <li><code>max_retry_attempts</code> (<code>Optional[int]</code>):  The number of retry attempts. Defaults to 5</li>
@@ -1266,10 +1287,10 @@ h4 .content {
 <p>Class to establish the interface for a timed metric handling</p>
 <h2 id="class-timedmetriclogger"><a name="TimedMetricLogger"></a> Class <code>TimedMetricLogger</code></h2>
 <p>Class to establish the interface for a timed metric handling</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="k">def</span> <span class="nf">mem_to_str</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="k">def</span> <span class="nf">mem_to_str</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 <p>Convert bytes to human readable string</p>
-<h4 id="parameters_17">Parameters:</h4>
+<h4 id="parameters_18">Parameters:</h4>
 <ul>
 <li><code>size</code> (<code>int</code>):  size in bytes</li>
 <li><code>precision</code> (<code>int</code>):  number of decimal places</li>
@@ -1278,7 +1299,7 @@ h4 .content {
 <p>Class to establish the interface for a timed metric handling</p>
 <h2 id="class-timedmetricsummarizer"><a name="TimedMetricSummarizer"></a> Class <code>TimedMetricSummarizer</code></h2>
 <p>Class to establish the interface for a timed metric handling</p>
-<p><em>Version Information: <code>cloudwatcher</code> v0.0.2, generated by <code>lucidoc</code> v0.4.3</em></p>
+<p><em>Version Information: <code>cloudwatcher</code> v0.0.3, generated by <code>lucidoc</code> v0.4.3</em></p>
 
               
             </article>
