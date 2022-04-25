@@ -1,0 +1,29 @@
+repos:
+  # miscellaneous
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  # Python
+  # - repo: https://github.com/PyCQA/flake8
+  #   rev: 4.0.1
+  #   hooks:
+  #     - id: flake8
+  #       args: [
+  #           "--ignore",
+  #           "E203,W503,E741", # ignore these rules, to comply with black. See: https://black.readthedocs.io/en/stable/faq.html#why-are-flake8-s-e203-and-w503-violated
+  #           "--max-line-length",
+  #           "88", # 90-ish is a good choice. See: https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#line-length
+  #         ]
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+  - repo: https://github.com/psf/black
+    rev: 21.12b0
+    hooks:
+      - id: black
