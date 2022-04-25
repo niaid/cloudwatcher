@@ -5,8 +5,6 @@ import re
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from numpy import logspace
-
 from .cloudwatcher import CloudWatcher
 
 Event = Dict[str, str]
