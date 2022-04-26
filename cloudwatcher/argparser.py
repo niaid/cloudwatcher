@@ -1,6 +1,7 @@
 """ Computing configuration representation """
 
 import argparse
+from random import choices
 
 from ._version import __version__
 from .const import LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
@@ -10,7 +11,7 @@ class _VersionInHelpParser(argparse.ArgumentParser):
     def format_help(self):
         """Add version information to help text."""
         return (
-            "version: {}\n".format(__version__)
+            f"version: {__version__}\nDocumentation available at: https://niaid.github.io/cloudwatcher\n\n"
             + super(_VersionInHelpParser, self).format_help()
         )
 
@@ -31,7 +32,9 @@ def build_argparser():
     region = "us-east-1"
 
     # add argument parser
-    parser = _VersionInHelpParser(description="CloudWatch logs and metrics explorer.")
+    parser = _VersionInHelpParser(
+        description="CloudWatch logs and metrics explorer.",
+    )
 
     subparsers = parser.add_subparsers(dest="command")
 
@@ -41,7 +44,7 @@ def build_argparser():
             description=msg,
             help=msg,
             formatter_class=lambda prog: argparse.HelpFormatter(
-                prog, max_help_position=40, width=90
+                prog, max_help_position=30, width=150
             ),
         )
 
@@ -59,30 +62,37 @@ def build_argparser():
             help="Whether debug mode should be launched (default: %(default)s)",
             action="store_true",
         )
-        sps[cmd].add_argument(
+        aws_creds_group = sps[cmd].add_argument_group(
+            "AWS CREDENTIALS", "Can be ommited if set in environment variables"
+        )
+        aws_creds_group.add_argument(
             "--aws-region",
             help="Region to monitor the metrics within. (default: %(default)s)",
             type=str,
             required=False,
             default=region,
+            metavar="R",
         )
-        sps[cmd].add_argument(
+        aws_creds_group.add_argument(
             "--aws-access-key-id",
             help="AWS Access Key ID to use for authentication",
             type=str,
             required=False,
+            metavar="K",
         )
-        sps[cmd].add_argument(
+        aws_creds_group.add_argument(
             "--aws-secret-access-key",
             help="AWS Secret Access Key to use for authentication",
             type=str,
             required=False,
+            metavar="S",
         )
-        sps[cmd].add_argument(
+        aws_creds_group.add_argument(
             "--aws-session-token",
             help="AWS Session Token to use for authentication",
             type=str,
             required=False,
+            metavar="T",
         )
         sps[cmd].add_argument(
             "--save",
@@ -102,18 +112,23 @@ def build_argparser():
         help="Path to a query JSON file. This is not implemented yet.",
         required=False,
         default=None,
+        metavar="Q",
     )
     sps[METRIC_CMD].add_argument(
         "-i",
         "--id",
         help="The unique identifier to assign to the metric data. Must be of the form '^[a-z][a-zA-Z0-9_]*$'.",
         default=id,
+        required=False,
+        metavar="ID",
     )
     sps[METRIC_CMD].add_argument(
         "-m",
         "--metric",
         help="Name of the metric collected by CloudWatchAgent (default: %(default)s)",
         default=metric_name,
+        required=False,
+        metavar="N",
     )
     sps[METRIC_CMD].add_argument(
         "-iid",
@@ -121,31 +136,39 @@ def build_argparser():
         help="Instance ID, needs to follow 'i-<numbers>' format",
         required=True,
         type=str,
+        metavar="ID",
     )
     sps[METRIC_CMD].add_argument(
         "--uptime",
         help="Display the uptime of the instance in seconds. It's either calculated precisely if the instance is still running, or estimated based on the reported metrics.",
         action="store_true",
     )
-    sps[METRIC_CMD].add_argument(
+    metric_collection_start_time = sps[METRIC_CMD].add_argument_group(
+        "METRIC COLLECTION TIME",
+        "The time range to collect metrics from. Uptime will be estimated in the timespan starting at least 15 ago.",
+    )
+    metric_collection_start_time.add_argument(
         "--days",
-        help="How many days to subtract from the current date to determine the metric collection start time (default: %(default)s). Uptime will be estimated in the timespan starting at least 15 ago.",
+        help="How many days to subtract from the current date to determine the metric collection start time (default: %(default)s).",
         default=days,
         type=int,
+        metavar="D",
     )
-    sps[METRIC_CMD].add_argument(
+    metric_collection_start_time.add_argument(
         "-hr",
         "--hours",
-        help="How many hours to subtract from the current time to determine the metric collection start time (default: %(default)s). Uptime will be estimated in the timespan starting at least 15 ago.",
+        help="How many hours to subtract from the current time to determine the metric collection start time (default: %(default)s).",
         default=hours,
         type=int,
+        metavar="H",
     )
-    sps[METRIC_CMD].add_argument(
+    metric_collection_start_time.add_argument(
         "-mi",
         "--minutes",
-        help="How many minutes to subtract from the current time to determine the metric collection start time (default: %(default)s). Uptime will be estimated in the timespan starting at least 15 ago.",
+        help="How many minutes to subtract from the current time to determine the metric collection start time (default: %(default)s).",
         default=minutes,
         type=int,
+        metavar="M",
     )
     sps[METRIC_CMD].add_argument(
         "-u",
@@ -156,19 +179,27 @@ def build_argparser():
             collected with that unit specified. Use 'Bytes' for memory (default: %(default)s)
             """,
         default=unit,
+        type=str,
+        metavar="U",
     )
     sps[METRIC_CMD].add_argument(
         "-s",
         "--stat",
         help="The statistic to apply over the time intervals, e.g. 'Maximum' (default: %(default)s)",
         default=stat,
+        type=str,
+        metavar="S",
     )
     sps[METRIC_CMD].add_argument(
         "-p",
         "--period",
-        help="The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: %(default)s)",
+        help="""
+            The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: %(default)s). 
+            It affects the data availability. See the docs 'Usage' section for more details.
+            """,
         default=period,
         type=int,
+        metavar="P",
     )
     sps[METRIC_CMD].add_argument(
         "--plot",
@@ -177,21 +208,26 @@ def build_argparser():
     )
     sps[METRIC_CMD].add_argument(
         "--namespace",
-        help="Namespace to monitor the metrics within. This value must match the 'Namespace' value in the CloudWatchAgent config (default: %(default)s)",
+        help="Namespace to monitor the metrics within. This value must match the 'Namespace' value in the CloudWatchAgent config.",
         type=str,
         required=True,
+        metavar="N",
     )
     sps[LOG_CMD].add_argument(
         "-g",
         "--log-group-name",
         help="The log group name to monitor",
         required=True,
+        type=str,
+        metavar="G",
     )
     sps[LOG_CMD].add_argument(
         "-s",
         "--log-stream-name",
         help="The log stream name to monitor",
         required=True,
+        type=str,
+        metavar="S",
     )
 
     return parser

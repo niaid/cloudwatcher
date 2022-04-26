@@ -8,7 +8,9 @@ cloudwatcher --help
 ```
 
 ```
-version: 0.0.2
+version: 0.0.3
+Documentation available at: https://niaid.github.io/cloudwatcher
+
 usage: cloudwatcher [-h] {metric,log} ...
 
 CloudWatch logs and metrics explorer.
@@ -35,73 +37,49 @@ clouwatcher metric --help
 ```
 
 ```
-version: 0.0.2
-usage: cloudwatcher metric [-h] [--version] [--debug] [--aws-region AWS_REGION]
-                           [--aws-access-key-id AWS_ACCESS_KEY_ID]
-                           [--aws-secret-access-key AWS_SECRET_ACCESS_KEY]
-                           [--aws-session-token AWS_SESSION_TOKEN] [--save] [-d DIR]
-                           [-q QUERY_JSON] [-i ID] [-m METRIC] -iid INSTANCE_ID [--uptime]
-                           [--days DAYS] [-hr HOURS] [-mi MINUTES] [-u UNIT] [-s STAT]
-                           [-p PERIOD] [--plot] --namespace NAMESPACE
+version: 0.0.3
+Documentation available at: https://niaid.github.io/cloudwatcher
+
+usage: cloudwatcher metric [-h] [--version] [--debug] [--aws-region R] [--aws-access-key-id K] [--aws-secret-access-key S] [--aws-session-token T]
+                           [--save] [-d DIR] [-q Q] [-i ID] [-m N] -iid ID [--uptime] [--days D] [-hr H] [-mi M] [-u U] [-s S] [-p P] [--plot]
+                           --namespace N
 
 Interact with AWS CloudWatch metrics.
 
 optional arguments:
-  -h, --help                            show this help message and exit
-  --version                             Print version and exit
-  --debug                               Whether debug mode should be launched (default:
-                                        False)
-  --aws-region AWS_REGION               Region to monitor the metrics within. (default:
-                                        us-east-1)
-  --aws-access-key-id AWS_ACCESS_KEY_ID
-                                        AWS Access Key ID to use for authentication
-  --aws-secret-access-key AWS_SECRET_ACCESS_KEY
-                                        AWS Secret Access Key to use for authentication
-  --aws-session-token AWS_SESSION_TOKEN
-                                        AWS Session Token to use for authentication
-  --save                                Whether to save the results to files in the
-                                        selected directory (default: False)
-  -d DIR, --dir DIR                     Directory to store the results in. Used with
-                                        `--save` (default: ./)
-  -q QUERY_JSON, --query-json QUERY_JSON
-                                        Path to a query JSON file. This is not implemented
-                                        yet.
-  -i ID, --id ID                        The unique identifier to assign to the metric
-                                        data. Must be of the form '^[a-z][a-zA-Z0-9_]*$'.
-  -m METRIC, --metric METRIC            Name of the metric collected by CloudWatchAgent
-                                        (default: mem_used)
-  -iid INSTANCE_ID, --instance-id INSTANCE_ID
-                                        Instance ID, needs to follow 'i-<numbers>' format
-  --uptime                              Display the uptime of the instance in seconds.
-                                        It's either calculated precisely if the instance
-                                        is still running, or estimated based on the
-                                        reported metrics.
-  --days DAYS                           How many days to subtract from the current date to
-                                        determine the metric collection start time
-                                        (default: 1). Uptime will be estimated in the
-                                        timespan starting at least 15 ago.
-  -hr HOURS, --hours HOURS              How many hours to subtract from the current time
-                                        to determine the metric collection start time
-                                        (default: 0). Uptime will be estimated in the
-                                        timespan starting at least 15 ago.
-  -mi MINUTES, --minutes MINUTES        How many minutes to subtract from the current time
-                                        to determine the metric collection start time
-                                        (default: 0). Uptime will be estimated in the
-                                        timespan starting at least 15 ago.
-  -u UNIT, --unit UNIT                  If you omit Unit then all data that was collected
-                                        with any unit is returned. If you specify a unit,
-                                        it acts as a filter and returns only data that was
-                                        collected with that unit specified. Use 'Bytes'
-                                        for memory (default: Bytes)
-  -s STAT, --stat STAT                  The statistic to apply over the time intervals,
-                                        e.g. 'Maximum' (default: Maximum)
-  -p PERIOD, --period PERIOD            The granularity, in seconds, of the returned data
-                                        points. Choices: 1, 5, 10, 30, 60, or any multiple
-                                        of 60 (default: 60)
-  --plot                                Whether to plot the metric data (default: False)
-  --namespace NAMESPACE                 Namespace to monitor the metrics within. This
-                                        value must match the 'Namespace' value in the
-                                        CloudWatchAgent config (default: None)
+  -h, --help                 show this help message and exit
+  --version                  Print version and exit
+  --debug                    Whether debug mode should be launched (default: False)
+  --save                     Whether to save the results to files in the selected directory (default: False)
+  -d DIR, --dir DIR          Directory to store the results in. Used with `--save` (default: ./)
+  -q Q, --query-json Q       Path to a query JSON file. This is not implemented yet.
+  -i ID, --id ID             The unique identifier to assign to the metric data. Must be of the form '^[a-z][a-zA-Z0-9_]*$'.
+  -m N, --metric N           Name of the metric collected by CloudWatchAgent (default: mem_used)
+  -iid ID, --instance-id ID  Instance ID, needs to follow 'i-<numbers>' format
+  --uptime                   Display the uptime of the instance in seconds. It's either calculated precisely if the instance is still running, or
+                             estimated based on the reported metrics.
+  -u U, --unit U             If you omit Unit then all data that was collected with any unit is returned. If you specify a unit, it acts as a filter
+                             and returns only data that was collected with that unit specified. Use 'Bytes' for memory (default: Bytes)
+  -s S, --stat S             The statistic to apply over the time intervals, e.g. 'Maximum' (default: Maximum)
+  -p P, --period P           The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: 60).
+                             It affects the data availability. See the docs 'Usage' section for more details.
+  --plot                     Whether to plot the metric data (default: False)
+  --namespace N              Namespace to monitor the metrics within. This value must match the 'Namespace' value in the CloudWatchAgent config.
+
+AWS CREDENTIALS:
+  Can be ommited if set in environment variables
+
+  --aws-region R             Region to monitor the metrics within. (default: us-east-1)
+  --aws-access-key-id K      AWS Access Key ID to use for authentication
+  --aws-secret-access-key S  AWS Secret Access Key to use for authentication
+  --aws-session-token T      AWS Session Token to use for authentication
+
+METRIC COLLECTION TIME:
+  The time range to collect metrics from. Uptime will be estimated in the timespan starting at least 15 ago.
+
+  --days D                   How many days to subtract from the current date to determine the metric collection start time (default: 1).
+  -hr H, --hours H           How many hours to subtract from the current time to determine the metric collection start time (default: 0).
+  -mi M, --minutes M         How many minutes to subtract from the current time to determine the metric collection start time (default: 0).
 ```
 
 ### Minimal command
@@ -128,34 +106,28 @@ clouwatcher log --help
 ```
 
 ```
-version: 0.0.2
-usage: cloudwatcher log [-h] [--version] [--debug] [--aws-region AWS_REGION]
-                        [--aws-access-key-id AWS_ACCESS_KEY_ID]
-                        [--aws-secret-access-key AWS_SECRET_ACCESS_KEY]
-                        [--aws-session-token AWS_SESSION_TOKEN] [--save] [-d DIR] -g
-                        LOG_GROUP_NAME -s LOG_STREAM_NAME
+version: 0.0.3
+Documentation available at: https://niaid.github.io/cloudwatcher
+
+usage: cloudwatcher log [-h] [--version] [--debug] [--aws-region R] [--aws-access-key-id K] [--aws-secret-access-key S] [--aws-session-token T]
+                        [--save] [-d DIR] -g G -s S
 
 Interact with AWS CloudWatch logs.
 
 optional arguments:
-  -h, --help                            show this help message and exit
-  --version                             Print version and exit
-  --debug                               Whether debug mode should be launched (default:
-                                        False)
-  --aws-region AWS_REGION               Region to monitor the metrics within. (default:
-                                        us-east-1)
-  --aws-access-key-id AWS_ACCESS_KEY_ID
-                                        AWS Access Key ID to use for authentication
-  --aws-secret-access-key AWS_SECRET_ACCESS_KEY
-                                        AWS Secret Access Key to use for authentication
-  --aws-session-token AWS_SESSION_TOKEN
-                                        AWS Session Token to use for authentication
-  --save                                Whether to save the results to files in the
-                                        selected directory (default: False)
-  -d DIR, --dir DIR                     Directory to store the results in. Used with
-                                        `--save` (default: ./)
-  -g LOG_GROUP_NAME, --log-group-name LOG_GROUP_NAME
-                                        The log group name to monitor
-  -s LOG_STREAM_NAME, --log-stream-name LOG_STREAM_NAME
-                                        The log stream name to monitor
+  -h, --help                 show this help message and exit
+  --version                  Print version and exit
+  --debug                    Whether debug mode should be launched (default: False)
+  --save                     Whether to save the results to files in the selected directory (default: False)
+  -d DIR, --dir DIR          Directory to store the results in. Used with `--save` (default: ./)
+  -g G, --log-group-name G   The log group name to monitor
+  -s S, --log-stream-name S  The log stream name to monitor
+
+AWS CREDENTIALS:
+  Can be ommited if set in environment variables
+
+  --aws-region R             Region to monitor the metrics within. (default: us-east-1)
+  --aws-access-key-id K      AWS Access Key ID to use for authentication
+  --aws-secret-access-key S  AWS Secret Access Key to use for authentication
+  --aws-session-token T      AWS Session Token to use for authentication
 ```
