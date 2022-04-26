@@ -585,18 +585,20 @@
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>cloudwatcher --help
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>version: 0.0.2
-<a id="__codelineno-1-2" name="__codelineno-1-2"></a>usage: cloudwatcher [-h] {metric,log} ...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>version: 0.0.3
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a>Documentation available at: https://niaid.github.io/cloudwatcher
 <a id="__codelineno-1-3" name="__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4"></a>CloudWatch logs and metrics explorer.
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a>usage: cloudwatcher [-h] {metric,log} ...
 <a id="__codelineno-1-5" name="__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6"></a>positional arguments:
-<a id="__codelineno-1-7" name="__codelineno-1-7"></a>  {metric,log}
-<a id="__codelineno-1-8" name="__codelineno-1-8"></a>    metric      Interact with AWS CloudWatch metrics.
-<a id="__codelineno-1-9" name="__codelineno-1-9"></a>    log         Interact with AWS CloudWatch logs.
-<a id="__codelineno-1-10" name="__codelineno-1-10"></a>
-<a id="__codelineno-1-11" name="__codelineno-1-11"></a>optional arguments:
-<a id="__codelineno-1-12" name="__codelineno-1-12"></a>  -h, --help    show this help message and exit
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a>CloudWatch logs and metrics explorer.
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a>positional arguments:
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a>  {metric,log}
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a>    metric      Interact with AWS CloudWatch metrics.
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a>    log         Interact with AWS CloudWatch logs.
+<a id="__codelineno-1-12" name="__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a>optional arguments:
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a>  -h, --help    show this help message and exit
 </code></pre></div>
 <h2 id="cloudwatch-metrics-monitoring">CloudWatch metrics monitoring</h2>
 <p>The tool is highly configurable and can be used in a variety of ways. Naturally, the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/metrics-collected-by-CloudWatch-agent.html">metrics available to be monitored</a> depend on the configuration of the CloudWatchAgent process.</p>
@@ -604,73 +606,49 @@
 <p>Please refer to the usage below for more options:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>clouwatcher metric --help
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>version: 0.0.2
-<a id="__codelineno-3-2" name="__codelineno-3-2"></a>usage: cloudwatcher metric [-h] [--version] [--debug] [--aws-region AWS_REGION]
-<a id="__codelineno-3-3" name="__codelineno-3-3"></a>                           [--aws-access-key-id AWS_ACCESS_KEY_ID]
-<a id="__codelineno-3-4" name="__codelineno-3-4"></a>                           [--aws-secret-access-key AWS_SECRET_ACCESS_KEY]
-<a id="__codelineno-3-5" name="__codelineno-3-5"></a>                           [--aws-session-token AWS_SESSION_TOKEN] [--save] [-d DIR]
-<a id="__codelineno-3-6" name="__codelineno-3-6"></a>                           [-q QUERY_JSON] [-i ID] [-m METRIC] -iid INSTANCE_ID [--uptime]
-<a id="__codelineno-3-7" name="__codelineno-3-7"></a>                           [--days DAYS] [-hr HOURS] [-mi MINUTES] [-u UNIT] [-s STAT]
-<a id="__codelineno-3-8" name="__codelineno-3-8"></a>                           [-p PERIOD] [--plot] --namespace NAMESPACE
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>version: 0.0.3
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a>Documentation available at: https://niaid.github.io/cloudwatcher
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>usage: cloudwatcher metric [-h] [--version] [--debug] [--aws-region R] [--aws-access-key-id K] [--aws-secret-access-key S] [--aws-session-token T]
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a>                           [--save] [-d DIR] [-q Q] [-i ID] [-m N] -iid ID [--uptime] [--days D] [-hr H] [-mi M] [-u U] [-s S] [-p P] [--plot]
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>                           --namespace N
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a>Interact with AWS CloudWatch metrics.
 <a id="__codelineno-3-9" name="__codelineno-3-9"></a>
-<a id="__codelineno-3-10" name="__codelineno-3-10"></a>Interact with AWS CloudWatch metrics.
-<a id="__codelineno-3-11" name="__codelineno-3-11"></a>
-<a id="__codelineno-3-12" name="__codelineno-3-12"></a>optional arguments:
-<a id="__codelineno-3-13" name="__codelineno-3-13"></a>  -h, --help                            show this help message and exit
-<a id="__codelineno-3-14" name="__codelineno-3-14"></a>  --version                             Print version and exit
-<a id="__codelineno-3-15" name="__codelineno-3-15"></a>  --debug                               Whether debug mode should be launched (default:
-<a id="__codelineno-3-16" name="__codelineno-3-16"></a>                                        False)
-<a id="__codelineno-3-17" name="__codelineno-3-17"></a>  --aws-region AWS_REGION               Region to monitor the metrics within. (default:
-<a id="__codelineno-3-18" name="__codelineno-3-18"></a>                                        us-east-1)
-<a id="__codelineno-3-19" name="__codelineno-3-19"></a>  --aws-access-key-id AWS_ACCESS_KEY_ID
-<a id="__codelineno-3-20" name="__codelineno-3-20"></a>                                        AWS Access Key ID to use for authentication
-<a id="__codelineno-3-21" name="__codelineno-3-21"></a>  --aws-secret-access-key AWS_SECRET_ACCESS_KEY
-<a id="__codelineno-3-22" name="__codelineno-3-22"></a>                                        AWS Secret Access Key to use for authentication
-<a id="__codelineno-3-23" name="__codelineno-3-23"></a>  --aws-session-token AWS_SESSION_TOKEN
-<a id="__codelineno-3-24" name="__codelineno-3-24"></a>                                        AWS Session Token to use for authentication
-<a id="__codelineno-3-25" name="__codelineno-3-25"></a>  --save                                Whether to save the results to files in the
-<a id="__codelineno-3-26" name="__codelineno-3-26"></a>                                        selected directory (default: False)
-<a id="__codelineno-3-27" name="__codelineno-3-27"></a>  -d DIR, --dir DIR                     Directory to store the results in. Used with
-<a id="__codelineno-3-28" name="__codelineno-3-28"></a>                                        `--save` (default: ./)
-<a id="__codelineno-3-29" name="__codelineno-3-29"></a>  -q QUERY_JSON, --query-json QUERY_JSON
-<a id="__codelineno-3-30" name="__codelineno-3-30"></a>                                        Path to a query JSON file. This is not implemented
-<a id="__codelineno-3-31" name="__codelineno-3-31"></a>                                        yet.
-<a id="__codelineno-3-32" name="__codelineno-3-32"></a>  -i ID, --id ID                        The unique identifier to assign to the metric
-<a id="__codelineno-3-33" name="__codelineno-3-33"></a>                                        data. Must be of the form &#39;^[a-z][a-zA-Z0-9_]*$&#39;.
-<a id="__codelineno-3-34" name="__codelineno-3-34"></a>  -m METRIC, --metric METRIC            Name of the metric collected by CloudWatchAgent
-<a id="__codelineno-3-35" name="__codelineno-3-35"></a>                                        (default: mem_used)
-<a id="__codelineno-3-36" name="__codelineno-3-36"></a>  -iid INSTANCE_ID, --instance-id INSTANCE_ID
-<a id="__codelineno-3-37" name="__codelineno-3-37"></a>                                        Instance ID, needs to follow &#39;i-&lt;numbers&gt;&#39; format
-<a id="__codelineno-3-38" name="__codelineno-3-38"></a>  --uptime                              Display the uptime of the instance in seconds.
-<a id="__codelineno-3-39" name="__codelineno-3-39"></a>                                        It&#39;s either calculated precisely if the instance
-<a id="__codelineno-3-40" name="__codelineno-3-40"></a>                                        is still running, or estimated based on the
-<a id="__codelineno-3-41" name="__codelineno-3-41"></a>                                        reported metrics.
-<a id="__codelineno-3-42" name="__codelineno-3-42"></a>  --days DAYS                           How many days to subtract from the current date to
-<a id="__codelineno-3-43" name="__codelineno-3-43"></a>                                        determine the metric collection start time
-<a id="__codelineno-3-44" name="__codelineno-3-44"></a>                                        (default: 1). Uptime will be estimated in the
-<a id="__codelineno-3-45" name="__codelineno-3-45"></a>                                        timespan starting at least 15 ago.
-<a id="__codelineno-3-46" name="__codelineno-3-46"></a>  -hr HOURS, --hours HOURS              How many hours to subtract from the current time
-<a id="__codelineno-3-47" name="__codelineno-3-47"></a>                                        to determine the metric collection start time
-<a id="__codelineno-3-48" name="__codelineno-3-48"></a>                                        (default: 0). Uptime will be estimated in the
-<a id="__codelineno-3-49" name="__codelineno-3-49"></a>                                        timespan starting at least 15 ago.
-<a id="__codelineno-3-50" name="__codelineno-3-50"></a>  -mi MINUTES, --minutes MINUTES        How many minutes to subtract from the current time
-<a id="__codelineno-3-51" name="__codelineno-3-51"></a>                                        to determine the metric collection start time
-<a id="__codelineno-3-52" name="__codelineno-3-52"></a>                                        (default: 0). Uptime will be estimated in the
-<a id="__codelineno-3-53" name="__codelineno-3-53"></a>                                        timespan starting at least 15 ago.
-<a id="__codelineno-3-54" name="__codelineno-3-54"></a>  -u UNIT, --unit UNIT                  If you omit Unit then all data that was collected
-<a id="__codelineno-3-55" name="__codelineno-3-55"></a>                                        with any unit is returned. If you specify a unit,
-<a id="__codelineno-3-56" name="__codelineno-3-56"></a>                                        it acts as a filter and returns only data that was
-<a id="__codelineno-3-57" name="__codelineno-3-57"></a>                                        collected with that unit specified. Use &#39;Bytes&#39;
-<a id="__codelineno-3-58" name="__codelineno-3-58"></a>                                        for memory (default: Bytes)
-<a id="__codelineno-3-59" name="__codelineno-3-59"></a>  -s STAT, --stat STAT                  The statistic to apply over the time intervals,
-<a id="__codelineno-3-60" name="__codelineno-3-60"></a>                                        e.g. &#39;Maximum&#39; (default: Maximum)
-<a id="__codelineno-3-61" name="__codelineno-3-61"></a>  -p PERIOD, --period PERIOD            The granularity, in seconds, of the returned data
-<a id="__codelineno-3-62" name="__codelineno-3-62"></a>                                        points. Choices: 1, 5, 10, 30, 60, or any multiple
-<a id="__codelineno-3-63" name="__codelineno-3-63"></a>                                        of 60 (default: 60)
-<a id="__codelineno-3-64" name="__codelineno-3-64"></a>  --plot                                Whether to plot the metric data (default: False)
-<a id="__codelineno-3-65" name="__codelineno-3-65"></a>  --namespace NAMESPACE                 Namespace to monitor the metrics within. This
-<a id="__codelineno-3-66" name="__codelineno-3-66"></a>                                        value must match the &#39;Namespace&#39; value in the
-<a id="__codelineno-3-67" name="__codelineno-3-67"></a>                                        CloudWatchAgent config (default: None)
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a>optional arguments:
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a>  -h, --help                 show this help message and exit
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a>  --version                  Print version and exit
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a>  --debug                    Whether debug mode should be launched (default: False)
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>  --save                     Whether to save the results to files in the selected directory (default: False)
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a>  -d DIR, --dir DIR          Directory to store the results in. Used with `--save` (default: ./)
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a>  -q Q, --query-json Q       Path to a query JSON file. This is not implemented yet.
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a>  -i ID, --id ID             The unique identifier to assign to the metric data. Must be of the form &#39;^[a-z][a-zA-Z0-9_]*$&#39;.
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a>  -m N, --metric N           Name of the metric collected by CloudWatchAgent (default: mem_used)
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a>  -iid ID, --instance-id ID  Instance ID, needs to follow &#39;i-&lt;numbers&gt;&#39; format
+<a id="__codelineno-3-20" name="__codelineno-3-20"></a>  --uptime                   Display the uptime of the instance in seconds. It&#39;s either calculated precisely if the instance is still running, or
+<a id="__codelineno-3-21" name="__codelineno-3-21"></a>                             estimated based on the reported metrics.
+<a id="__codelineno-3-22" name="__codelineno-3-22"></a>  -u U, --unit U             If you omit Unit then all data that was collected with any unit is returned. If you specify a unit, it acts as a filter
+<a id="__codelineno-3-23" name="__codelineno-3-23"></a>                             and returns only data that was collected with that unit specified. Use &#39;Bytes&#39; for memory (default: Bytes)
+<a id="__codelineno-3-24" name="__codelineno-3-24"></a>  -s S, --stat S             The statistic to apply over the time intervals, e.g. &#39;Maximum&#39; (default: Maximum)
+<a id="__codelineno-3-25" name="__codelineno-3-25"></a>  -p P, --period P           The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: 60).
+<a id="__codelineno-3-26" name="__codelineno-3-26"></a>                             It affects the data availability. See the docs &#39;Usage&#39; section for more details.
+<a id="__codelineno-3-27" name="__codelineno-3-27"></a>  --plot                     Whether to plot the metric data (default: False)
+<a id="__codelineno-3-28" name="__codelineno-3-28"></a>  --namespace N              Namespace to monitor the metrics within. This value must match the &#39;Namespace&#39; value in the CloudWatchAgent config.
+<a id="__codelineno-3-29" name="__codelineno-3-29"></a>
+<a id="__codelineno-3-30" name="__codelineno-3-30"></a>AWS CREDENTIALS:
+<a id="__codelineno-3-31" name="__codelineno-3-31"></a>  Can be ommited if set in environment variables
+<a id="__codelineno-3-32" name="__codelineno-3-32"></a>
+<a id="__codelineno-3-33" name="__codelineno-3-33"></a>  --aws-region R             Region to monitor the metrics within. (default: us-east-1)
+<a id="__codelineno-3-34" name="__codelineno-3-34"></a>  --aws-access-key-id K      AWS Access Key ID to use for authentication
+<a id="__codelineno-3-35" name="__codelineno-3-35"></a>  --aws-secret-access-key S  AWS Secret Access Key to use for authentication
+<a id="__codelineno-3-36" name="__codelineno-3-36"></a>  --aws-session-token T      AWS Session Token to use for authentication
+<a id="__codelineno-3-37" name="__codelineno-3-37"></a>
+<a id="__codelineno-3-38" name="__codelineno-3-38"></a>METRIC COLLECTION TIME:
+<a id="__codelineno-3-39" name="__codelineno-3-39"></a>  The time range to collect metrics from. Uptime will be estimated in the timespan starting at least 15 ago.
+<a id="__codelineno-3-40" name="__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41"></a>  --days D                   How many days to subtract from the current date to determine the metric collection start time (default: 1).
+<a id="__codelineno-3-42" name="__codelineno-3-42"></a>  -hr H, --hours H           How many hours to subtract from the current time to determine the metric collection start time (default: 0).
+<a id="__codelineno-3-43" name="__codelineno-3-43"></a>  -mi M, --minutes M         How many minutes to subtract from the current time to determine the metric collection start time (default: 0).
 </code></pre></div>
 <h3 id="minimal-command">Minimal command</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="go">python3.9 cloudwatch.py --instance-id i-024a73d6738255cbd</span>
@@ -687,36 +665,30 @@
 <h2 id="cloudwatch-logs-monitoring">CloudWatch logs monitoring</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>clouwatcher log --help
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>version: 0.0.2
-<a id="__codelineno-6-2" name="__codelineno-6-2"></a>usage: cloudwatcher log [-h] [--version] [--debug] [--aws-region AWS_REGION]
-<a id="__codelineno-6-3" name="__codelineno-6-3"></a>                        [--aws-access-key-id AWS_ACCESS_KEY_ID]
-<a id="__codelineno-6-4" name="__codelineno-6-4"></a>                        [--aws-secret-access-key AWS_SECRET_ACCESS_KEY]
-<a id="__codelineno-6-5" name="__codelineno-6-5"></a>                        [--aws-session-token AWS_SESSION_TOKEN] [--save] [-d DIR] -g
-<a id="__codelineno-6-6" name="__codelineno-6-6"></a>                        LOG_GROUP_NAME -s LOG_STREAM_NAME
-<a id="__codelineno-6-7" name="__codelineno-6-7"></a>
-<a id="__codelineno-6-8" name="__codelineno-6-8"></a>Interact with AWS CloudWatch logs.
-<a id="__codelineno-6-9" name="__codelineno-6-9"></a>
-<a id="__codelineno-6-10" name="__codelineno-6-10"></a>optional arguments:
-<a id="__codelineno-6-11" name="__codelineno-6-11"></a>  -h, --help                            show this help message and exit
-<a id="__codelineno-6-12" name="__codelineno-6-12"></a>  --version                             Print version and exit
-<a id="__codelineno-6-13" name="__codelineno-6-13"></a>  --debug                               Whether debug mode should be launched (default:
-<a id="__codelineno-6-14" name="__codelineno-6-14"></a>                                        False)
-<a id="__codelineno-6-15" name="__codelineno-6-15"></a>  --aws-region AWS_REGION               Region to monitor the metrics within. (default:
-<a id="__codelineno-6-16" name="__codelineno-6-16"></a>                                        us-east-1)
-<a id="__codelineno-6-17" name="__codelineno-6-17"></a>  --aws-access-key-id AWS_ACCESS_KEY_ID
-<a id="__codelineno-6-18" name="__codelineno-6-18"></a>                                        AWS Access Key ID to use for authentication
-<a id="__codelineno-6-19" name="__codelineno-6-19"></a>  --aws-secret-access-key AWS_SECRET_ACCESS_KEY
-<a id="__codelineno-6-20" name="__codelineno-6-20"></a>                                        AWS Secret Access Key to use for authentication
-<a id="__codelineno-6-21" name="__codelineno-6-21"></a>  --aws-session-token AWS_SESSION_TOKEN
-<a id="__codelineno-6-22" name="__codelineno-6-22"></a>                                        AWS Session Token to use for authentication
-<a id="__codelineno-6-23" name="__codelineno-6-23"></a>  --save                                Whether to save the results to files in the
-<a id="__codelineno-6-24" name="__codelineno-6-24"></a>                                        selected directory (default: False)
-<a id="__codelineno-6-25" name="__codelineno-6-25"></a>  -d DIR, --dir DIR                     Directory to store the results in. Used with
-<a id="__codelineno-6-26" name="__codelineno-6-26"></a>                                        `--save` (default: ./)
-<a id="__codelineno-6-27" name="__codelineno-6-27"></a>  -g LOG_GROUP_NAME, --log-group-name LOG_GROUP_NAME
-<a id="__codelineno-6-28" name="__codelineno-6-28"></a>                                        The log group name to monitor
-<a id="__codelineno-6-29" name="__codelineno-6-29"></a>  -s LOG_STREAM_NAME, --log-stream-name LOG_STREAM_NAME
-<a id="__codelineno-6-30" name="__codelineno-6-30"></a>                                        The log stream name to monitor
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>version: 0.0.3
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a>Documentation available at: https://niaid.github.io/cloudwatcher
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>usage: cloudwatcher log [-h] [--version] [--debug] [--aws-region R] [--aws-access-key-id K] [--aws-secret-access-key S] [--aws-session-token T]
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a>                        [--save] [-d DIR] -g G -s S
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a>Interact with AWS CloudWatch logs.
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a>optional arguments:
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a>  -h, --help                 show this help message and exit
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a>  --version                  Print version and exit
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a>  --debug                    Whether debug mode should be launched (default: False)
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a>  --save                     Whether to save the results to files in the selected directory (default: False)
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a>  -d DIR, --dir DIR          Directory to store the results in. Used with `--save` (default: ./)
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a>  -g G, --log-group-name G   The log group name to monitor
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a>  -s S, --log-stream-name S  The log stream name to monitor
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a>AWS CREDENTIALS:
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a>  Can be ommited if set in environment variables
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a>  --aws-region R             Region to monitor the metrics within. (default: us-east-1)
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a>  --aws-access-key-id K      AWS Access Key ID to use for authentication
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a>  --aws-secret-access-key S  AWS Secret Access Key to use for authentication
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a>  --aws-session-token T      AWS Session Token to use for authentication
 </code></pre></div>
 
               
