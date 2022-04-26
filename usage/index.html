@@ -369,8 +369,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#minimal-command" class="md-nav__link">
-    Minimal command
+  <a href="#minimal-command-example" class="md-nav__link">
+    Minimal command example
   </a>
   
 </li>
@@ -534,8 +534,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#minimal-command" class="md-nav__link">
-    Minimal command
+  <a href="#minimal-command-example" class="md-nav__link">
+    Minimal command example
   </a>
   
 </li>
@@ -650,8 +650,8 @@
 <a id="__codelineno-3-42" name="__codelineno-3-42"></a>  -hr H, --hours H           How many hours to subtract from the current time to determine the metric collection start time (default: 0).
 <a id="__codelineno-3-43" name="__codelineno-3-43"></a>  -mi M, --minutes M         How many minutes to subtract from the current time to determine the metric collection start time (default: 0).
 </code></pre></div>
-<h3 id="minimal-command">Minimal command</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="go">python3.9 cloudwatch.py --instance-id i-024a73d6738255cbd</span>
+<h3 id="minimal-command-example">Minimal command example</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="go">cloudwatcher metric --instance-id i-024a73d6738255cbd</span>
 </code></pre></div>
 <h3 id="notes-on-metrics-availabilty">Notes on metrics availabilty</h3>
 <p>Amazon CloudWatch retains metric data as follows:</p>
@@ -661,7 +661,7 @@
 <li>Data points with a period of 300 seconds (5-minute) are available for 63 days.</li>
 <li>Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months).</li>
 </ul>
-<p>Select your period of interest accordingly.</p>
+<p>Select your period of interest accordingly. This is crucial as for example if the EC2 instance has stopped over 3 hours ago, selecting a &lt; 60 second period will return an empty reponse.</p>
 <h2 id="cloudwatch-logs-monitoring">CloudWatch logs monitoring</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>clouwatcher log --help
 </code></pre></div>
