@@ -6,7 +6,7 @@ Please refer to [this page](https://docs.aws.amazon.com/AmazonCloudWatch/latest/
 
 ## Configuration
 
-`CloudWatchAgent` is a powerful tool and can be [configured](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html) to report variety of metrics. The configuration file is located at `/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json` in each EC2 instance and is sourced from a file in the nephele2 repository: `resources/misc_files_for_worker/cloudwatch_agent_cfg.json`.
+`CloudWatchAgent` is a powerful tool and can be [configured](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html) to report variety of metrics.
 
 Here is an example of the configuration file:
 
@@ -35,3 +35,25 @@ The above configuration file is used to colect 3 memory metrics every second:
 - `mem_used`
 - `mem_cached`
 - `mem_total`
+
+### EC2 userdata
+
+The tool can be configured to be launched automatically by the EC2 instance userdata. Here are the steps to configure the tool to be launched automatically:
+
+1. Download `CloudWatchAgent` appropriate for your EC2 instance type; learn more [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/download-cloudwatch-agent-commandline.html).
+2. Install `CloudWatchAgent` on the EC2 instance.
+3. Create/copy a `CloudWatchAgent` configuration file.
+4. Start the `CloudWatchAgent` service pointing to the created configuration file.
+
+For a Debian EC2 instance, the steps can be achieved by executing the following commands:
+
+```bash linenums="1" title="ec2_userdata.sh"
+#!/bin/bash
+CLOUDWATCH_CFG_SRC=<path-in-repo>/config.json
+CLOUDWATCH_CFG_FILE=/opt/aws/amazon-cloudwatch-agent/bin/config.json
+
+wget https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/amazon-cloudwatch-agent.deb
+dpkg -i -E ./amazon-cloudwatch-agent.deb
+cp $CLOUDWATCH_CFG_SRC $CLOUDWATCH_CFG_FILE
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:$CLOUDWATCH_CFG_FILE
+```

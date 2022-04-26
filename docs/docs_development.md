@@ -6,8 +6,7 @@ The documentation is built from the makrdown files in the `/docs` directory with
 
 !!! info "Makefile"
 
-    The following commands are encoded in a Makefie in this repository: [`makefile`](./makefile).
-
+    The following commands are encoded in a Makefie in this repository: [`makefile`](https://github.com/niaid/cloudwatcher/blob/main/makefile).
 
 ### Serve
 
@@ -47,23 +46,23 @@ In order to serve the documentation by hand follow the steps below.
 
     The commands need to be run from the root of the repository, unless stated otherwise.
 
-1. Install the documentation-related dependancies and the Python package itself with [Poetry](https://poetry.org/)
+1. Install the documentation-related dependancies and the Python package itself with [Poetry](https://python-poetry.org/)
 
-    ```console
-    poetry install
-    ```
+   ```console
+   poetry install
+   ```
 
 2. Document the API of the package
 
-    ```console
-    lucidoc cloudwatcher --parse rst --outfile docs/API_documentation.md
-    ```
+   ```console
+   lucidoc cloudwatcher --parse rst --outfile docs/API_documentation.md
+   ```
 
 3. Run the following command in the project root
 
-    ```
-    mkdocs serve
-    ```
+   ```console
+   mkdocs serve
+   ```
 
 ## Deploying the documentation
 
