@@ -1,0 +1,902 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.1.7">
+    
+    
+      
+        <title>API usage - cloudwatcher</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cd566b2a.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cloudwatcher-python-api-usage" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="cloudwatcher" class="md-header__button md-logo" aria-label="cloudwatcher" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            cloudwatcher
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API usage
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/niaid/cloudwatcher" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niaid/cloudwatcher
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="cloudwatcher" class="md-nav__button md-logo" aria-label="cloudwatcher" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    cloudwatcher
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/niaid/cloudwatcher" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niaid/cloudwatcher
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          Installation & Setup
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Installation & Setup" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Installation & Setup
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EC2_instance_setup/" class="md-nav__link">
+        EC2 intance setup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../login_credentials/" class="md-nav__link">
+        AWS credentials
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Usage & Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Usage & Features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Usage & Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        Features
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Python API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Python API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Python API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_documentation/" class="md-nav__link">
+        API documentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        API usage
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metricwatcher-convenient-interface-to-aws-cloudwatch-metrics" class="md-nav__link">
+    MetricWatcher: convenient interface to AWS CloudWatch metrics
+  </a>
+  
+    <nav class="md-nav" aria-label="MetricWatcher: convenient interface to AWS CloudWatch metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metricwatcher-initialization" class="md-nav__link">
+    MetricWatcher initialization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricwatcher-ec2-query-period-selection" class="md-nav__link">
+    MetricWatcher EC2 query period selection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-methods" class="md-nav__link">
+    Logging methods
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-saving-methods" class="md-nav__link">
+    File saving methods
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maunal-ec2-querying" class="md-nav__link">
+    Maunal EC2 querying
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timedmetric-dataclass" class="md-nav__link">
+    TimedMetric dataclass
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logwatcher-convenient-interface-to-aws-cloudwatch-logs" class="md-nav__link">
+    LogWatcher: convenient interface to AWS CloudWatch logs
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Development
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Development" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Development
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs_development/" class="md-nav__link">
+        Docs development
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Release notes
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metricwatcher-convenient-interface-to-aws-cloudwatch-metrics" class="md-nav__link">
+    MetricWatcher: convenient interface to AWS CloudWatch metrics
+  </a>
+  
+    <nav class="md-nav" aria-label="MetricWatcher: convenient interface to AWS CloudWatch metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metricwatcher-initialization" class="md-nav__link">
+    MetricWatcher initialization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricwatcher-ec2-query-period-selection" class="md-nav__link">
+    MetricWatcher EC2 query period selection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-methods" class="md-nav__link">
+    Logging methods
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-saving-methods" class="md-nav__link">
+    File saving methods
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maunal-ec2-querying" class="md-nav__link">
+    Maunal EC2 querying
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timedmetric-dataclass" class="md-nav__link">
+    TimedMetric dataclass
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logwatcher-convenient-interface-to-aws-cloudwatch-logs" class="md-nav__link">
+    LogWatcher: convenient interface to AWS CloudWatch logs
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+<a href="https://github.com/niaid/cloudwatcher/edit/main/docs/API_usage.md" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+<h1 id="cloudwatcher-python-api-usage"><code>cloudwatcher</code> Python API usage</h1>
+<p>The purpose of this page is to provide a quick overview of the <code>cloudwatcher</code> Python API. The package consists of two user-facing classes:</p>
+<ul>
+<li><code>MetricWatcher</code>: This class is used to interact with AWS CloudWatch metrics.</li>
+<li><code>LogWatcher</code>: This class is used to interact with AWS CloudWatch logs.</li>
+</ul>
+<p>Both of these classes inherit from the <code>CloudWatcher</code> class.</p>
+<h2 id="metricwatcher-convenient-interface-to-aws-cloudwatch-metrics"><code>MetricWatcher</code>: convenient interface to AWS CloudWatch metrics</h2>
+<p><code>MetricWatcher</code> can be used to interact with AWS CloudWatch metrics. </p>
+<h3 id="metricwatcher-initialization"><code>MetricWatcher</code> initialization</h3>
+<p>As described in the Login credentials section, the AWS credentials can be sourced from environment variables: <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code>, <code>AWS_SESSION_TOKEN</code>.
+Alternatively, you can pass the values as arguments to the <code>MetricWatcher</code> constructor.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">cloudwatcher</span> <span class="kn">import</span> <span class="n">MetricWatcher</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">cloudwatcher.const</span> <span class="kn">import</span> <span class="n">DEFAULT_QUERY_KWARGS</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">instance_id</span> <span class="o">=</span> <span class="s2">&quot;i-048529e65b26aaded&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="n">mw</span> <span class="o">=</span> <span class="n">MetricWatcher</span><span class="p">(</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a>    <span class="n">namespace</span><span class="o">=</span><span class="s2">&quot;michal-NepheleNamespace&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a>    <span class="n">metric_name</span><span class="o">=</span><span class="s2">&quot;mem_used&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="n">metric_id</span><span class="o">=</span><span class="s2">&quot;mem_used&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a>    <span class="n">metric_unit</span><span class="o">=</span><span class="s2">&quot;Bytes&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a>    <span class="n">ec2_instance_id</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="metricwatcher-ec2-query-period-selection"><code>MetricWatcher</code> EC2 query period selection</h3>
+<p>In order to specify the EC2 instace query settings (period, granularity, etc.), the user would need to provide multiple parameters. To make it easier, there are a few sensible presets that can be used to select the query settings, which are passed to <code>query_ec2_metrics</code> method. These presets are defined to query the data reported by the EC2 instance within the last day, hour or minute.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">cloudwatcher.const</span> <span class="kn">import</span> <span class="n">QUERY_KWARGS_PRESETS</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="nb">list</span><span class="p">(</span><span class="n">QUERY_KWARGS_PRESETS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[&#39;day&#39;, &#39;hour&#39;, &#39;minute&#39;]
+</code></pre></div>
+<p>The presets can be used by passing the <code>query_preset</code> argument to the functions presented below. Alternatively, users can pass <code>query_kwargs</code> argument, which overrides the preset values.</p>
+<h3 id="logging-methods">Logging methods</h3>
+<p>There is a method that can be used to log the metric to the screen. The EC2 instance is automatically queried if the query response is not provided.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">mw</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="n">query_preset</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>
+</code></pre></div>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃<span style="color: #800080; text-decoration-color: #800080; font-weight: bold"> Time (UTC) </span>┃<span style="color: #800080; text-decoration-color: #800080; font-weight: bold"> Value      </span>┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:17:40  </span>│ 641.938 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:17:30  </span>│ 641.938 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:17:20  </span>│ 641.906 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:17:10  </span>│ 641.945 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:17:00  </span>│ 641.438 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:16:50  </span>│ 640.918 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:16:40  </span>│ 640.918 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:16:30  </span>│ 640.887 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:16:20  </span>│ 641.262 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:16:10  </span>│ 641.441 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:16:00  </span>│ 641.441 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:15:50  </span>│ 767.469 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:15:40  </span>│ 2.078 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:15:30  </span>│ 2.079 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:15:20  </span>│ 2.304 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:15:10  </span>│ 2.064 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:15:00  </span>│ 7.922 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:14:50  </span>│ 7.789 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:14:40  </span>│ 2.307 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:14:30  </span>│ 2.128 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:14:20  </span>│ 2.122 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:14:10  </span>│ 2.095 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:14:00  </span>│ 1.995 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:13:50  </span>│ 1.886 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:13:40  </span>│ 1.926 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:13:30  </span>│ 1.730 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:13:20  </span>│ 1.730 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:13:10  </span>│ 1.555 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:13:00  </span>│ 1.492 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:12:50  </span>│ 1.462 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:12:40  </span>│ 1.540 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:12:30  </span>│ 1.313 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:12:20  </span>│ 967.289 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:12:10  </span>│ 832.797 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:12:00  </span>│ 1.134 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:11:50  </span>│ 1.031 GB   │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:11:40  </span>│ 958.074 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:11:30  </span>│ 860.031 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:11:20  </span>│ 799.848 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:11:10  </span>│ 740.176 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:11:00  </span>│ 679.586 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:10:50  </span>│ 698.457 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:10:40  </span>│ 689.941 MB │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  12:10:30  </span>│ 624.820 MB │
+└────────────┴────────────┘
+</pre>
+
+<h3 id="file-saving-methods">File saving methods</h3>
+<p>There are number of methods that can be used to save the metric data to a file. Again, the EC2 instance is automatically queried if the query response is not provided.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="n">mw</span><span class="o">.</span><span class="n">save_metric_plot</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/tmp/</span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">_plot.png&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">mw</span><span class="o">.</span><span class="n">save_metric_csv</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/tmp/</span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">_metric.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">mw</span><span class="o">.</span><span class="n">save_metric_json</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/tmp/</span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">_metric.json&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">mw</span><span class="o">.</span><span class="n">save_response_json</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/tmp/</span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">_response.json&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../API_usage_files/API_usage_8_0.png" /></p>
+<h3 id="maunal-ec2-querying">Maunal EC2 querying</h3>
+<p>For users that require more control over the EC2 instance query settings, the <code>query_ec2_metrics</code> method can be used to manually query the EC2 instance. For instance it allows to fine tune the query period settings.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="n">FINE_TUNED_SETTINGS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>    <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>    <span class="s2">&quot;hours&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a>    <span class="s2">&quot;minutes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>    <span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="s2">&quot;Maximum&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>    <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="p">}</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="n">response</span> <span class="o">=</span> <span class="n">mw</span><span class="o">.</span><span class="n">query_ec2_metrics</span><span class="p">(</span><span class="o">**</span><span class="n">FINE_TUNED_SETTINGS</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="n">response</span><span class="p">[</span><span class="s2">&quot;ResponseMetadata&quot;</span><span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>{&#39;RequestId&#39;: &#39;20f5d4a7-6baa-4da7-ab28-b77ca796b3bb&#39;,
+ &#39;HTTPStatusCode&#39;: 200,
+ &#39;HTTPHeaders&#39;: {&#39;x-amzn-requestid&#39;: &#39;20f5d4a7-6baa-4da7-ab28-b77ca796b3bb&#39;,
+  &#39;content-type&#39;: &#39;text/xml&#39;,
+  &#39;content-length&#39;: &#39;8116&#39;,
+  &#39;date&#39;: &#39;Thu, 28 Apr 2022 14:06:33 GMT&#39;},
+ &#39;RetryAttempts&#39;: 0}
+</code></pre></div>
+<h3 id="timedmetric-dataclass"><code>TimedMetric</code> dataclass</h3>
+<p>Internally, the package uses <code>TimedMetric</code> dataclass to store the metric data. This dataclass is used to store the metric data and provide a convenient interface to access the data. It can be also used to interact with the metric data by the user.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="n">response</span> <span class="o">=</span> <span class="n">mw</span><span class="o">.</span><span class="n">query_ec2_metrics</span><span class="p">(</span><span class="o">**</span><span class="n">FINE_TUNED_SETTINGS</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">timed_metric</span> <span class="o">=</span> <span class="n">mw</span><span class="o">.</span><span class="n">timed_metric_factory</span><span class="p">(</span><span class="n">response</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timed_metric</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">timed_metric</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>&lt;class &#39;cloudwatcher.metric_handlers.TimedMetric&#39;&gt;
+
+
+
+
+
+[673120256.0,
+ 673087488.0,
+ 673087488.0,
+ 673087488.0,
+ 673120256.0,
+ 673128448.0,
+ 672595968.0,
+ 672595968.0,
+ 672051200.0]
+</code></pre></div>
+<h2 id="logwatcher-convenient-interface-to-aws-cloudwatch-logs"><code>LogWatcher</code>: convenient interface to AWS CloudWatch logs</h2>
+<p><code>LogWatcher</code> can be used to interact with AWS CloudWatch logs.</p>
+<p><em>Coming soon...</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../API_documentation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API documentation" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              API documentation
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../docs_development/" class="md-footer__link md-footer__link--next" aria-label="Next: Docs development" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Docs development
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.22074ed6.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.01de222e.min.js"></script>
+      
+    
+  </body>
+</html>

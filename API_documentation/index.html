@@ -366,6 +366,34 @@
     
   
   
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Python API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Python API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Python API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
@@ -678,6 +706,27 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_usage/" class="md-nav__link">
+        API usage
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1136,20 +1185,26 @@ h4 .content {
 <ul>
 <li><code>bool</code>:  True if instance is running, False otherwise</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">def</span> <span class="nf">log_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">def</span> <span class="nf">log_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and log the metric data</p>
 <h4 id="parameters_3">Parameters:</h4>
 <ul>
 <li><code>kwargs</code> (``):  keyword arguments to pass to the handler</li>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">def</span> <span class="nf">log_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">def</span> <span class="nf">log_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and log the response</p>
 <h4 id="parameters_4">Parameters:</h4>
 <ul>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">def</span> <span class="nf">query_ec2_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">hours</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">minutes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">stat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span>
 </code></pre></div>
@@ -1163,23 +1218,29 @@ h4 .content {
 <li><code>stat</code> (<code>str</code>):  stat to use, e.g. 'Maximum'</li>
 <li><code>period</code> (<code>int</code>):  the granularity, in seconds, of the returned data pointsreturn dict: metric statistics response, check the structure of the response <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data">here</a></li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">def</span> <span class="nf">save_metric_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">def</span> <span class="nf">save_metric_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and save the metric data to a CSV file</p>
 <h4 id="parameters_6">Parameters:</h4>
 <ul>
 <li><code>file_path</code> (<code>str</code>):  path to the file to save the metric data to</li>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">def</span> <span class="nf">save_metric_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">def</span> <span class="nf">save_metric_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and save the metric data to a JSON file</p>
 <h4 id="parameters_7">Parameters:</h4>
 <ul>
 <li><code>file_path</code> (<code>str</code>):  path to the file to save the metric data to</li>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">def</span> <span class="nf">save_metric_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">def</span> <span class="nf">save_metric_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and plot the metric data</p>
 <h4 id="parameters_8">Parameters:</h4>
@@ -1187,22 +1248,31 @@ h4 .content {
 <li><code>file_path</code> (<code>str</code>):  path to the file to plot the metric data to</li>
 <li><code>kwargs</code> (``):  keyword arguments to pass to the plotter</li>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">def</span> <span class="nf">save_response_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">def</span> <span class="nf">save_response_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and save the response data to a JSON file</p>
 <h4 id="parameters_9">Parameters:</h4>
 <ul>
 <li><code>file_path</code> (<code>str</code>):  path to the file to save the response data to</li>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">def</span> <span class="nf">summarize_metric_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">def</span> <span class="nf">summarize_metric_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <p>Query and summarize the metric data to a JSON file</p>
 <h4 id="parameters_10">Parameters:</h4>
 <ul>
 <li><code>file_path</code> (<code>str</code>):  path to the file to save the metric data to</li>
 <li><code>response</code> (<code>dict</code>):  response retrieved with <code>query_ec2_metrics</code>.A query is performed if not provided.</li>
+<li><code>response</code> (<code>dict</code>):  response from <code>query_ec2_metrics</code> method</li>
+<li><code>query_kwargs</code> (<code>dict</code>):  kwargs to pass to the EC2 query</li>
+<li><code>query_preset</code> (<code>str</code>):  period preset to use for the EC2 query</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="k">def</span> <span class="nf">timed_metric_factory</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">cloudwatcher</span><span class="o">.</span><span class="n">metric_handlers</span><span class="o">.</span><span class="n">TimedMetric</span><span class="p">]</span>
 </code></pre></div>
@@ -1314,7 +1384,7 @@ h4 .content {
 <p>Class to establish the interface for a timed metric handling</p>
 <h2 id="class-timedmetricsummarizer"><a name="TimedMetricSummarizer"></a> Class <code>TimedMetricSummarizer</code></h2>
 <p>Class to establish the interface for a timed metric handling</p>
-<p><em>Version Information: <code>cloudwatcher</code> v0.0.3, generated by <code>lucidoc</code> v0.4.3</em></p>
+<p><em>Version Information: <code>cloudwatcher</code> v0.0.4, generated by <code>lucidoc</code> v0.4.3</em></p>
 
               
             </article>
@@ -1344,13 +1414,13 @@ h4 .content {
       
       
         
-        <a href="../docs_development/" class="md-footer__link md-footer__link--next" aria-label="Next: Docs development" rel="next">
+        <a href="../API_usage/" class="md-footer__link md-footer__link--next" aria-label="Next: API usage" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Docs development
+              API usage
             </div>
           </div>
           <div class="md-footer__button md-icon">
