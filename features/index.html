@@ -743,7 +743,7 @@
 <p>Generated when <code>--save</code> option is used.</p>
 <h3 id="json-with-reponse">JSON with reponse</h3>
 <p>A JSON file with the response from the AWS API, useful for debugging.</p>
-<div class="highlight"><span class="filename">{instance_id}_response.json</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="p">{</span>
+<div class="highlight"><span class="filename">{dimension_name}_{dimension_value}_{metric}_response.json</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="p">{</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2"></a>  <span class="nt">&quot;MetricDataResults&quot;</span><span class="p">:</span> <span class="p">[</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3"></a>    <span class="p">{</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4"></a>      <span class="nt">&quot;Id&quot;</span><span class="p">:</span> <span class="s2">&quot;memory_usage&quot;</span><span class="p">,</span>
@@ -777,7 +777,7 @@
 </code></pre></div>
 <h3 id="json-with-metric-data">JSON with metric data</h3>
 <p>A JSON file with the raw data, which can be used for further analysis.</p>
-<div class="highlight"><span class="filename">{instance_id}_{metric_label}.json</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p">{</span>
+<div class="highlight"><span class="filename">{dimension_name}_{dimension_value}_{metric}.json</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p">{</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2"></a>  <span class="nt">&quot;Label&quot;</span><span class="p">:</span> <span class="s2">&quot;mem_used&quot;</span><span class="p">,</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3"></a>  <span class="nt">&quot;Values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">492003328.0</span><span class="p">,</span> <span class="mf">492204032.0</span><span class="p">,</span> <span class="mf">492040192.0</span><span class="p">,</span> <span class="mf">450666496.0</span><span class="p">,</span> <span class="mf">429965312.0</span><span class="p">],</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4"></a>  <span class="nt">&quot;Timestamps&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -791,7 +791,7 @@
 </code></pre></div>
 <h3 id="csv-with-metric-data">CSV with metric data</h3>
 <p>A CSV file with the raw data, which can be used for further analysis.</p>
-<div class="highlight"><span class="filename">{instance_id}_{metric_label}.csv</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>time,value
+<div class="highlight"><span class="filename">{dimension_name}_{dimension_value}_{metric}.csv</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>time,value
 <a id="__codelineno-5-2" name="__codelineno-5-2"></a>2021-11-12 19:19:00+00:00,492003328.0
 <a id="__codelineno-5-3" name="__codelineno-5-3"></a>2021-11-12 19:18:30+00:00,492204032.0
 <a id="__codelineno-5-4" name="__codelineno-5-4"></a>2021-11-12 19:18:00+00:00,492040192.0
@@ -803,7 +803,7 @@
 <figure>
 <p><img alt="Memory usage over time" src="../example_plot.png" />
   </p>
-<figcaption><code>{instance_id}_{metric_label}.png</code></figcaption>
+<figcaption><code>{dimension_name}_{dimension_value}_{metric}.png</code></figcaption>
 </figure>
 
               
