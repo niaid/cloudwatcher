@@ -3,6 +3,7 @@ tests/test/*
 
 # mkdocs
 site
+docs/API_usage_files/
 
 # development environment
 .env

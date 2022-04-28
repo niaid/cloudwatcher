@@ -1,10 +1,9 @@
 """ Computing configuration representation """
 
 import argparse
-from random import choices
 
 from ._version import __version__
-from .const import LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
+from .const import CLI_DEFAULTS, LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
 
 
 class _VersionInHelpParser(argparse.ArgumentParser):
@@ -18,18 +17,6 @@ class _VersionInHelpParser(argparse.ArgumentParser):
 
 def build_argparser():
     """Build argument parser"""
-
-    # args defaults
-    metric_name = "mem_used"
-    id = "memory_usage"
-    days = 1
-    hours = 0
-    minutes = 0
-    unit = "Bytes"
-    stat = "Maximum"
-    period = 60
-    dir = "./"
-    region = "us-east-1"
 
     # add argument parser
     parser = _VersionInHelpParser(
@@ -70,7 +57,7 @@ def build_argparser():
             help="Region to monitor the metrics within. (default: %(default)s)",
             type=str,
             required=False,
-            default=region,
+            default=CLI_DEFAULTS["region"],
             metavar="R",
         )
         aws_creds_group.add_argument(
@@ -103,7 +90,7 @@ def build_argparser():
             "-d",
             "--dir",
             help="Directory to store the results in. Used with `--save` (default: %(default)s)",
-            default=dir,
+            default=CLI_DEFAULTS["dir"],
         )
 
     sps[METRIC_CMD].add_argument(
@@ -118,7 +105,7 @@ def build_argparser():
         "-i",
         "--id",
         help="The unique identifier to assign to the metric data. Must be of the form '^[a-z][a-zA-Z0-9_]*$'.",
-        default=id,
+        default=CLI_DEFAULTS["id"],
         required=False,
         metavar="ID",
     )
@@ -126,17 +113,26 @@ def build_argparser():
         "-m",
         "--metric",
         help="Name of the metric collected by CloudWatchAgent (default: %(default)s)",
-        default=metric_name,
+        default=CLI_DEFAULTS["metric_name"],
         required=False,
         metavar="N",
     )
     sps[METRIC_CMD].add_argument(
-        "-iid",
-        "--instance-id",
-        help="Instance ID, needs to follow 'i-<numbers>' format",
+        "-dn",
+        "--dimension-name",
+        help="The name of the dimension to query. (default: %(default)s)",
+        required=False,
+        type=str,
+        metavar="N",
+        default=CLI_DEFAULTS["dimension_name"],
+    )
+    sps[METRIC_CMD].add_argument(
+        "-dv",
+        "--dimension-value",
+        help="The value of the dimension to filter on.",
         required=True,
         type=str,
-        metavar="ID",
+        metavar="V",
     )
     sps[METRIC_CMD].add_argument(
         "--uptime",
@@ -150,7 +146,7 @@ def build_argparser():
     metric_collection_start_time.add_argument(
         "--days",
         help="How many days to subtract from the current date to determine the metric collection start time (default: %(default)s).",
-        default=days,
+        default=CLI_DEFAULTS["days"],
         type=int,
         metavar="D",
     )
@@ -158,7 +154,7 @@ def build_argparser():
         "-hr",
         "--hours",
         help="How many hours to subtract from the current time to determine the metric collection start time (default: %(default)s).",
-        default=hours,
+        default=CLI_DEFAULTS["hours"],
         type=int,
         metavar="H",
     )
@@ -166,7 +162,7 @@ def build_argparser():
         "-mi",
         "--minutes",
         help="How many minutes to subtract from the current time to determine the metric collection start time (default: %(default)s).",
-        default=minutes,
+        default=CLI_DEFAULTS["minutes"],
         type=int,
         metavar="M",
     )
@@ -178,7 +174,6 @@ def build_argparser():
             If you specify a unit, it acts as a filter and returns only data that was
             collected with that unit specified. Use 'Bytes' for memory (default: %(default)s)
             """,
-        default=unit,
         type=str,
         metavar="U",
     )
@@ -186,7 +181,7 @@ def build_argparser():
         "-s",
         "--stat",
         help="The statistic to apply over the time intervals, e.g. 'Maximum' (default: %(default)s)",
-        default=stat,
+        default=CLI_DEFAULTS["stat"],
         type=str,
         metavar="S",
     )
@@ -197,7 +192,7 @@ def build_argparser():
             The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: %(default)s). 
             It affects the data availability. See the docs 'Usage' section for more details.
             """,
-        default=period,
+        default=CLI_DEFAULTS["period"],
         type=int,
         metavar="P",
     )

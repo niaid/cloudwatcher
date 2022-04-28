@@ -50,7 +50,7 @@ Generated when `--save` option is used.
 
 A JSON file with the response from the AWS API, useful for debugging.
 
-```json title="{instance_id}_response.json"
+```json title="{dimension_name}_{dimension_value}_{metric}_response.json"
 {
   "MetricDataResults": [
     {
@@ -88,7 +88,7 @@ A JSON file with the response from the AWS API, useful for debugging.
 
 A JSON file with the raw data, which can be used for further analysis.
 
-```json title="{instance_id}_{metric_label}.json"
+```json title="{dimension_name}_{dimension_value}_{metric}.json"
 {
   "Label": "mem_used",
   "Values": [492003328.0, 492204032.0, 492040192.0, 450666496.0, 429965312.0],
@@ -107,7 +107,7 @@ A JSON file with the raw data, which can be used for further analysis.
 
 A CSV file with the raw data, which can be used for further analysis.
 
-``` title="{instance_id}_{metric_label}.csv"
+``` title="{dimension_name}_{dimension_value}_{metric}.csv"
 time,value
 2021-11-12 19:19:00+00:00,492003328.0
 2021-11-12 19:18:30+00:00,492204032.0
@@ -122,5 +122,5 @@ Generated when `--plot` option used.
 
 <figure markdown>
   ![Memory usage over time](./example_plot.png)
-  <figcaption><code>{instance_id}_{metric_label}.png</code></figcaption>
+  <figcaption><code>{dimension_name}_{dimension_value}_{metric}.png</code></figcaption>
 </figure>

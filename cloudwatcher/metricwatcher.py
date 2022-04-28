@@ -6,6 +6,7 @@ import boto3
 import pytz
 
 from .cloudwatcher import CloudWatcher
+from .const import DEFAULT_QUERY_KWARGS, QUERY_KWARGS_PRESETS
 from .metric_handlers import (
     ResponseHandler,
     ResponseLogger,
@@ -18,7 +19,6 @@ from .metric_handlers import (
     TimedMetricPlotter,
     TimedMetricSummarizer,
 )
-from .const import DEFAULT_QUERY_KWARGS, QUERY_KWARGS_PRESETS
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,10 +31,11 @@ class MetricWatcher(CloudWatcher):
     def __init__(
         self,
         namespace: str,
-        ec2_instance_id: str,
+        dimension_name: str,
+        dimension_value: str,
         metric_name: str,
         metric_id: str,
-        metric_unit: str,
+        metric_unit: Optional[str] = None,
         aws_access_key_id: Optional[str] = None,
         aws_secret_access_key: Optional[str] = None,
         aws_session_token: Optional[str] = None,
@@ -55,7 +56,8 @@ class MetricWatcher(CloudWatcher):
             aws_region_name=aws_region_name,
         )
         self.namespace = namespace
-        self.ec2_instance_id = ec2_instance_id
+        self.dimension_name = dimension_name
+        self.dimension_value = dimension_value
         self.metric_name = metric_name
         self.metric_id = metric_id
         self.metric_unit = metric_unit
@@ -91,8 +93,9 @@ class MetricWatcher(CloudWatcher):
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
         _LOGGER.info(
-            f"Querying '{self.metric_name}' for EC2 instance '{self.ec2_instance_id}'"
-            f" from {start_time.strftime('%H:%M:%S')} to {now.strftime('%H:%M:%S')}"
+            f"Querying '{self.metric_name}' for dimension "
+            f"('{self.dimension_name}'='{self.dimension_value}') from "
+            f"{start_time.strftime('%H:%M:%S')} to {now.strftime('%H:%M:%S')}"
         )
 
         response = self.client.get_metric_data(
@@ -104,11 +107,16 @@ class MetricWatcher(CloudWatcher):
                             "Namespace": self.namespace,
                             "MetricName": self.metric_name,
                             "Dimensions": [
-                                {"Name": "InstanceId", "Value": self.ec2_instance_id}
+                                {
+                                    "Name": self.dimension_name,
+                                    "Value": self.dimension_value,
+                                }
                             ],
                         },
                         "Stat": stat,
-                        "Unit": self.metric_unit,
+                        "Unit": str(
+                            self.metric_unit
+                        ),  # str(None) is desired, if no unit is specified
                         "Period": period,
                     },
                 },
@@ -125,6 +133,7 @@ class MetricWatcher(CloudWatcher):
 
     def get_ec2_uptime(
         self,
+        ec2_instance_id: str,
         days: int,
         hours: int,
         minutes: int,
@@ -132,23 +141,20 @@ class MetricWatcher(CloudWatcher):
         """
         Get the runtime of an EC2 instance
 
-        :param logging.logger logger: logger to use. Any object that has 'info', 'warning' and 'error' methods
         :param int days: how many days to subtract from the current date to determine the metric collection start time
         :param int hours: how many hours to subtract from the current time to determine the metric collection start time
         :param int minute: how many minutes to subtract from the current time to determine the metric collection start time
-        :param str namespace: namespace of the metric, e.g. 'NepheleNamespace'
-        :param boto3.resource ec2_resource: boto3 resource object to use, optional
-
+        :param str ec2_instance_id: the ID of the EC2 instance to query
         Returns:
             int: runtime of the instance in seconds
         """
-        if not self.is_ec2_running():
+        if not self.is_ec2_running(ec2_instance_id):
             _LOGGER.info(
-                f"Instance '{self.ec2_instance_id}' is not running anymore. "
+                f"Instance '{self.dimension_value}' is not running anymore. "
                 f"Uptime will be estimated based on reported metrics in the last {days} days"
             )
             instances = self.ec2_resource.instances.filter(
-                Filters=[{"Name": "instance-id", "Values": [self.ec2_instance_id]}]
+                Filters=[{"Name": "instance-id", "Values": [self.dimension_value]}]
             )
             # get the latest reported metric
             metrics_response = self.query_ec2_metrics(
@@ -167,33 +173,32 @@ class MetricWatcher(CloudWatcher):
                     earliest_metric_report_time - latest_metric_report_time
                 ).total_seconds()
             except IndexError:
-                _LOGGER.warning(f"No metric data found for EC2: {self.ec2_instance_id}")
+                _LOGGER.warning(f"No metric data found for EC2: {self.dimension_value}")
                 return
         instances = self.ec2_resource.instances.filter(
-            Filters=[{"Name": "instance-id", "Values": [self.ec2_instance_id]}]
+            Filters=[{"Name": "instance-id", "Values": [self.dimension_value]}]
         )
         for instance in instances:
             _LOGGER.info(
-                f"Instance '{self.ec2_instance_id}' is still running. "
+                f"Instance '{self.dimension_value}' is still running. "
                 f"Launch time: {instance.launch_time}"
             )
             return (datetime.now(pytz.utc) - instance.launch_time).total_seconds()
 
-    def is_ec2_running(self) -> bool:
+    def is_ec2_running(self, ec2_instance_id: str) -> bool:
         """
         Check if EC2 instance is running
 
+        :param str ec2_instance_id: the ID of the EC2 instance to query
         :returns bool: True if instance is running, False otherwise
         """
         instances = self.ec2_resource.instances.filter(
-            Filters=[{"Name": "instance-id", "Values": [self.ec2_instance_id]}]
+            Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
         )
         if len(list(instances)) == 0:
             return None
         if len(list(instances)) > 1:
-            raise Exception(
-                f"Multiple EC2 instances matched by ID: {self.ec2_instance_id}"
-            )
+            raise Exception(f"Multiple EC2 instances matched by ID: {ec2_instance_id}")
         for instance in instances:
             # check the status codes and their meanings: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceState.html
             if instance.state["Code"] <= 16:
@@ -375,7 +380,7 @@ class MetricWatcher(CloudWatcher):
             query_preset=query_preset,
         )
 
-    def summarize_metric_json(
+    def log_metric_summary(
         self, response: Optional[Dict] = None, query_preset: Optional[str] = None
     ):
         """
