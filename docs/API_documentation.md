@@ -97,7 +97,7 @@ Check if EC2 instance is running
 
 
 ```python
-def log_metric(self, response: Union[Dict, NoneType]=None)
+def log_metric(self, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and log the metric data
@@ -105,18 +105,24 @@ Query and log the metric data
 
 - `kwargs` (``):  keyword arguments to pass to the handler
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
 
 ```python
-def log_response(self, response: Union[Dict, NoneType]=None)
+def log_response(self, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and log the response
 #### Parameters:
 
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
@@ -139,7 +145,7 @@ Query EC2 metrics
 
 
 ```python
-def save_metric_csv(self, file_path: str, response: Union[Dict, NoneType]=None)
+def save_metric_csv(self, file_path: str, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and save the metric data to a CSV file
@@ -147,12 +153,15 @@ Query and save the metric data to a CSV file
 
 - `file_path` (`str`):  path to the file to save the metric data to
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
 
 ```python
-def save_metric_json(self, file_path: str, response: Union[Dict, NoneType]=None)
+def save_metric_json(self, file_path: str, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and save the metric data to a JSON file
@@ -160,12 +169,15 @@ Query and save the metric data to a JSON file
 
 - `file_path` (`str`):  path to the file to save the metric data to
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
 
 ```python
-def save_metric_plot(self, file_path: str, response: Union[Dict, NoneType]=None)
+def save_metric_plot(self, file_path: str, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and plot the metric data
@@ -174,12 +186,15 @@ Query and plot the metric data
 - `file_path` (`str`):  path to the file to plot the metric data to
 - `kwargs` (``):  keyword arguments to pass to the plotter
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
 
 ```python
-def save_response_json(self, file_path: str, response: Union[Dict, NoneType]=None)
+def save_response_json(self, file_path: str, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and save the response data to a JSON file
@@ -187,12 +202,15 @@ Query and save the response data to a JSON file
 
 - `file_path` (`str`):  path to the file to save the response data to
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
 
 ```python
-def summarize_metric_json(self, response: Union[Dict, NoneType]=None)
+def summarize_metric_json(self, response: Union[Dict, NoneType]=None, query_preset: Union[str, NoneType]=None)
 ```
 
 Query and summarize the metric data to a JSON file
@@ -200,6 +218,9 @@ Query and summarize the metric data to a JSON file
 
 - `file_path` (`str`):  path to the file to save the metric data to
 - `response` (`dict`):  response retrieved with `query_ec2_metrics`.A query is performed if not provided.
+- `response` (`dict`):  response from `query_ec2_metrics` method
+- `query_kwargs` (`dict`):  kwargs to pass to the EC2 query
+- `query_preset` (`str`):  period preset to use for the EC2 query
 
 
 
@@ -383,4 +404,4 @@ Class to establish the interface for a timed metric handling
 
 
 
-*Version Information: `cloudwatcher` v0.0.3, generated by `lucidoc` v0.4.3*
+*Version Information: `cloudwatcher` v0.0.4, generated by `lucidoc` v0.4.3*

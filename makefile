@@ -3,6 +3,7 @@
 doc_api:
 	poetry install -v
 	lucidoc cloudwatcher --parse rst --outfile docs/API_documentation.md
+	jupyter nbconvert docs/API_usage.ipynb  --to markdown --output API_usage.md
 
 serve_docs: doc_api
 	mkdocs serve

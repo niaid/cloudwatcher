@@ -1,6 +1,6 @@
 import datetime
 import logging
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import boto3
 import pytz
@@ -18,6 +18,7 @@ from .metric_handlers import (
     TimedMetricPlotter,
     TimedMetricSummarizer,
 )
+from .const import DEFAULT_QUERY_KWARGS, QUERY_KWARGS_PRESETS
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -220,16 +221,22 @@ class MetricWatcher(CloudWatcher):
         self,
         handler_class: TimedMetricHandler,
         response: Optional[Dict] = None,
+        query_kwargs: Optional[Dict] = None,
+        query_preset: Optional[str] = None,
         **kwargs,
     ) -> None:
         """
         Internal method to execute a TimedMetricHandler
 
         :param TimedMetricHandler handler_class: TimedMetricHandler class to execute
+        :param dict response: response from CloudWatch client
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         :param kwargs: keyword arguments to pass to the handler
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        response = response or self.query_ec2_metrics()
+        query_kwargs = query_kwargs or self._get_query_kwargs(query_preset)
+        response = response or self.query_ec2_metrics(**query_kwargs)
         timed_metrics = self.timed_metric_factory(response)
         for timed_metric in timed_metrics:
             if len(timed_metric.values) < 1:
@@ -237,61 +244,118 @@ class MetricWatcher(CloudWatcher):
             handler = handler_class(timed_metric=timed_metric)
             handler(**kwargs)
 
+    def _get_query_kwargs(self, preset_key: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Based on the selected preset identifier get the query values
+
+        :param str preset_key: preset identifier:param dict query_kwargs: kwargs to pass to the EC2 query
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
+        :return Dict[str, Any]: query values
+        """
+        if preset_key is None:
+            return DEFAULT_QUERY_KWARGS
+        if preset_key not in QUERY_KWARGS_PRESETS:
+            raise KeyError(
+                f"Invalid preset key: {preset_key}."
+                f"Valid keys are: {list(QUERY_KWARGS_PRESETS.keys())}"
+            )
+        return QUERY_KWARGS_PRESETS.get(preset_key)
+
     def _exec_response_handler(
         self,
         handler_class: ResponseHandler,
         response: Optional[Dict] = None,
+        query_kwargs: Optional[Dict] = None,
+        query_preset: Optional[str] = None,
         **kwargs,
     ) -> None:
         """
         Internal method to execute a ResponseHandler
 
         :param ResponseHandler handler_class: ResponseHandler class to execute
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        response = response or self.query_ec2_metrics()
+        query_kwargs = query_kwargs or self._get_query_kwargs(query_preset)
+        response = response or self.query_ec2_metrics(**query_kwargs)
         handler = handler_class(response=response)
         handler(**kwargs)
 
-    def save_metric_json(self, file_path: str, response: Optional[Dict] = None):
+    def save_metric_json(
+        self,
+        file_path: str,
+        response: Optional[Dict] = None,
+        query_preset: Optional[str] = None,
+    ):
         """
         Query and save the metric data to a JSON file
 
         :param str file_path: path to the file to save the metric data to
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
         self._exec_timed_metric_handler(
-            TimedMetricJsonSaver, target=file_path, response=response
+            TimedMetricJsonSaver,
+            target=file_path,
+            response=response,
+            query_preset=query_preset,
         )
 
-    def save_metric_csv(self, file_path: str, response: Optional[Dict] = None):
+    def save_metric_csv(
+        self,
+        file_path: str,
+        response: Optional[Dict] = None,
+        query_preset: Optional[str] = None,
+    ):
         """
         Query and save the metric data to a CSV file
 
         :param str file_path: path to the file to save the metric data to
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
         self._exec_timed_metric_handler(
-            TimedMetricCsvSaver, target=file_path, response=response
+            TimedMetricCsvSaver,
+            target=file_path,
+            response=response,
+            query_preset=query_preset,
         )
 
-    def log_metric(self, response: Optional[Dict] = None):
+    def log_metric(
+        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
+    ):
         """
         Query and log the metric data
 
         :param kwargs: keyword arguments to pass to the handler
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
         self._exec_timed_metric_handler(
             TimedMetricLogger,
             target=None,  # TODO: add support for saving to file
             response=response,
+            query_preset=query_preset,
         )
 
-    def save_metric_plot(self, file_path: str, response: Optional[Dict] = None):
+    def save_metric_plot(
+        self,
+        file_path: str,
+        response: Optional[Dict] = None,
+        query_preset: Optional[str] = None,
+    ):
         """
         Query and plot the metric data
 
@@ -299,21 +363,30 @@ class MetricWatcher(CloudWatcher):
         :param kwargs: keyword arguments to pass to the plotter
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
         self._exec_timed_metric_handler(
             TimedMetricPlotter,
             target=file_path,
             metric_unit=self.metric_unit,
             response=response,
+            query_preset=query_preset,
         )
 
-    def summarize_metric_json(self, response: Optional[Dict] = None):
+    def summarize_metric_json(
+        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
+    ):
         """
         Query and summarize the metric data to a JSON file
 
         :param str file_path: path to the file to save the metric data to
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
         self._exec_timed_metric_handler(
             TimedMetricSummarizer,
@@ -321,23 +394,47 @@ class MetricWatcher(CloudWatcher):
             metric_unit=self.metric_unit,
             summarizer=("Max", max),
             response=response,
+            query_preset=query_preset,
         )
 
-    def save_response_json(self, file_path: str, response: Optional[Dict] = None):
+    def save_response_json(
+        self,
+        file_path: str,
+        response: Optional[Dict] = None,
+        query_preset: Optional[str] = None,
+    ):
         """
         Query and save the response data to a JSON file
 
         :param str file_path: path to the file to save the response data to
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
-        self._exec_response_handler(ResponseSaver, target=file_path, response=response)
+        self._exec_response_handler(
+            ResponseSaver,
+            target=file_path,
+            response=response,
+            query_preset=query_preset,
+        )
 
-    def log_response(self, response: Optional[Dict] = None):
+    def log_response(
+        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
+    ):
         """
         Query and log the response
 
         :param dict response: response retrieved with `query_ec2_metrics`.
              A query is performed if not provided.
+        :param dict response: response from `query_ec2_metrics` method
+        :param dict query_kwargs: kwargs to pass to the EC2 query
+        :param str query_preset: period preset to use for the EC2 query
         """
-        self._exec_response_handler(ResponseLogger, target=None, response=response)
+        self._exec_response_handler(
+            ResponseLogger,
+            target=None,
+            response=response,
+            query_preset=query_preset,
+        )

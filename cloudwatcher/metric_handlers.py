@@ -102,7 +102,7 @@ class ResponseLogger(ResponseHandler):
             raise NotImplementedError(
                 "Logging responses to a file is not yet implemented."
             )
-        _LOGGER.debug(json.dumps(self.response, indent=4, default=str))
+        _LOGGER.info(json.dumps(self.response, indent=4, default=str))
 
 
 class TimedMetricPlotter(TimedMetricHandler):
