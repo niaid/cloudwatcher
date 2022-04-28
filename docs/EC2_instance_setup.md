@@ -1,5 +1,9 @@
 # EC2 instance setup
 
+!!! info "Using ECS ContainerInsights?"
+
+    **This section may not be required for your setup**. For instance, if you plan to monitor ECS containers that report the metrics with [ECS ContainerInsights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-ECS-cluster.html).
+
 In order to use the tool a `CloudWatchAgent` process must be running on the EC2 instance to be monitored.
 
 Please refer to [this page](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html) to learn how to install and start the `CloudWatchAgent` on an EC2 instance.

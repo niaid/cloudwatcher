@@ -36,11 +36,6 @@ def main():
         if args.query_json is not None:
             raise NotImplementedError("Querying via JSON is not yet implemented")
 
-        if not args.instance_id.startswith("i-"):
-            raise ValueError(
-                f"Instance id needs to start with 'i-'. Got: {args.instance_id}"
-            )
-
         if not os.path.exists(args.dir):
             _LOGGER.info(f"Creating directory: {args.dir}")
             os.makedirs(args.dir, exist_ok=True)
@@ -50,7 +45,8 @@ def main():
             metric_name=args.metric,
             metric_id=args.id,
             metric_unit=args.unit,
-            ec2_instance_id=args.instance_id,
+            dimension_value=args.dimension_value,
+            dimension_name=args.dimension_name,
             aws_access_key_id=args.aws_access_key_id,
             aws_secret_access_key=args.aws_secret_access_key,
             aws_session_token=args.aws_session_token,
@@ -67,30 +63,26 @@ def main():
 
         metric_watcher.log_response(response=response)
         metric_watcher.log_metric(response=response)
+        metric_watcher.log_metric_summary(response=response)
 
+        name_prefix = f"{args.dimension_name}_{args.dimension_value}_{args.metric}"
         if args.save:
             metric_watcher.save_metric_json(
-                file_path=os.path.join(
-                    args.dir, f"{args.instance_id}_{args.metric}.json"
-                ),
+                file_path=os.path.join(args.dir, f"{name_prefix}.json"),
                 response=response,
             )
             metric_watcher.save_metric_csv(
-                file_path=os.path.join(
-                    args.dir, f"{args.instance_id}_{args.metric}.csv"
-                ),
+                file_path=os.path.join(args.dir, f"{name_prefix}.csv"),
                 response=response,
             )
             metric_watcher.save_response_json(
-                file_path=os.path.join(args.dir, f"{args.instance_id}_response.json"),
+                file_path=os.path.join(args.dir, f"{name_prefix}_response.json"),
                 response=response,
             )
 
         if args.plot:
             metric_watcher.save_metric_plot(
-                file_path=os.path.join(
-                    args.dir, f"{args.instance_id}_{args.metric}.png"
-                ),
+                file_path=os.path.join(args.dir, f"{name_prefix}.png"),
                 response=response,
             )
 

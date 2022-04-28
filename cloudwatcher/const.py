@@ -17,3 +17,17 @@ QUERY_KWARGS_PRESETS = {
     "hour": {"days": 0, "hours": 1, "minutes": 0, "stat": "Maximum", "period": 1},
     "minute": {"days": 0, "hours": 0, "minutes": 1, "stat": "Maximum", "period": 1},
 }
+
+CLI_DEFAULTS = {
+    "metric_name": "mem_used",
+    "id": "memory_usage",
+    "dimension_name": "InstanceId",
+    "days": 1,
+    "hours": 0,
+    "minutes": 0,
+    "unit": "Bytes",
+    "stat": "Maximum",
+    "period": 60,
+    "dir": "./",
+    "region": "us-east-1",
+}
