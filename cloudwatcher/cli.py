@@ -87,6 +87,12 @@ def main():
             )
 
         if args.uptime:
+            if not args.dimension_value.startswith("i-"):
+                _LOGGER.error(
+                    "Uptime is only available for EC2 instances. "
+                    "Please provide an EC2 instance ID as the dimension value."
+                )
+                sys.exit(1)
             try:
                 seconds_run = metric_watcher.get_ec2_uptime(
                     days=max(
@@ -94,6 +100,7 @@ def main():
                     ),  # metrics with a period of 60 seconds are available for 15 days
                     hours=args.hours,
                     minutes=args.minutes,
+                    ec2_instance_id=args.dimension_value,
                 )
                 if seconds_run is not None:
                     _LOGGER.info(f"Instance uptime is {int(seconds_run)} seconds")
