@@ -7,6 +7,7 @@ site
 # development environment
 .env
 test_cli.sh
+manual_test.py
 
 # toy/experimental files
 *.csv

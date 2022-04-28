@@ -25,7 +25,11 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 nav:
   - Installation & Setup:
       - Installation: installation.md
@@ -34,7 +38,9 @@ nav:
   - Usage & Features:
       - Usage: usage.md
       - Features: features.md
-  - API documentation: API_documentation.md
+  - Python API:
+      - API documentation: API_documentation.md
+      - API usage: API_usage.md
   - Development:
       - Docs development: docs_development.md
   - Release notes: changelog.md

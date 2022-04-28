@@ -82,10 +82,10 @@ METRIC COLLECTION TIME:
   -mi M, --minutes M         How many minutes to subtract from the current time to determine the metric collection start time (default: 0).
 ```
 
-### Minimal command
+### Minimal command example
 
 ```console
-python3.9 cloudwatch.py --instance-id i-024a73d6738255cbd
+cloudwatcher metric --instance-id i-024a73d6738255cbd
 ```
 
 ### Notes on metrics availabilty
@@ -97,7 +97,7 @@ Amazon CloudWatch retains metric data as follows:
 - Data points with a period of 300 seconds (5-minute) are available for 63 days.
 - Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months).
 
-Select your period of interest accordingly.
+Select your period of interest accordingly. This is crucial as for example if the EC2 instance has stopped over 3 hours ago, selecting a < 60 second period will return an empty reponse.
 
 ## CloudWatch logs monitoring
 

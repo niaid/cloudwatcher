@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cloudwatcher"
-version = "0.0.3"
+version = "0.0.4"
 description = "A tool for monitoring AWS CloudWatch metrics"
 authors = ["Michal Stolarczyk <stolarczyk.michal93@gmail.com>"]
 
@@ -17,6 +17,10 @@ pytest = "^7.1.1"
 lucidoc = "^0.4.3"
 pre-commit = "^2.18.1"
 flake8 = "^4.0.1"
+ipython = "7.32.0"
+ipykernel = "^6.13.0"
+nbconvert = "^6.5.0"
+black = {extras = ["jupyter"], version = "^22.3.0"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
