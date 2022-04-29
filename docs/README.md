@@ -14,7 +14,7 @@ Here are the steps to use `cloudwatcher` as a command line tool:
 
 ## Documentation
 
-Full package documentation can be found at: https://niaid.github.io/cloudwatcher
+Full package documentation, which includes examples of usage and setup, can be found at: https://niaid.github.io/cloudwatcher
 
 ## Authors
 
