@@ -18,4 +18,4 @@ Full package documentation can be found at: https://niaid.github.io/cloudwatcher
 
 ## Authors
 
-- [Michał Stolarczyk](michal.stolarczyk@nih.gov) (@stolarczyk)
+- [Michał Stolarczyk](michal.stolarczyk@nih.gov)
