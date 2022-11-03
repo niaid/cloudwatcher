@@ -19,11 +19,12 @@ class CloudWatcher:
         """
         Initialize CloudWatcher
 
-        :param str service_name: The name of the service
-        :param str region_name: The name of the region. Defaults to 'us-east-1'
-        :param Optional[str] aws_access_key_id: The AWS access key ID
-        :param Optional[str] aws_secret_access_key: The AWS secret access key
-        :param Optional[str] aws_session_token: The AWS session token
+        Args:
+            service_name (str): The name of the service to use
+            aws_region_name (Optional[str]): The AWS region name. Defaults to 'us-east-1'
+            aws_access_key_id (Optional[str]): The AWS access key ID. Defaults to None
+            aws_secret_access_key (Optional[str]): The AWS secret access key. Defaults to None
+            aws_session_token (Optional[str]): The AWS session token. Defaults to None
         """
         self.aws_region_name = aws_region_name or "us-east-1"
         self.service_name = service_name

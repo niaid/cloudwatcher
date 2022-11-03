@@ -2,8 +2,8 @@
 
 import argparse
 
-from ._version import __version__
-from .const import CLI_DEFAULTS, LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
+from cloudwatcher._version import __version__
+from cloudwatcher.const import CLI_DEFAULTS, LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
 
 
 class _VersionInHelpParser(argparse.ArgumentParser):
@@ -121,10 +121,10 @@ def build_argparser():
         "-dn",
         "--dimension-name",
         help="The name of the dimension to query. (default: %(default)s)",
-        required=False,
+        required=True,
         type=str,
         metavar="N",
-        default=CLI_DEFAULTS["dimension_name"],
+        nargs="+",
     )
     sps[METRIC_CMD].add_argument(
         "-dv",
@@ -133,6 +133,7 @@ def build_argparser():
         required=True,
         type=str,
         metavar="V",
+        nargs="+",
     )
     sps[METRIC_CMD].add_argument(
         "--uptime",

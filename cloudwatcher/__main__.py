@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from .cli import main
+from cloudwatcher.cli import main
 
 if __name__ == "__main__":
 

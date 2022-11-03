@@ -18,6 +18,13 @@ theme:
 repo_url: https://github.com/niaid/cloudwatcher
 repo_name: niaid/cloudwatcher
 edit_uri: edit/main/docs/
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 3
 markdown_extensions:
   - admonition
   - md_in_html

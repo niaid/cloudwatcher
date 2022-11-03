@@ -17,6 +17,13 @@ _LOGGER = logging.getLogger(__name__)
 def convert_mem(value: int, force_suffix: str = None) -> Tuple[float, str]:
     """
     Convert memory in bytes to the highest possible, or desired memory unit
+
+    Args:
+        value (int): The memory in bytes
+        force_suffix (str): The desired memory unit
+
+    Returns:
+        Tuple[float, str]: The memory in the desired unit and the unit
     """
     suffixes = ["B", "KB", "MB", "GB", "TB"]
     if force_suffix is not None:
@@ -37,6 +44,11 @@ def convert_mem(value: int, force_suffix: str = None) -> Tuple[float, str]:
 class TimedMetric:
     """
     Timed metric object
+
+    Args:
+        timestamps (List[datetime]): The timestamps of the metric
+        values (List[float]): The values of the metric
+        label (str): The label of the metric
     """
 
     label: str
@@ -51,15 +63,28 @@ class TimedMetric:
 
 class Handler(ABC):
     """
-    Abstract class to establish the interface for handling
+    Abstract class to establish the interface for data handling
     """
 
     @abstractmethod
     def __init__(self, response: dict, logger: logging.Logger) -> None:
+        """
+        Initialize the handler
+
+        Args:
+            response (dict): The response from the AWS API
+            logger (logging.Logger): The logger to use
+        """
         pass
 
     @abstractmethod
     def __call__(self, target: str) -> None:
+        """
+        Execute the handler
+
+        Args:
+            target (str): The target to use for the handler
+        """
         pass
 
 
@@ -69,6 +94,12 @@ class ResponseHandler(Handler):
     """
 
     def __init__(self, response: dict) -> None:
+        """ 
+        Initialize the handler
+
+        Args:
+            response (dict): The response from the AWS API
+        """
         self.response = response
 
 
@@ -78,6 +109,12 @@ class TimedMetricHandler(Handler):
     """
 
     def __init__(self, timed_metric: TimedMetric) -> None:
+        """
+        Initialize the handler
+
+        Args:
+            timed_metric (TimedMetric): The timed metric to use
+        """
         self.timed_metric = timed_metric
 
 
@@ -87,6 +124,12 @@ class ResponseSaver(ResponseHandler):
     """
 
     def __call__(self, target: str) -> None:
+        """
+        Save the response to a file
+
+        Args:
+            target (str): The target file to save the response to
+        """
         with open(target, "w") as f:
             json.dump(self.response, f, indent=4, default=str)
         _LOGGER.info(f"Saved response to: {target}")
@@ -109,6 +152,10 @@ class TimedMetricPlotter(TimedMetricHandler):
     def __call__(self, target: str, metric_unit: str) -> None:
         """
         Plot the timed metric
+
+        Args:
+            target (str): The target file to save the plot to
+            metric_unit (str): The unit of the metric
         """
         values = self.timed_metric.values
         if self.timed_metric.label.startswith("mem") and metric_unit == "Bytes":
@@ -146,6 +193,11 @@ class TimedMetricSummarizer(TimedMetricHandler):
     ) -> None:
         """
         Summarize the metric
+
+        Args:
+            target (str): The target file to save the summary to
+            metric_unit (str): The unit of the metric
+            summarizer (Tuple[str, callable]): The summarizer to use and the function to use
         """
         if target is not None:
             raise NotImplementedError("Logging to a file is not yet implemented.")
@@ -194,10 +246,12 @@ class TimedMetricLogger(TimedMetricHandler):
         """
         Convert bytes to human readable string
 
-        :param int size: size in bytes
-        :param int precision: number of decimal places
+        Args:
+            size (int): The size in bytes
+            precision (int): The precision to use, number of decimal places
 
-        :return str: human readable string
+        Returns:
+            str: The human readable string
         """
         size, suffix = convert_mem(size)
         return "%.*f %s" % (precision, size, suffix)
@@ -207,6 +261,9 @@ class TimedMetricJsonSaver(TimedMetricHandler):
     def __call__(self, target: str) -> None:
         """
         Write the object to a json file
+
+        Args:
+            target (str): The target file to save the object to
         """
         with open(target, "w") as f:
             json.dump(
@@ -226,6 +283,9 @@ class TimedMetricCsvSaver(TimedMetricHandler):
     def __call__(self, target: str) -> None:
         """
         Write the object to a csv file
+
+        Args:
+            target (str): The target file to save the object to
         """
         with open(target, "w", encoding="UTF8", newline="") as f:
             writer = csv.writer(f)

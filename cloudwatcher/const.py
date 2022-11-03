@@ -20,8 +20,7 @@ QUERY_KWARGS_PRESETS = {
 
 CLI_DEFAULTS = {
     "metric_name": "mem_used",
-    "id": "memory_usage",
-    "dimension_name": "InstanceId",
+    "id": "provide_metric_id",
     "days": 1,
     "hours": 0,
     "minutes": 0,
