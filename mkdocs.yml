@@ -45,6 +45,7 @@ nav:
   - Usage & Features:
       - Usage: usage.md
       - Features: features.md
+      - Presets: presets.md
   - Python API:
       - API documentation: API_documentation.md
       - API usage: API_usage.md
