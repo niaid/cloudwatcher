@@ -138,7 +138,6 @@ def get_metric_watcher_setup(
     if preset_name is None and preset_path is None:
         raise ValueError("Either preset_name or preset_path must be provided")
 
-    if preset_path is None:
-        preset_path = PresetFilesInventory().get_preset(preset_name)
+    preset_path = preset_path or PresetFilesInventory().get_preset(preset_name)
     logger.info(f"Using preset: {preset_path}")
     return MetricWatcherSetup.from_json(preset_path)

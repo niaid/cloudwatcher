@@ -616,26 +616,6 @@ python-versions = ">=3.7"
 typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
 
 [[package]]
-name = "logmuse"
-version = "0.2.7"
-description = "Logging setup"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "lucidoc"
-version = "0.4.3"
-description = "API documentation in Markdown"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-logmuse = ">=0.2.0"
-ubiquerg = ">=0.0.5"
-
-[[package]]
 name = "markdown"
 version = "3.3.5"
 description = "Python implementation of Markdown."
@@ -1457,14 +1437,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "ubiquerg"
-version = "0.6.2"
-description = "Various utility functions"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "urllib3"
 version = "1.26.9"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -1551,7 +1523,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "015221f1225f216433c37ed3a1ade878a0817279e5d01648020db6aeac568563"
+content-hash = "fe5994f29e29340e6961e0c4c922be6dc1d2541e9c318c10c3a723198418e46b"
 
 [metadata.files]
 anyio = []
@@ -1845,14 +1817,6 @@ kiwisolver = [
     {file = "kiwisolver-1.4.2-pp37-pypy37_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0e8afdf533b613122e4bbaf3c1e42c2a5e9e2d1dd3a0a017749a7658757cb377"},
     {file = "kiwisolver-1.4.2-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:42f6ef9b640deb6f7d438e0a371aedd8bef6ddfde30683491b2e6f568b4e884e"},
     {file = "kiwisolver-1.4.2.tar.gz", hash = "sha256:7f606d91b8a8816be476513a77fd30abe66227039bd6f8b406c348cb0247dcc9"},
-]
-logmuse = [
-    {file = "logmuse-0.2.7-py3-none-any.whl", hash = "sha256:691fc43118feddeaf41b57cd8b8ed5c8e6071948e57a2b824b9c690712e858a8"},
-    {file = "logmuse-0.2.7.tar.gz", hash = "sha256:a4692c44ddfa912c3cb149ca4c7545f80119aa7485868fd1412e7c647e9a7e7e"},
-]
-lucidoc = [
-    {file = "lucidoc-0.4.3-py3-none-any.whl", hash = "sha256:6ddcd83f109566f9d67a9a1ff6c8eaac21df9c0f34b5d0f06c02d676b792d05c"},
-    {file = "lucidoc-0.4.3.tar.gz", hash = "sha256:1c32b512dc097c2b6ece9507e2b7272b84c008d4cbca47e8890e6ede0ca28c54"},
 ]
 markdown = [
     {file = "Markdown-3.3.5-py3-none-any.whl", hash = "sha256:0d2d09f75cb8d1ffc6770c65c61770b23a61708101f47bda416a002a0edbc480"},
@@ -2423,10 +2387,6 @@ typed-ast = [
 typing-extensions = [
     {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},
     {file = "typing_extensions-4.2.0.tar.gz", hash = "sha256:f1c24655a0da0d1b67f07e17a5e6b2a105894e6824b92096378bb3668ef02376"},
-]
-ubiquerg = [
-    {file = "ubiquerg-0.6.2-py2.py3-none-any.whl", hash = "sha256:6336c4dc2c64fd759585265ad0a307eb48944368de531fb686447d2a93a5779d"},
-    {file = "ubiquerg-0.6.2.tar.gz", hash = "sha256:a9b1388799d4c366f956e0c912819099ad8f6cd0e5d890923cdde197f80d14cf"},
 ]
 urllib3 = [
     {file = "urllib3-1.26.9-py2.py3-none-any.whl", hash = "sha256:44ece4d53fb1706f667c9bd1c648f5469a2ec925fcf3a776667042d645472c14"},
