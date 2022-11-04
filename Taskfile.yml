@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  jupyter:
+    cmds:
+      - jupyter nbconvert docs/API_usage.ipynb  --to markdown --output API_usage.md
+  serve_docs:
+    deps:
+      - jupyter
+    cmds:
+      - mkdocs serve
+  build_docs:
+    deps:
+      - jupyter
+    cmds:
+      - mkdocs build
+  deploy_docs:
+    deps:
+      - jupyter  
+    cmds:
+      - mkdocs gh-deploy

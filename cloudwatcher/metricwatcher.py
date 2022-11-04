@@ -80,22 +80,26 @@ class MetricWatcher(CloudWatcher):
         Query EC2 metrics
 
         Args:
-            days (int): how many days to subtract from the current date to determine the metric collection start time
-            hours (int): how many hours to subtract from the current time to determine the metric collection start time
-            minutes (int): how many minutes to subtract from the current time to determine the metric collection start time
+            days (int): how many days to subtract from the current date to determine
+                the metric collection start time
+            hours (int): how many hours to subtract from the current time to determine
+                the metric collection start time
+            minutes (int): how many minutes to subtract from the current time to
+                determine the metric collection start time
             stat (str): the statistic to query
             period (int): the period of the metric
 
         Returns:
-            Dict: the response from the query, check the structure of the response [here](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data)
+            Dict: the response from the query, check the structure of the
+            response [here](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data) # noqa: E501
         """
         # Create CloudWatch client
         now = datetime.datetime.now(pytz.utc)
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
         _LOGGER.info(
-            f"Querying '{self.metric_name}' for dimensions "
-            f"{self.dimensions_list} from {start_time.strftime('%H:%M:%S')} to {now.strftime('%H:%M:%S')}"
+            f"Querying '{self.metric_name}' for dimensions {self.dimensions_list} "
+            f"from {start_time.strftime('%H:%M:%S')} to {now.strftime('%H:%M:%S')}"
         )
 
         response = self.client.get_metric_data(
@@ -106,7 +110,7 @@ class MetricWatcher(CloudWatcher):
                         "Metric": {
                             "Namespace": self.namespace,
                             "MetricName": self.metric_name,
-                            "Dimensions": self.dimensions_list,
+                            "Dimensions": [dim.dict() for dim in self.dimensions_list],
                         },
                         "Stat": stat,
                         "Unit": str(
@@ -138,9 +142,12 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             ec2_instance_id (str): the ID of the EC2 instance
-            days (int): how many days to subtract from the current date to determine the metric collection start time
-            hours (int): how many hours to subtract from the current time to determine the metric collection start time
-            minutes (int): how many minutes to subtract from the current time to determine the metric collection start time
+            days (int): how many days to subtract from the current date to determine
+                the metric collection start time
+            hours (int): how many hours to subtract from the current time to determine
+                 the metric collection start time
+            minutes (int): how many minutes to subtract from the current time to
+                determine the metric collection start time
 
         Returns:
             int: the runtime of the EC2 instance in minutes
@@ -148,7 +155,8 @@ class MetricWatcher(CloudWatcher):
         if not self.is_ec2_running(ec2_instance_id):
             _LOGGER.info(
                 f"Instance '{self.dimension_value}' is not running anymore. "
-                f"Uptime will be estimated based on reported metrics in the last {days} days"
+                f"Uptime will be estimated based on reported metrics in "
+                f"the last {days} days"
             )
             instances = self.ec2_resource.instances.filter(
                 Filters=[{"Name": "instance-id", "Values": [self.dimension_value]}]
@@ -159,7 +167,8 @@ class MetricWatcher(CloudWatcher):
                 hours=hours,
                 minutes=minutes,
                 stat="Maximum",  # any stat works
-                period=60,  # most precise period that AWS stores for instances where start time is between 3 hours and 15 days ago
+                period=60,  # most precise period that AWS stores for instances where
+                # start time is between 3 hours and 15 days ago
             )
             # extract the latest metric report time
             timed_metrics = self.timed_metric_factory(metrics_response)
@@ -200,7 +209,8 @@ class MetricWatcher(CloudWatcher):
         if len(list(instances)) > 1:
             raise Exception(f"Multiple EC2 instances matched by ID: {ec2_instance_id}")
         for instance in instances:
-            # check the status codes and their meanings: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceState.html
+            # check the status codes and their meanings:
+            # https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceState.html # noqa: E501
             if instance.state["Code"] <= 16:
                 return True
         return False

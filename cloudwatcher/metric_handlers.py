@@ -94,7 +94,7 @@ class ResponseHandler(Handler):
     """
 
     def __init__(self, response: dict) -> None:
-        """ 
+        """
         Initialize the handler
 
         Args:

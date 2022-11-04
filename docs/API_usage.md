@@ -9,7 +9,7 @@ Both of these classes inherit from the `CloudWatcher` class.
 
 ## `MetricWatcher`: convenient interface to AWS CloudWatch metrics
 
-`MetricWatcher` can be used to interact with AWS CloudWatch metrics. 
+`MetricWatcher` can be used to interact with AWS CloudWatch metrics.
 
 ### `MetricWatcher` initialization
 
@@ -122,9 +122,9 @@ mw.save_response_json(file_path=f"/tmp/{instance_id}_response.json")
 ```
 
 
-    
+
 ![png](API_usage_files/API_usage_8_0.png)
-    
+
 
 
 ### Maunal EC2 querying

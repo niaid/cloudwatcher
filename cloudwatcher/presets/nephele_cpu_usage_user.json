@@ -1,0 +1,16 @@
+{
+    "namespace": "NepheleNamespaceEC2",
+    "dimensions_list": [
+        {
+            "Name": "InstanceId",
+            "Value": "i-0c4d9523c99fbc1da"
+        },
+        {
+            "Name": "cpu",
+            "Value": "cpu-total"
+        }
+    ],
+    "metric_name": "cpu_usage_user",
+    "metric_id": "nephele",
+    "metric_unit": "Percent"
+}

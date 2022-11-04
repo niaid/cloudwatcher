@@ -10,7 +10,8 @@ class _VersionInHelpParser(argparse.ArgumentParser):
     def format_help(self):
         """Add version information to help text."""
         return (
-            f"version: {__version__}\nDocumentation available at: https://niaid.github.io/cloudwatcher\n\n"
+            f"version: {__version__}\nDocumentation available at: "
+            "https://niaid.github.io/cloudwatcher\n\n"
             + super(_VersionInHelpParser, self).format_help()
         )
 
@@ -105,7 +106,6 @@ def build_argparser():
         "-i",
         "--id",
         help="The unique identifier to assign to the metric data. Must be of the form '^[a-z][a-zA-Z0-9_]*$'.",
-        default=CLI_DEFAULTS["id"],
         required=False,
         metavar="ID",
     )
@@ -113,24 +113,21 @@ def build_argparser():
         "-m",
         "--metric",
         help="Name of the metric collected by CloudWatchAgent (default: %(default)s)",
-        default=CLI_DEFAULTS["metric_name"],
         required=False,
         metavar="N",
     )
     sps[METRIC_CMD].add_argument(
         "-dn",
-        "--dimension-name",
+        "--dimensions-names",
         help="The name of the dimension to query. (default: %(default)s)",
-        required=True,
         type=str,
         metavar="N",
         nargs="+",
     )
     sps[METRIC_CMD].add_argument(
         "-dv",
-        "--dimension-value",
+        "--dimensions-values",
         help="The value of the dimension to filter on.",
-        required=True,
         type=str,
         metavar="V",
         nargs="+",
@@ -167,6 +164,32 @@ def build_argparser():
         type=int,
         metavar="M",
     )
+    preset = sps[METRIC_CMD].add_argument_group(
+        "PRESETS", "Use one of the predefined presets to collect metrics."
+    )
+    preset.add_argument(
+        "--preset-name",
+        help="Name of the preset to use.",
+        default=None,
+        type=str,
+        metavar="N",
+    )
+    preset.add_argument(
+        "--preset-path",
+        help="Path to the preset file to use.",
+        default=None,
+        type=str,
+        metavar="P",
+    )
+    preset.add_argument(
+        "--dimensions",
+        help="Elements of the dimensions list to use. Must be of the form: name1:value1 name2:value2",
+        default=None,
+        type=str,
+        metavar="A",
+        nargs="+",
+    )
+
     sps[METRIC_CMD].add_argument(
         "-u",
         "--unit",
@@ -190,7 +213,7 @@ def build_argparser():
         "-p",
         "--period",
         help="""
-            The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: %(default)s). 
+            The granularity, in seconds, of the returned data points. Choices: 1, 5, 10, 30, 60, or any multiple of 60 (default: %(default)s).
             It affects the data availability. See the docs 'Usage' section for more details.
             """,
         default=CLI_DEFAULTS["period"],
@@ -206,7 +229,6 @@ def build_argparser():
         "--namespace",
         help="Namespace to monitor the metrics within. This value must match the 'Namespace' value in the CloudWatchAgent config.",
         type=str,
-        required=True,
         metavar="N",
     )
     sps[LOG_CMD].add_argument(
