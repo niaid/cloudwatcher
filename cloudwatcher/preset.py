@@ -1,4 +1,5 @@
 import os
+import argparse
 from typing import List, Dict
 from dataclasses import dataclass
 from pydantic import BaseModel
@@ -26,7 +27,8 @@ class PresetFilesInventory:
     def get_preset(self, preset_name: str) -> str:
         if preset_name not in self.presets:
             raise ValueError(
-                f"Preset {preset_name} not found. Available presets: {self.presets}"
+                f"Preset {preset_name} not found. Available presets: "
+                f"{', '.join(self.presets.keys())}"
             )
         return self.presets[preset_name]
 
@@ -122,22 +124,38 @@ class MetricWatcherSetup:
 
 
 def get_metric_watcher_setup(
-    preset_name: str = None, preset_path: str = None, logger: Logger = None
+    namespace: argparse.Namespace, logger: Logger
 ) -> MetricWatcherSetup:
     """
     Get a MetricWatcherSetup object from a preset
 
     Args:
-        preset_name (str): The name of the preset to use. Defaults to None
-        preset_path (str): The path to the preset file. Defaults to None
+        namespace (argparse.Namespace): The namespace to use
         logger (Logger): The logger to use. Defaults to None
 
     Returns:
         MetricWatcherSetup: The MetricWatcherSetup object
     """
-    if preset_name is None and preset_path is None:
-        raise ValueError("Either preset_name or preset_path must be provided")
 
-    preset_path = preset_path or PresetFilesInventory().get_preset(preset_name)
-    logger.info(f"Using preset: {preset_path}")
-    return MetricWatcherSetup.from_json(preset_path)
+    if namespace.preset_name is not None or namespace.preset_path is not None:
+        preset_path = namespace.preset_path or PresetFilesInventory().get_preset(
+            namespace.preset_name
+        )
+        logger.info(f"Using preset: {preset_path}")
+        mw_setup = MetricWatcherSetup.from_json(preset_path)
+        mw_setup.upsert_dimensions(namespace.dimensions)
+        mw_setup.namespace = namespace.namespace or mw_setup.namespace
+        mw_setup.metric_name = namespace.metric or mw_setup.metric_name
+        mw_setup.metric_id = namespace.id or mw_setup.metric_id
+    else:
+        mw_setup = MetricWatcherSetup(
+            namespace=namespace.namespace,
+            dimensions_list=[
+                Dimension(**dimension) for dimension in namespace.dimensions
+            ],
+            metric_name=namespace.metric,
+            metric_id=namespace.id,
+            metric_unit=namespace.unit,
+        )
+    logger.debug(f"MetricWatcherSetup: {mw_setup}")
+    return mw_setup

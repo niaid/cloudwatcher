@@ -41,17 +41,7 @@ def main():
             _LOGGER.info(f"Creating directory: {args.dir}")
             os.makedirs(args.dir, exist_ok=True)
 
-        if args.preset_name is not None or args.preset_path is not None:
-            mw_setup = get_metric_watcher_setup(
-                preset_name=args.preset_name,
-                preset_path=args.preset_path,
-                logger=_LOGGER,
-            )
-        mw_setup.upsert_dimensions(args.dimensions)
-        mw_setup.namespace = args.namespace if args.namespace else mw_setup.namespace
-        mw_setup.metric_name = args.metric if args.metric else mw_setup.metric_name
-        mw_setup.metric_id = args.id if args.id else mw_setup.metric_id
-        _LOGGER.debug(f"MetricWatcherSetup: {mw_setup}")
+        mw_setup = get_metric_watcher_setup(namespace=args, logger=_LOGGER)
         metric_watcher = MetricWatcher(**mw_setup.to_dict())
 
         response = metric_watcher.query_ec2_metrics(

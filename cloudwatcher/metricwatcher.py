@@ -97,9 +97,11 @@ class MetricWatcher(CloudWatcher):
         now = datetime.datetime.now(pytz.utc)
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
+        _time = lambda x: x.strftime("%Y-%m-%d %H:%M:%S")
+
         _LOGGER.info(
             f"Querying '{self.metric_name}' for dimensions {self.dimensions_list} "
-            f"from {start_time.strftime('%H:%M:%S')} to {now.strftime('%H:%M:%S')}"
+            f"from {_time(start_time)} to {_time(now)}"
         )
 
         response = self.client.get_metric_data(
