@@ -5,6 +5,7 @@ from typing import List, Dict
 from dataclasses import dataclass
 from pydantic import BaseModel
 from pathlib import Path
+from rich.table import Table
 
 from typing import List
 import json
@@ -37,6 +38,22 @@ class PresetFilesInventory:
         }
 
     @property
+    def presets_table(self) -> Table:
+        """
+        Get a rich table with the available presets
+
+        Returns:
+            Table: The rich table
+        """
+        table = Table(show_header=True, header_style="bold magenta")
+        table.add_column("Name")
+        table.add_column("Path", style="dim")
+        for preset_name, preset_path in self.presets.items():
+            table.add_row(preset_name, preset_path.as_posix())
+        table.title = f"Presets available in: {self.presets_dir}"
+        return table
+
+    @property
     def presets(self) -> Dict[str, Path]:
         """
         Get the available presets
@@ -66,7 +83,7 @@ class PresetFilesInventory:
         """
         return self._presets_dir
 
-    def get_preset(self, preset_name: str) -> Path:
+    def get_preset_path(self, preset_name: str) -> Path:
         """
         Get the preset file content
 
@@ -206,7 +223,7 @@ def get_metric_watcher_setup(
             preset_path = Path(namespace.preset_path)
         else:
             presets_inventory = PresetFilesInventory(presets_dir)
-            preset_path = presets_inventory.get_preset(namespace.preset_name)
+            preset_path = presets_inventory.get_preset_path(namespace.preset_name)
         _LOGGER.info(f"Using preset: {preset_path}")
         mw_setup = MetricWatcherSetup.from_json(preset_path)
         mw_setup.upsert_dimensions(namespace.dimensions)

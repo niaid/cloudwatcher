@@ -3,7 +3,6 @@ import os
 import sys
 
 from rich.logging import RichHandler
-from rich.table import Table
 from rich.console import Console
 from pathlib import Path
 
@@ -45,15 +44,7 @@ def main():
         )
 
         if args.preset_list:
-            presets_inventory = PresetFilesInventory(presets_dir=preset_dir)
-            table = Table(show_header=True, header_style="bold magenta")
-            table.add_column("Preset")
-            table.add_column("Path", style="dim")
-            for preset_name, preset_path in presets_inventory.presets.items():
-                table.add_row(preset_name, preset_path.as_posix())
-            table.title = f"Available presets ({presets_inventory.presets_dir})"
-            console = Console()
-            console.print(table)
+            Console().print(PresetFilesInventory(presets_dir=preset_dir).presets_table)
             sys.exit(0)
 
         if not os.path.exists(args.dir):
