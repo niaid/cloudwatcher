@@ -12,16 +12,10 @@ DEFAULT_QUERY_KWARGS = {
     "stat": "Maximum",
     "period": 5,
 }
-QUERY_KWARGS_PRESETS = {
-    "day": {"days": 1, "hours": 0, "minutes": 0, "stat": "Maximum", "period": 10},
-    "hour": {"days": 0, "hours": 1, "minutes": 0, "stat": "Maximum", "period": 1},
-    "minute": {"days": 0, "hours": 0, "minutes": 1, "stat": "Maximum", "period": 1},
-}
 
 CLI_DEFAULTS = {
     "metric_name": "mem_used",
-    "id": "memory_usage",
-    "dimension_name": "InstanceId",
+    "id": "provide_metric_id",
     "days": 1,
     "hours": 0,
     "minutes": 0,

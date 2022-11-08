@@ -1,0 +1,12 @@
+{
+    "namespace": "NepheleNamespaceEC2",
+    "dimensions_list": [
+        {
+            "Name": "InstanceId",
+            "Value": ""
+        }
+    ],
+    "metric_name": "processes_dead",
+    "metric_id": "nephele",
+    "metric_unit": "Count"
+}

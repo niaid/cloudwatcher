@@ -2,6 +2,21 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 
+## [0.1.0] - 2022-11-08
+
+### Added
+
+- presets functionality to improve UX
+
+### Changed
+
+- merged `--dimension-name` and `--dimension-value` into `--dimensions` option
+
+### Removed
+
+- defaults for `--id`, `-unit`, `--stat` etc. Presets should be used instead
+- `query_kwargs` argument
+
 ## [0.0.6] - 2022-05-03
 
 ### Added

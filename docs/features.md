@@ -104,10 +104,9 @@ A JSON file with the raw data, which can be used for further analysis.
 
 ### CSV with metric data
 
-
 A CSV file with the raw data, which can be used for further analysis.
 
-``` title="{dimension_name}_{dimension_value}_{metric}.csv"
+```title="{dimension_name}_{dimension_value}_{metric}.csv"
 time,value
 2021-11-12 19:19:00+00:00,492003328.0
 2021-11-12 19:18:30+00:00,492204032.0

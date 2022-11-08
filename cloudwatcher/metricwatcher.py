@@ -5,9 +5,9 @@ from typing import Any, Dict, List, Optional
 import boto3
 import pytz
 
-from .cloudwatcher import CloudWatcher
-from .const import DEFAULT_QUERY_KWARGS, QUERY_KWARGS_PRESETS
-from .metric_handlers import (
+from cloudwatcher.cloudwatcher import CloudWatcher
+from cloudwatcher.const import DEFAULT_QUERY_KWARGS
+from cloudwatcher.metric_handlers import (
     ResponseHandler,
     ResponseLogger,
     ResponseSaver,
@@ -31,8 +31,7 @@ class MetricWatcher(CloudWatcher):
     def __init__(
         self,
         namespace: str,
-        dimension_name: str,
-        dimension_value: str,
+        dimensions_list: List[Dict[str, str]],
         metric_name: str,
         metric_id: str,
         metric_unit: Optional[str] = None,
@@ -44,9 +43,16 @@ class MetricWatcher(CloudWatcher):
         """
         Initialize MetricWatcher
 
-        :param str namespace: The namespace of the metric
-        :param Optional[str] region_name: The name of the region. Defaults to 'us-east-1'
-        :param Optional[str] start_token: The start token to use for the query
+        Args:
+            namespace (str): the namespace of the metric
+            dimensions_list (List[Dict[str, str]]): the dimensions of the metric
+            metric_name (str): the name of the metric
+            metric_id (str): the ID of the metric
+            metric_unit (Optional[str]): the unit of the metric
+            aws_access_key_id (Optional[str]): the AWS access key ID
+            aws_secret_access_key (Optional[str]): the AWS secret access key
+            aws_session_token (Optional[str]): the AWS session token
+            aws_region_name (Optional[str]): the AWS region name
         """
         super().__init__(
             service_name="cloudwatch",
@@ -56,8 +62,7 @@ class MetricWatcher(CloudWatcher):
             aws_region_name=aws_region_name,
         )
         self.namespace = namespace
-        self.dimension_name = dimension_name
-        self.dimension_value = dimension_value
+        self.dimensions_list = dimensions_list
         self.metric_name = metric_name
         self.metric_id = metric_id
         self.metric_unit = metric_unit
@@ -80,22 +85,29 @@ class MetricWatcher(CloudWatcher):
         """
         Query EC2 metrics
 
-        :param str namespace: namespace to monitor the metrics within. This value must match the 'Nampespace' value in the config
-        :param int days: how many days to subtract from the current date to determine the metric collection start time
-        :param int hours: how many hours to subtract from the current time to determine the metric collection start time
-        :param int minute: how many minutes to subtract from the current time to determine the metric collection start time
-        :param str stat: stat to use, e.g. 'Maximum'
-        :param int period: the granularity, in seconds, of the returned data points
-        return dict: metric statistics response, check the structure of the response [here](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data)
+        Args:
+            days (int): how many days to subtract from the current date to determine
+                the metric collection start time
+            hours (int): how many hours to subtract from the current time to determine
+                the metric collection start time
+            minutes (int): how many minutes to subtract from the current time to
+                determine the metric collection start time
+            stat (str): the statistic to query
+            period (int): the period of the metric
+
+        Returns:
+            Dict: the response from the query, check the structure of the
+            response [here](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data) # noqa: E501
         """
         # Create CloudWatch client
         now = datetime.datetime.now(pytz.utc)
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
+        _time = lambda x: x.strftime("%Y-%m-%d %H:%M:%S")
+
         _LOGGER.info(
-            f"Querying '{self.metric_name}' for dimension "
-            f"('{self.dimension_name}'='{self.dimension_value}') from "
-            f"{start_time.strftime('%H:%M:%S')} to {now.strftime('%H:%M:%S')}"
+            f"Querying '{self.metric_name}' for dimensions {self.dimensions_list} "
+            f"from {_time(start_time)} to {_time(now)}"
         )
 
         response = self.client.get_metric_data(
@@ -106,12 +118,7 @@ class MetricWatcher(CloudWatcher):
                         "Metric": {
                             "Namespace": self.namespace,
                             "MetricName": self.metric_name,
-                            "Dimensions": [
-                                {
-                                    "Name": self.dimension_name,
-                                    "Value": self.dimension_value,
-                                }
-                            ],
+                            "Dimensions": [dim.dict() for dim in self.dimensions_list],
                         },
                         "Stat": stat,
                         "Unit": str(
@@ -141,17 +148,23 @@ class MetricWatcher(CloudWatcher):
         """
         Get the runtime of an EC2 instance
 
-        :param int days: how many days to subtract from the current date to determine the metric collection start time
-        :param int hours: how many hours to subtract from the current time to determine the metric collection start time
-        :param int minute: how many minutes to subtract from the current time to determine the metric collection start time
-        :param str ec2_instance_id: the ID of the EC2 instance to query
+        Args:
+            ec2_instance_id (str): the ID of the EC2 instance
+            days (int): how many days to subtract from the current date to determine
+                the metric collection start time
+            hours (int): how many hours to subtract from the current time to determine
+                 the metric collection start time
+            minutes (int): how many minutes to subtract from the current time to
+                determine the metric collection start time
+
         Returns:
-            int: runtime of the instance in seconds
+            int: the runtime of the EC2 instance in minutes
         """
         if not self.is_ec2_running(ec2_instance_id):
             _LOGGER.info(
                 f"Instance '{self.dimension_value}' is not running anymore. "
-                f"Uptime will be estimated based on reported metrics in the last {days} days"
+                f"Uptime will be estimated based on reported metrics in "
+                f"the last {days} days"
             )
             instances = self.ec2_resource.instances.filter(
                 Filters=[{"Name": "instance-id", "Values": [self.dimension_value]}]
@@ -162,7 +175,8 @@ class MetricWatcher(CloudWatcher):
                 hours=hours,
                 minutes=minutes,
                 stat="Maximum",  # any stat works
-                period=60,  # most precise period that AWS stores for instances where start time is between 3 hours and 15 days ago
+                period=60,  # most precise period that AWS stores for instances where
+                # start time is between 3 hours and 15 days ago
             )
             # extract the latest metric report time
             timed_metrics = self.timed_metric_factory(metrics_response)
@@ -189,8 +203,11 @@ class MetricWatcher(CloudWatcher):
         """
         Check if EC2 instance is running
 
-        :param str ec2_instance_id: the ID of the EC2 instance to query
-        :returns bool: True if instance is running, False otherwise
+        Args:
+            ec2_instance_id (str): the ID of the EC2 instance
+
+        Returns:
+            bool: True if EC2 instance is running, False otherwise
         """
         instances = self.ec2_resource.instances.filter(
             Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
@@ -200,7 +217,8 @@ class MetricWatcher(CloudWatcher):
         if len(list(instances)) > 1:
             raise Exception(f"Multiple EC2 instances matched by ID: {ec2_instance_id}")
         for instance in instances:
-            # check the status codes and their meanings: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceState.html
+            # check the status codes and their meanings:
+            # https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceState.html # noqa: E501
             if instance.state["Code"] <= 16:
                 return True
         return False
@@ -210,8 +228,11 @@ class MetricWatcher(CloudWatcher):
         """
         Create a collection of TimedMetrics from the CloudWatch client response.
 
-        :param dict response: response from CloudWatch client
-        :return List[TimedMetric]: list of TimedMetric objects
+        Args:
+            response (dict): the response from the query
+
+        Returns:
+            List[TimedMetric]: a collection of TimedMetrics
         """
         return [
             TimedMetric(
@@ -227,20 +248,18 @@ class MetricWatcher(CloudWatcher):
         handler_class: TimedMetricHandler,
         response: Optional[Dict] = None,
         query_kwargs: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
         **kwargs,
     ) -> None:
         """
         Internal method to execute a TimedMetricHandler
 
-        :param TimedMetricHandler handler_class: TimedMetricHandler class to execute
-        :param dict response: response from CloudWatch client
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
-        :param kwargs: keyword arguments to pass to the handler
+        Args:
+            handler_class (TimedMetricHandler): the TimedMetricHandler to execute
+            response (Optional[Dict]): the response from the query
+            query_kwargs (Optional[Dict]): the query kwargs to use for the query
+            **kwargs: additional kwargs to pass to the handler
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        query_kwargs = query_kwargs or self._get_query_kwargs(query_preset)
         response = response or self.query_ec2_metrics(**query_kwargs)
         timed_metrics = self.timed_metric_factory(response)
         for timed_metric in timed_metrics:
@@ -249,42 +268,24 @@ class MetricWatcher(CloudWatcher):
             handler = handler_class(timed_metric=timed_metric)
             handler(**kwargs)
 
-    def _get_query_kwargs(self, preset_key: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Based on the selected preset identifier get the query values
-
-        :param str preset_key: preset identifier:param dict query_kwargs: kwargs to pass to the EC2 query
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
-        :return Dict[str, Any]: query values
-        """
-        if preset_key is None:
-            return DEFAULT_QUERY_KWARGS
-        if preset_key not in QUERY_KWARGS_PRESETS:
-            raise KeyError(
-                f"Invalid preset key: {preset_key}."
-                f"Valid keys are: {list(QUERY_KWARGS_PRESETS.keys())}"
-            )
-        return QUERY_KWARGS_PRESETS.get(preset_key)
-
     def _exec_response_handler(
         self,
         handler_class: ResponseHandler,
         response: Optional[Dict] = None,
         query_kwargs: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
         **kwargs,
     ) -> None:
         """
         Internal method to execute a ResponseHandler
 
-        :param ResponseHandler handler_class: ResponseHandler class to execute
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            handler_class (ResponseHandler): the ResponseHandler to execute
+            response (Optional[Dict]): the response from the query
+            query_kwargs (Optional[Dict]): the query kwargs to use for the query
+            **kwargs: additional kwargs to pass to the handler
+
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        query_kwargs = query_kwargs or self._get_query_kwargs(query_preset)
         response = response or self.query_ec2_metrics(**query_kwargs)
         handler = handler_class(response=response)
         handler(**kwargs)
@@ -293,46 +294,42 @@ class MetricWatcher(CloudWatcher):
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and save the metric data to a JSON file
 
-        :param str file_path: path to the file to save the metric data to
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            file_path (str): the file path to save the metric data to
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricJsonSaver,
             target=file_path,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
     def save_metric_csv(
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and save the metric data to a CSV file
 
-        :param str file_path: path to the file to save the metric data to
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            file_path (str): the file path to save the metric data to
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricCsvSaver,
             target=file_path,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
     def log_metric(
@@ -341,57 +338,45 @@ class MetricWatcher(CloudWatcher):
         """
         Query and log the metric data
 
-        :param kwargs: keyword arguments to pass to the handler
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricLogger,
             target=None,  # TODO: add support for saving to file
             response=response,
-            query_preset=query_preset,
         )
 
     def save_metric_plot(
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and plot the metric data
 
-        :param str file_path: path to the file to plot the metric data to
-        :param kwargs: keyword arguments to pass to the plotter
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            file_path (str): the file path to save the metric data to
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricPlotter,
             target=file_path,
             metric_unit=self.metric_unit,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
-    def log_metric_summary(
-        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
-    ):
+    def log_metric_summary(self, response: Optional[Dict] = None):
         """
         Query and summarize the metric data to a JSON file
 
-        :param str file_path: path to the file to save the metric data to
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricSummarizer,
@@ -399,47 +384,39 @@ class MetricWatcher(CloudWatcher):
             metric_unit=self.metric_unit,
             summarizer=("Max", max),
             response=response,
-            query_preset=query_preset,
         )
 
     def save_response_json(
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and save the response data to a JSON file
 
-        :param str file_path: path to the file to save the response data to
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            file_path (str): the file path to save the response data to
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_response_handler(
             ResponseSaver,
             target=file_path,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
-    def log_response(
-        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
-    ):
+    def log_response(self, response: Optional[Dict] = None):
         """
         Query and log the response
 
-        :param dict response: response retrieved with `query_ec2_metrics`.
-             A query is performed if not provided.
-        :param dict response: response from `query_ec2_metrics` method
-        :param dict query_kwargs: kwargs to pass to the EC2 query
-        :param str query_preset: period preset to use for the EC2 query
+        Args:
+            response (Optional[Dict]): the response from the query
+            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_response_handler(
             ResponseLogger,
             target=None,
             response=response,
-            query_preset=query_preset,
         )

@@ -18,6 +18,13 @@ theme:
 repo_url: https://github.com/niaid/cloudwatcher
 repo_name: niaid/cloudwatcher
 edit_uri: edit/main/docs/
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 3
 markdown_extensions:
   - admonition
   - md_in_html
@@ -29,7 +36,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: "!!python/name:pymdownx.superfences.fence_code_format"
 nav:
   - Installation & Setup:
       - Installation: installation.md
@@ -38,6 +45,7 @@ nav:
   - Usage & Features:
       - Usage: usage.md
       - Features: features.md
+      - Presets: presets.md
   - Python API:
       - API documentation: API_documentation.md
       - API usage: API_usage.md

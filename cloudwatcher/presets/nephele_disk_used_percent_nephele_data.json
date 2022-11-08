@@ -1,0 +1,24 @@
+{
+    "namespace": "NepheleNamespaceEC2",
+    "dimensions_list": [
+        {
+            "Name": "InstanceId",
+            "Value": "i-04127265744c54ce6"
+        },
+        {
+            "Name": "path",
+            "Value": "/nephele_data"
+        },
+        {
+            "Name": "fstype",
+            "Value": "ext4"
+        },
+        {
+            "Name": "device",
+            "Value": "md0"
+        }
+    ],
+    "metric_name": "disk_used_percent",
+    "metric_id": "nephele",
+    "metric_unit": "Percent"
+}

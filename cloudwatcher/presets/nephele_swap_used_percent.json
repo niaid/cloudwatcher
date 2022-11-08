@@ -1,0 +1,12 @@
+{
+    "namespace": "NepheleNamespaceEC2",
+    "dimensions_list": [
+        {
+            "Name": "InstanceId",
+            "Value": ""
+        }
+    ],
+    "metric_name": "swap_used_percent",
+    "metric_id": "nephele",
+    "metric_unit": "Percent"
+}

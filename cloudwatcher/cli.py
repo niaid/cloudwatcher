@@ -3,12 +3,15 @@ import os
 import sys
 
 from rich.logging import RichHandler
+from rich.console import Console
+from pathlib import Path
 
 from cloudwatcher.const import LOG_CMD, METRIC_CMD
 from cloudwatcher.logwatcher import LogWatcher
 
 from .argparser import build_argparser
 from .metricwatcher import MetricWatcher
+from .preset import get_metric_watcher_setup, PresetFilesInventory
 
 
 def main():
@@ -33,25 +36,19 @@ def main():
     _LOGGER.debug(f"CLI arguments: {args}")
 
     if args.command == METRIC_CMD:
-        if args.query_json is not None:
-            raise NotImplementedError("Querying via JSON is not yet implemented")
+
+        if args.preset_list:
+            Console().print(
+                PresetFilesInventory(presets_dir=args.preset_dir).presets_table
+            )
+            sys.exit(0)
 
         if not os.path.exists(args.dir):
             _LOGGER.info(f"Creating directory: {args.dir}")
             os.makedirs(args.dir, exist_ok=True)
 
-        metric_watcher = MetricWatcher(
-            namespace=args.namespace,
-            metric_name=args.metric,
-            metric_id=args.id,
-            metric_unit=args.unit,
-            dimension_value=args.dimension_value,
-            dimension_name=args.dimension_name,
-            aws_access_key_id=args.aws_access_key_id,
-            aws_secret_access_key=args.aws_secret_access_key,
-            aws_session_token=args.aws_session_token,
-            aws_region_name=args.aws_region,
-        )
+        mw_setup = get_metric_watcher_setup(namespace=args, presets_dir=args.preset_dir)
+        metric_watcher = MetricWatcher(**mw_setup.to_dict())
 
         response = metric_watcher.query_ec2_metrics(
             days=args.days,
@@ -65,7 +62,7 @@ def main():
         metric_watcher.log_metric(response=response)
         metric_watcher.log_metric_summary(response=response)
 
-        name_prefix = f"{args.dimension_name}_{args.dimension_value}_{args.metric}"
+        name_prefix = f"{metric_watcher.metric_id}_{metric_watcher.metric_name}"
         if args.save:
             metric_watcher.save_metric_json(
                 file_path=os.path.join(args.dir, f"{name_prefix}.json"),
@@ -87,10 +84,11 @@ def main():
             )
 
         if args.uptime:
-            if not args.dimension_value.startswith("i-"):
+            if not args.dimension_name == "InstanceId":
                 _LOGGER.error(
                     "Uptime is only available for EC2 instances. "
-                    "Please provide an EC2 instance ID as the dimension value."
+                    "Please provide 'InstanceId' as dimension name and EC2 instance id"
+                    " as the dimension value."
                 )
                 sys.exit(1)
             try:
