@@ -231,19 +231,17 @@ def get_metric_watcher_setup(
             preset_path = presets_inventory.get_preset_path(namespace.preset_name)
         _LOGGER.info(f"Using preset: {preset_path}")
         mw_setup = MetricWatcherSetup.from_json(preset_path)
-        mw_setup.upsert_dimensions(namespace.dimensions)
         mw_setup.namespace = namespace.namespace or mw_setup.namespace
         mw_setup.metric_name = namespace.metric or mw_setup.metric_name
         mw_setup.metric_id = namespace.id or mw_setup.metric_id
     else:
         mw_setup = MetricWatcherSetup(
             namespace=namespace.namespace,
-            dimensions_list=[
-                Dimension(**dimension) for dimension in namespace.dimensions
-            ],
             metric_name=namespace.metric,
             metric_id=namespace.id,
             metric_unit=namespace.unit,
+            dimensions_list=[],
         )
+    mw_setup.upsert_dimensions(namespace.dimensions)
     _LOGGER.debug(f"MetricWatcherSetup: {mw_setup}")
     return mw_setup

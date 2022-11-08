@@ -81,12 +81,12 @@ METRIC COLLECTION TIME:
   -mi M, --minutes M          How many minutes to subtract from the current time to determine the metric collection start time (default: 0).
 ```
 
-### Minimal command example
+### Command example
 
-This minimal command will query dimesion `InstanceId` for `mem_user` in `Bytes` with period 60s over last 24h.
+This minimal command will query dimesion `InstanceId` for `mem_used` in `Bytes` with period 60s over last 2 days.
 
 ```console
-cloudwatcher metric --dimension-value i-024a73d6738255cbd
+cloudwatcher metric --dimensions InstanceId:i-0e0165b35c8d648c8 --namespace NepheleNamespaceEC2 --metric mem_used --id mem_used --days 2 --stat Maximum --unit Bytes
 ```
 
 ### Notes on metrics availabilty
@@ -99,6 +99,22 @@ Amazon CloudWatch retains metric data as follows:
 - Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months).
 
 Select your period of interest accordingly. This is crucial as for example if the EC2 instance has stopped over 3 hours ago, selecting a < 60 second period will return an empty reponse.
+
+### Using presets
+
+As you can see, the command required to retrieve the metrics is quite long. To make it easier to use, you can create a preset file and use it to query the metrics. Alternatively, you can use one of the built-in presets.
+
+List presets with:
+
+```console
+cloudwatcher metric --preset-list
+```
+
+Query metrics with preset:
+
+```
+cloudwatcher metric --preset <preset_name>
+```
 
 ## CloudWatch logs monitoring
 

@@ -111,22 +111,6 @@ def build_argparser():
         metavar="N",
     )
     sps[METRIC_CMD].add_argument(
-        "-dn",
-        "--dimensions-names",
-        help="The name of the dimension to query. (default: %(default)s)",
-        type=str,
-        metavar="N",
-        nargs="+",
-    )
-    sps[METRIC_CMD].add_argument(
-        "-dv",
-        "--dimensions-values",
-        help="The value of the dimension to filter on.",
-        type=str,
-        metavar="V",
-        nargs="+",
-    )
-    sps[METRIC_CMD].add_argument(
         "--uptime",
         help="Display the uptime of the instance in seconds. It's either calculated precisely if the instance is still running, or estimated based on the reported metrics.",
         action="store_true",
@@ -158,6 +142,14 @@ def build_argparser():
         type=int,
         metavar="M",
     )
+    sps[METRIC_CMD].add_argument(
+        "--dimensions",
+        help="Elements of the dimensions list to use. Must be of the form: name1:value1 name2:value2",
+        default=None,
+        type=str,
+        metavar="A",
+        nargs="+",
+    )
     preset = sps[METRIC_CMD].add_argument_group(
         "PRESETS", "Use one of the predefined presets to collect metrics."
     )
@@ -186,14 +178,6 @@ def build_argparser():
         default=None,
         type=str,
         metavar="P",
-    )
-    preset.add_argument(
-        "--dimensions",
-        help="Elements of the dimensions list to use. Must be of the form: name1:value1 name2:value2",
-        default=None,
-        type=str,
-        metavar="A",
-        nargs="+",
     )
 
     sps[METRIC_CMD].add_argument(
