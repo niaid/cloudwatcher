@@ -13,7 +13,7 @@
     
     
       
-        <title>Docs development - cloudwatcher</title>
+        <title>Presets - cloudwatcher</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#documentation-development" class="md-skip">
+        <a href="#presets" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docs development
+              Presets
             
           </span>
         </div>
@@ -307,12 +307,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
       
@@ -361,11 +363,72 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../presets/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Presets
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Presets
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-preset-command-example" class="md-nav__link">
+    Custom preset command example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-preset-command-example" class="md-nav__link">
+    Built-in preset command example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -445,14 +508,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
@@ -473,93 +534,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Docs development
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../docs_development/" class="md-nav__link">
         Docs development
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#with-make" class="md-nav__link">
-    With make
-  </a>
-  
-    <nav class="md-nav" aria-label="With make">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#serve" class="md-nav__link">
-    Serve
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#build" class="md-nav__link">
-    Build
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy" class="md-nav__link">
-    Deploy
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#by-hand" class="md-nav__link">
-    By hand
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-the-documentation" class="md-nav__link">
-    Deploying the documentation
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -613,50 +592,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#with-make" class="md-nav__link">
-    With make
+  <a href="#usage" class="md-nav__link">
+    Usage
   </a>
   
-    <nav class="md-nav" aria-label="With make">
+    <nav class="md-nav" aria-label="Usage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#serve" class="md-nav__link">
-    Serve
+  <a href="#custom-preset-command-example" class="md-nav__link">
+    Custom preset command example
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#build" class="md-nav__link">
-    Build
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy" class="md-nav__link">
-    Deploy
+  <a href="#built-in-preset-command-example" class="md-nav__link">
+    Built-in preset command example
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#by-hand" class="md-nav__link">
-    By hand
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-the-documentation" class="md-nav__link">
-    Deploying the documentation
-  </a>
   
 </li>
       
@@ -674,58 +632,58 @@
                 
                   
 
-  <a href="https://github.com/niaid/cloudwatcher/edit/main/docs/docs_development.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/niaid/cloudwatcher/edit/main/docs/presets.md" title="Edit this page" class="md-content__button md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
-<h1 id="documentation-development">Documentation development</h1>
-<p>The documentation is built from the makrdown files in the <code>/docs</code> directory with static site generator <a href="https://mkdocs.org/">MkDocs</a>.</p>
-<h2 id="with-make">With <code>make</code></h2>
-<div class="admonition info">
-<p class="admonition-title">Makefile</p>
-<p>The following commands are encoded in a Makefie in this repository: <a href="https://github.com/niaid/cloudwatcher/blob/main/makefile"><code>makefile</code></a>.</p>
-</div>
-<h3 id="serve">Serve</h3>
-<p>To serve the documentation locally, you can the <code>serve_docs</code> target:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">make serve_docs</span>
+<h1 id="presets">Presets</h1>
+<p>In order to improve the UX when using <code>cloudwatcher metric</code> comamnd. The <code>cloudwatcher</code> package provides a few presets that can be used to query the data reported by <code>CloudWatchAgent</code> within certain systems. Additionally, custom presets can be defined by the user and used in the same way.</p>
+<p>Presets are JSON-formatted files that provide parameter bundles for <code>MetricWatcher</code> initialization.</p>
+<h2 id="usage">Usage</h2>
+<p>The presets are used if <code>--preset-name</code> or <code>--preset-path</code> option is provided. The <code>--preset-name</code> option can be used to select one of the built-in presets. The <code>--preset-path</code> option can be used to select a custom preset.</p>
+<p>Importantly, the settings defined in the preset can be extended or overridden by the user by providing additional arguments to the <code>cloudwatcher metric</code> command, e.g. <code>--dimensions key:value --metric-id test</code>.</p>
+<h3 id="custom-preset-command-example">Custom preset command example</h3>
+<p>The custom preset can be defined in a JSON file, for example:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">custom_preset.json</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;namespace&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MetricNamespace&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;dimensions_list&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;InstanceId&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;Value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;i-0c4d9523c99fbc1da&quot;</span><span class="w"></span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">      </span><span class="nt">&quot;Value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cpu-total&quot;</span><span class="w"></span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">  </span><span class="p">],</span><span class="w"></span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">  </span><span class="nt">&quot;metric_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cpu_usage_user&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">  </span><span class="nt">&quot;metric_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my_metric_id&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">  </span><span class="nt">&quot;metric_unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Percent&quot;</span><span class="w"></span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>The above preset can be used by passing the <code>--preset-path</code> option:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cloudwatcher metric --preset-path custom_preset.json
 </code></pre></div>
-<p>The documentation is served on <a href="http://localhost:8000/">http://localhost:8000/</a>.</p>
-<h3 id="build">Build</h3>
-<p>To build the documentation, you can the <code>build_docs</code> target:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">make build_docs</span>
-</code></pre></div>
-<p>The documentation is built in the <code>/site</code> directory.</p>
-<h3 id="deploy">Deploy</h3>
-<p>To deploy the documentation to GitHub Pages, you can the <code>deploy_docs</code> target:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">make deploy_docs</span>
-</code></pre></div>
-<p>The documentation is deployed to GitHub Pages.</p>
-<h2 id="by-hand">By hand</h2>
-<p>In order to serve the documentation by hand follow the steps below.</p>
-<div class="admonition info">
-<p class="admonition-title">Note</p>
-<p>The commands need to be run from the root of the repository, unless stated otherwise.</p>
-</div>
-<ol>
-<li>Install the documentation-related dependancies and the Python package itself with <a href="https://python-poetry.org/">Poetry</a></li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">poetry install</span>
-</code></pre></div>
-<ol>
-<li>Document the API of the package</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">lucidoc cloudwatcher --parse rst --outfile docs/API_documentation.md</span>
-</code></pre></div>
-<ol>
-<li>Run the following command in the project root</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">mkdocs serve</span>
-</code></pre></div>
-<h2 id="deploying-the-documentation">Deploying the documentation</h2>
-<p>In order to deploy the documentation run the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>mkdocs gh-deploy
+<h3 id="built-in-preset-command-example">Built-in preset command example</h3>
+<p>The built-in presets can be used by passing the <code>--preset-name</code> option:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cloudwatcher metric --preset-name nepehele_mem
 </code></pre></div>
 
 
@@ -747,7 +705,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../API_usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API usage" rel="prev">
+        <a href="../features/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Features" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -756,20 +714,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              API usage
+              Features
             </div>
           </div>
         </a>
       
       
         
-        <a href="../changelog/" class="md-footer__link md-footer__link--next" aria-label="Next: Release notes" rel="next">
+        <a href="../API_documentation/" class="md-footer__link md-footer__link--next" aria-label="Next: API documentation" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Release notes
+              API documentation
             </div>
           </div>
           <div class="md-footer__button md-icon">
