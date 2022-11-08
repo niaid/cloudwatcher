@@ -1,30 +1,81 @@
 import os
 import argparse
+import logging
 from typing import List, Dict
 from dataclasses import dataclass
 from pydantic import BaseModel
-from logging import Logger
 from pathlib import Path
 
 from typing import List
 import json
 
+_LOGGER = logging.getLogger(__name__)
+
 
 class PresetFilesInventory:
-    def __init__(self) -> None:
-        self._presets = self._get_available_presets()
+    def __init__(self, presets_dir: Path) -> None:
+        """
+        Initialize the preset inventory
 
-    def _get_available_presets(self) -> List[str]:
+        Args:
+            presets_dir (Path): The path to the presets directory
+
+        Raises:
+            ValueError: If the presets directory does not exist
+        """
+        if not presets_dir.exists():
+            raise ValueError(f"Presets directory {presets_dir} does not exist")
+        self._presets_dir = presets_dir
+        _LOGGER.debug(f"Presets directory: {self.presets_dir}")
+        self._presets = self._get_available_presets(presets_dir)
+
+    def _get_available_presets(self, presets_dir: Path) -> List[str]:
         return {
             preset_file.stem: preset_file
-            for preset_file in (Path(__file__).parent / "presets").iterdir()
+            for preset_file in presets_dir.iterdir()
+            if preset_file.is_file() and preset_file.suffix == ".json"
         }
 
     @property
     def presets(self) -> Dict[str, Path]:
+        """
+        Get the available presets
+
+        Returns:
+            Dict[str, Path]: The available presets
+        """
         return self._presets
 
-    def get_preset(self, preset_name: str) -> str:
+    @property
+    def presets_list(self) -> List[str]:
+        """
+        Get the list of available presets
+
+        Returns:
+            List[str]: The list of available presets
+        """
+        return list(self._presets.keys())
+
+    @property
+    def presets_dir(self) -> Path:
+        """
+        Get the presets directory
+
+        Returns:
+            Path: The presets directory
+        """
+        return self._presets_dir
+
+    def get_preset(self, preset_name: str) -> Path:
+        """
+        Get the preset file content
+
+        Args:
+            preset_name (str): The name of the preset
+
+        Returns:
+            Path: the path to the preset file
+        """
         if preset_name not in self.presets:
             raise ValueError(
                 f"Preset {preset_name} not found. Available presets: "
@@ -34,6 +85,14 @@ class PresetFilesInventory:
 
 
 class Dimension(BaseModel):
+    """
+    A class for AWS CloudWatch dimension
+
+    Args:
+        Name (str): The name of the dimension
+        Value (str): The value of the dimension
+    """
+
     Name: str
     Value: str
 
@@ -46,6 +105,10 @@ class Dimension(BaseModel):
 
 @dataclass
 class MetricWatcherSetup:
+    """
+    A class for the setup of the MetricWatcher
+    """
+
     namespace: str
     dimensions_list: List[Dimension]
     metric_name: str
@@ -124,7 +187,7 @@ class MetricWatcherSetup:
 
 
 def get_metric_watcher_setup(
-    namespace: argparse.Namespace, logger: Logger
+    namespace: argparse.Namespace, presets_dir: Path
 ) -> MetricWatcherSetup:
     """
     Get a MetricWatcherSetup object from a preset
@@ -132,16 +195,19 @@ def get_metric_watcher_setup(
     Args:
         namespace (argparse.Namespace): The namespace to use
         logger (Logger): The logger to use. Defaults to None
+        presets_dir (Path): The path to the presets directory
 
     Returns:
         MetricWatcherSetup: The MetricWatcherSetup object
     """
 
     if namespace.preset_name is not None or namespace.preset_path is not None:
-        preset_path = namespace.preset_path or PresetFilesInventory().get_preset(
-            namespace.preset_name
-        )
-        logger.info(f"Using preset: {preset_path}")
+        if namespace.preset_path is not None:
+            preset_path = Path(namespace.preset_path)
+        else:
+            presets_inventory = PresetFilesInventory(presets_dir)
+            preset_path = presets_inventory.get_preset(namespace.preset_name)
+        _LOGGER.info(f"Using preset: {preset_path}")
         mw_setup = MetricWatcherSetup.from_json(preset_path)
         mw_setup.upsert_dimensions(namespace.dimensions)
         mw_setup.namespace = namespace.namespace or mw_setup.namespace
@@ -157,5 +223,5 @@ def get_metric_watcher_setup(
             metric_id=namespace.id,
             metric_unit=namespace.unit,
         )
-    logger.debug(f"MetricWatcherSetup: {mw_setup}")
+    _LOGGER.debug(f"MetricWatcherSetup: {mw_setup}")
     return mw_setup

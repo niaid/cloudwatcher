@@ -45,8 +45,14 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             namespace (str): the namespace of the metric
-            dimension_name (str): the name of the dimension
-            dimension_value (str): the value of the dimension
+            dimensions_list (List[Dict[str, str]]): the dimensions of the metric
+            metric_name (str): the name of the metric
+            metric_id (str): the ID of the metric
+            metric_unit (Optional[str]): the unit of the metric
+            aws_access_key_id (Optional[str]): the AWS access key ID
+            aws_secret_access_key (Optional[str]): the AWS secret access key
+            aws_session_token (Optional[str]): the AWS session token
+            aws_region_name (Optional[str]): the AWS region name
         """
         super().__init__(
             service_name="cloudwatch",

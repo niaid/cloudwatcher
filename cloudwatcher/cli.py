@@ -3,13 +3,16 @@ import os
 import sys
 
 from rich.logging import RichHandler
+from rich.table import Table
+from rich.console import Console
+from pathlib import Path
 
 from cloudwatcher.const import LOG_CMD, METRIC_CMD
 from cloudwatcher.logwatcher import LogWatcher
 
 from .argparser import build_argparser
 from .metricwatcher import MetricWatcher
-from .preset import get_metric_watcher_setup
+from .preset import get_metric_watcher_setup, PresetFilesInventory
 
 
 def main():
@@ -34,14 +37,30 @@ def main():
     _LOGGER.debug(f"CLI arguments: {args}")
 
     if args.command == METRIC_CMD:
-        if args.query_json is not None:
-            raise NotImplementedError("Querying via JSON is not yet implemented")
+
+        preset_dir = (
+            Path(args.preset_dir)
+            if args.preset_dir
+            else Path(__file__).parent / "presets"
+        )
+
+        if args.preset_list:
+            presets_inventory = PresetFilesInventory(presets_dir=preset_dir)
+            table = Table(show_header=True, header_style="bold magenta")
+            table.add_column("Preset")
+            table.add_column("Path", style="dim")
+            for preset_name, preset_path in presets_inventory.presets.items():
+                table.add_row(preset_name, preset_path.as_posix())
+            table.title = f"Available presets ({presets_inventory.presets_dir})"
+            console = Console()
+            console.print(table)
+            sys.exit(0)
 
         if not os.path.exists(args.dir):
             _LOGGER.info(f"Creating directory: {args.dir}")
             os.makedirs(args.dir, exist_ok=True)
 
-        mw_setup = get_metric_watcher_setup(namespace=args, logger=_LOGGER)
+        mw_setup = get_metric_watcher_setup(namespace=args, presets_dir=preset_dir)
         metric_watcher = MetricWatcher(**mw_setup.to_dict())
 
         response = metric_watcher.query_ec2_metrics(

@@ -95,14 +95,6 @@ def build_argparser():
         )
 
     sps[METRIC_CMD].add_argument(
-        "-q",
-        "--query-json",
-        help="Path to a query JSON file. This is not implemented yet.",
-        required=False,
-        default=None,
-        metavar="Q",
-    )
-    sps[METRIC_CMD].add_argument(
         "-i",
         "--id",
         help="The unique identifier to assign to the metric data. Must be of the form '^[a-z][a-zA-Z0-9_]*$'.",
@@ -166,6 +158,18 @@ def build_argparser():
     )
     preset = sps[METRIC_CMD].add_argument_group(
         "PRESETS", "Use one of the predefined presets to collect metrics."
+    )
+    preset.add_argument(
+        "--preset-list",
+        help="List all available presets.",
+        action="store_true",
+    )
+    preset.add_argument(
+        "--preset-dir",
+        help="Path to the preset directory",
+        default=None,
+        type=str,
+        metavar="D",
     )
     preset.add_argument(
         "--preset-name",

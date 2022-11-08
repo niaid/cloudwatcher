@@ -1,21 +1,21 @@
-version: '3'
+version: "3"
 
 tasks:
   jupyter:
     cmds:
-      - jupyter nbconvert docs/API_usage.ipynb  --to markdown --output API_usage.md
+      - poetry run jupyter nbconvert docs/API_usage.ipynb  --to markdown --output API_usage.md
   serve_docs:
     deps:
       - jupyter
     cmds:
-      - mkdocs serve
+      - poetry run mkdocs serve
   build_docs:
     deps:
       - jupyter
     cmds:
-      - mkdocs build
+      - poetry run mkdocs build
   deploy_docs:
     deps:
-      - jupyter  
+      - jupyter
     cmds:
-      - mkdocs gh-deploy
+      - poetry run mkdocs gh-deploy

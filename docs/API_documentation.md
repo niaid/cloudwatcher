@@ -12,6 +12,14 @@
 
 ::: cloudwatcher.metricwatcher.MetricWatcher
 
+## `MetricWatcherSetup`
+
+::: cloudwatcher.preset.MetricWatcherSetup
+
+## `PresetFilesInventory`
+
+::: cloudwatcher.preset.PresetFilesInventory
+
 ## Metric handlers
 
 ::: cloudwatcher.metric_handlers
