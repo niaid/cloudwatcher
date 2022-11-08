@@ -2,15 +2,17 @@
 
 import argparse
 
-from cloudwatcher._version import __version__
 from cloudwatcher.const import CLI_DEFAULTS, LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
+from importlib.metadata import version
+
+cloudwatcher_version = version("cloudwatcher")
 
 
 class _VersionInHelpParser(argparse.ArgumentParser):
     def format_help(self):
         """Add version information to help text."""
         return (
-            f"version: {__version__}\nDocumentation available at: "
+            f"version: {cloudwatcher_version}\nDocumentation available at: "
             "https://niaid.github.io/cloudwatcher\n\n"
             + super(_VersionInHelpParser, self).format_help()
         )
@@ -43,7 +45,7 @@ def build_argparser():
             "--version",
             help="Print version and exit",
             action="version",
-            version="%(prog)s {}".format(__version__),
+            version=f"%(prog)s {cloudwatcher_version}",
         )
         sps[cmd].add_argument(
             "--debug",

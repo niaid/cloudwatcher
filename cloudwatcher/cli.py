@@ -37,21 +37,17 @@ def main():
 
     if args.command == METRIC_CMD:
 
-        preset_dir = (
-            Path(args.preset_dir)
-            if args.preset_dir
-            else Path(__file__).parent / "presets"
-        )
-
         if args.preset_list:
-            Console().print(PresetFilesInventory(presets_dir=preset_dir).presets_table)
+            Console().print(
+                PresetFilesInventory(presets_dir=args.preset_dir).presets_table
+            )
             sys.exit(0)
 
         if not os.path.exists(args.dir):
             _LOGGER.info(f"Creating directory: {args.dir}")
             os.makedirs(args.dir, exist_ok=True)
 
-        mw_setup = get_metric_watcher_setup(namespace=args, presets_dir=preset_dir)
+        mw_setup = get_metric_watcher_setup(namespace=args, presets_dir=args.preset_dir)
         metric_watcher = MetricWatcher(**mw_setup.to_dict())
 
         response = metric_watcher.query_ec2_metrics(

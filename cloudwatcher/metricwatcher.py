@@ -6,7 +6,7 @@ import boto3
 import pytz
 
 from cloudwatcher.cloudwatcher import CloudWatcher
-from cloudwatcher.const import DEFAULT_QUERY_KWARGS, QUERY_KWARGS_PRESETS
+from cloudwatcher.const import DEFAULT_QUERY_KWARGS
 from cloudwatcher.metric_handlers import (
     ResponseHandler,
     ResponseLogger,
@@ -248,7 +248,6 @@ class MetricWatcher(CloudWatcher):
         handler_class: TimedMetricHandler,
         response: Optional[Dict] = None,
         query_kwargs: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
         **kwargs,
     ) -> None:
         """
@@ -258,11 +257,9 @@ class MetricWatcher(CloudWatcher):
             handler_class (TimedMetricHandler): the TimedMetricHandler to execute
             response (Optional[Dict]): the response from the query
             query_kwargs (Optional[Dict]): the query kwargs to use for the query
-            query_preset (Optional[str]): the query preset to use for the query
             **kwargs: additional kwargs to pass to the handler
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        query_kwargs = query_kwargs or self._get_query_kwargs(query_preset)
         response = response or self.query_ec2_metrics(**query_kwargs)
         timed_metrics = self.timed_metric_factory(response)
         for timed_metric in timed_metrics:
@@ -271,31 +268,11 @@ class MetricWatcher(CloudWatcher):
             handler = handler_class(timed_metric=timed_metric)
             handler(**kwargs)
 
-    def _get_query_kwargs(self, preset_key: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Based on the selected preset identifier get the query values
-
-        Args:
-            preset_key (Optional[str]): the preset identifier
-
-        Returns:
-            Dict[str, Any]: the query kwargs
-        """
-        if preset_key is None:
-            return DEFAULT_QUERY_KWARGS
-        if preset_key not in QUERY_KWARGS_PRESETS:
-            raise KeyError(
-                f"Invalid preset key: {preset_key}."
-                f"Valid keys are: {list(QUERY_KWARGS_PRESETS.keys())}"
-            )
-        return QUERY_KWARGS_PRESETS.get(preset_key)
-
     def _exec_response_handler(
         self,
         handler_class: ResponseHandler,
         response: Optional[Dict] = None,
         query_kwargs: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
         **kwargs,
     ) -> None:
         """
@@ -305,12 +282,10 @@ class MetricWatcher(CloudWatcher):
             handler_class (ResponseHandler): the ResponseHandler to execute
             response (Optional[Dict]): the response from the query
             query_kwargs (Optional[Dict]): the query kwargs to use for the query
-            query_preset (Optional[str]): the query preset to use for the query
             **kwargs: additional kwargs to pass to the handler
 
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        query_kwargs = query_kwargs or self._get_query_kwargs(query_preset)
         response = response or self.query_ec2_metrics(**query_kwargs)
         handler = handler_class(response=response)
         handler(**kwargs)
@@ -319,7 +294,7 @@ class MetricWatcher(CloudWatcher):
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and save the metric data to a JSON file
@@ -333,14 +308,14 @@ class MetricWatcher(CloudWatcher):
             TimedMetricJsonSaver,
             target=file_path,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
     def save_metric_csv(
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and save the metric data to a CSV file
@@ -354,7 +329,7 @@ class MetricWatcher(CloudWatcher):
             TimedMetricCsvSaver,
             target=file_path,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
     def log_metric(
@@ -371,14 +346,13 @@ class MetricWatcher(CloudWatcher):
             TimedMetricLogger,
             target=None,  # TODO: add support for saving to file
             response=response,
-            query_preset=query_preset,
         )
 
     def save_metric_plot(
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and plot the metric data
@@ -393,12 +367,10 @@ class MetricWatcher(CloudWatcher):
             target=file_path,
             metric_unit=self.metric_unit,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
-    def log_metric_summary(
-        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
-    ):
+    def log_metric_summary(self, response: Optional[Dict] = None):
         """
         Query and summarize the metric data to a JSON file
 
@@ -412,14 +384,13 @@ class MetricWatcher(CloudWatcher):
             metric_unit=self.metric_unit,
             summarizer=("Max", max),
             response=response,
-            query_preset=query_preset,
         )
 
     def save_response_json(
         self,
         file_path: str,
         response: Optional[Dict] = None,
-        query_preset: Optional[str] = None,
+        query_kwargs: Optional[Dict] = None,
     ):
         """
         Query and save the response data to a JSON file
@@ -433,12 +404,10 @@ class MetricWatcher(CloudWatcher):
             ResponseSaver,
             target=file_path,
             response=response,
-            query_preset=query_preset,
+            query_kwargs=query_kwargs,
         )
 
-    def log_response(
-        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
-    ):
+    def log_response(self, response: Optional[Dict] = None):
         """
         Query and log the response
 
@@ -450,5 +419,4 @@ class MetricWatcher(CloudWatcher):
             ResponseLogger,
             target=None,
             response=response,
-            query_preset=query_preset,
         )

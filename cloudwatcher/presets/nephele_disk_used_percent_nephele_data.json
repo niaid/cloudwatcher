@@ -7,7 +7,7 @@
         },
         {
             "Name": "path",
-            "Value": "/"
+            "Value": "/nephele_data"
         },
         {
             "Name": "fstype",
@@ -15,7 +15,7 @@
         },
         {
             "Name": "device",
-            "Value": "nvme2n1p1"
+            "Value": "md0"
         }
     ],
     "metric_name": "disk_used_percent",

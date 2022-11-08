@@ -1,7 +1,7 @@
 import os
 import argparse
 import logging
-from typing import List, Dict
+from typing import List, Dict, Union
 from dataclasses import dataclass
 from pydantic import BaseModel
 from pathlib import Path
@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class PresetFilesInventory:
-    def __init__(self, presets_dir: Path) -> None:
+    def __init__(self, presets_dir: Union[Path, str] = None) -> None:
         """
         Initialize the preset inventory
 
@@ -24,11 +24,16 @@ class PresetFilesInventory:
         Raises:
             ValueError: If the presets directory does not exist
         """
-        if not presets_dir.exists():
-            raise ValueError(f"Presets directory {presets_dir} does not exist")
-        self._presets_dir = presets_dir
+        preset_dir = (
+            Path(presets_dir)
+            if presets_dir is not None
+            else Path(__file__).parent / "presets"
+        )
+        if not preset_dir.exists():
+            raise ValueError(f"Presets directory {preset_dir} does not exist")
+        self._presets_dir = preset_dir
         _LOGGER.debug(f"Presets directory: {self.presets_dir}")
-        self._presets = self._get_available_presets(presets_dir)
+        self._presets = self._get_available_presets(self.presets_dir)
 
     def _get_available_presets(self, presets_dir: Path) -> List[str]:
         return {
