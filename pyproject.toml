@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cloudwatcher"
-version = "0.1.1"
+version = "0.1.2"
 description = "A tool for monitoring AWS CloudWatch metrics"
 authors = ["Michal Stolarczyk <stolarczyk.michal93@gmail.com>"]
 
