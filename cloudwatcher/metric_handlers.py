@@ -161,6 +161,7 @@ class TimedMetricPlotter(TimedMetricHandler):
         if self.timed_metric.label.startswith("mem") and metric_unit == "Bytes":
             metric_unit = "GB"
             values = [convert_mem(v, force_suffix=metric_unit)[0] for v in values]
+        plt.figure()
         plt.plot(
             self.timed_metric.timestamps,
             values,

@@ -35,6 +35,7 @@ class MetricWatcher(CloudWatcher):
         metric_name: str,
         metric_id: str,
         metric_unit: Optional[str] = None,
+        metric_description: Optional[str] = None,
         aws_access_key_id: Optional[str] = None,
         aws_secret_access_key: Optional[str] = None,
         aws_session_token: Optional[str] = None,
@@ -162,12 +163,12 @@ class MetricWatcher(CloudWatcher):
         """
         if not self.is_ec2_running(ec2_instance_id):
             _LOGGER.info(
-                f"Instance '{self.dimension_value}' is not running anymore. "
+                f"Instance '{ec2_instance_id}' is not running anymore. "
                 f"Uptime will be estimated based on reported metrics in "
                 f"the last {days} days"
             )
             instances = self.ec2_resource.instances.filter(
-                Filters=[{"Name": "instance-id", "Values": [self.dimension_value]}]
+                Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
             )
             # get the latest reported metric
             metrics_response = self.query_ec2_metrics(
@@ -187,14 +188,14 @@ class MetricWatcher(CloudWatcher):
                     earliest_metric_report_time - latest_metric_report_time
                 ).total_seconds()
             except IndexError:
-                _LOGGER.warning(f"No metric data found for EC2: {self.dimension_value}")
+                _LOGGER.warning(f"No metric data found for EC2: {ec2_instance_id}")
                 return
         instances = self.ec2_resource.instances.filter(
-            Filters=[{"Name": "instance-id", "Values": [self.dimension_value]}]
+            Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
         )
         for instance in instances:
             _LOGGER.info(
-                f"Instance '{self.dimension_value}' is still running. "
+                f"Instance '{ec2_instance_id}' is still running. "
                 f"Launch time: {instance.launch_time}"
             )
             return (datetime.now(pytz.utc) - instance.launch_time).total_seconds()
