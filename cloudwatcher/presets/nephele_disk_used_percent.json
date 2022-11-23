@@ -3,7 +3,7 @@
     "dimensions_list": [
         {
             "Name": "InstanceId",
-            "Value": "i-04127265744c54ce6"
+            "Value": ""
         },
         {
             "Name": "path",
@@ -19,6 +19,7 @@
         }
     ],
     "metric_name": "disk_used_percent",
-    "metric_id": "nephele",
-    "metric_unit": "Percent"
+    "metric_id": "root",
+    "metric_unit": "Percent",
+    "metric_description": "Percentage of disk used over time. Path: <code>/</code> (root)"
 }

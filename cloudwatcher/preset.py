@@ -140,6 +140,7 @@ class MetricWatcherSetup:
     aws_secret_access_key: str = None
     aws_session_token: str = None
     aws_region_name: str = None
+    metric_description: str = None
 
     def __post_init__(self):
         self.aws_access_key_id = self.aws_access_key_id or os.environ.get(

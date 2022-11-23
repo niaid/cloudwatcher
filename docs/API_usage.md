@@ -20,14 +20,12 @@ Alternatively, you can pass the values as arguments to the `MetricWatcher` const
 ```python
 from cloudwatcher.metricwatcher import MetricWatcher
 from cloudwatcher.preset import Dimension
-from cloudwatcher._version import __version__
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
-print(f"CloudWatcher version: {__version__}")
-
-instance_id = "i-00beb88d31184ae62"
+instance_id = os.environ.get("INSTANCE_ID")
 mw = MetricWatcher(
     namespace="NepheleNamespaceEC2",
     metric_name="mem_used",
@@ -36,9 +34,6 @@ mw = MetricWatcher(
     dimensions_list=[Dimension(Name="InstanceId", Value=instance_id)],
 )
 ```
-
-    CloudWatcher version: 0.1.0
-
 
 ### `MetricWatcher` presets
 
@@ -151,12 +146,12 @@ response["ResponseMetadata"]
 
 
 
-    {'RequestId': 'd64c4f8e-8544-48ee-894e-e5acf2a66464',
+    {'RequestId': 'bb3880e0-17e6-45d2-a007-a7b797c6d52f',
      'HTTPStatusCode': 200,
-     'HTTPHeaders': {'x-amzn-requestid': 'd64c4f8e-8544-48ee-894e-e5acf2a66464',
+     'HTTPHeaders': {'x-amzn-requestid': 'bb3880e0-17e6-45d2-a007-a7b797c6d52f',
       'content-type': 'text/xml',
       'content-length': '33663',
-      'date': 'Tue, 08 Nov 2022 16:09:50 GMT'},
+      'date': 'Tue, 08 Nov 2022 16:46:07 GMT'},
      'RetryAttempts': 0}
 
 

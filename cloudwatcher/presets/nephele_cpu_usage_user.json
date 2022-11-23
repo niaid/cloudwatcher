@@ -3,7 +3,7 @@
     "dimensions_list": [
         {
             "Name": "InstanceId",
-            "Value": "i-0c4d9523c99fbc1da"
+            "Value": ""
         },
         {
             "Name": "cpu",
@@ -12,5 +12,6 @@
     ],
     "metric_name": "cpu_usage_user",
     "metric_id": "nephele",
-    "metric_unit": "Percent"
+    "metric_unit": "Percent",
+    "metric_description": "Precentage of total CPU used over time"
 }
