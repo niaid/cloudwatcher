@@ -2,6 +2,22 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 
+## [0.1.2] - 2022-11-23
+
+### Fixed
+
+- `AttributeError: module 'datetime' has no attribute 'now'`
+
+## [0.1.1] - 2022-11-23
+
+### Added
+
+- `metric_description` property to `MetricWatcher` and `MetricWasterSetup` classes
+
+### Fixed
+
+- `MetricWatcher.get_ec2_uptime` method
+
 ## [0.1.0] - 2022-11-08
 
 ### Added

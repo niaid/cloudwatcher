@@ -198,7 +198,9 @@ class MetricWatcher(CloudWatcher):
                 f"Instance '{ec2_instance_id}' is still running. "
                 f"Launch time: {instance.launch_time}"
             )
-            return (datetime.now(pytz.utc) - instance.launch_time).total_seconds()
+            return (
+                datetime.datetime.now(pytz.utc) - instance.launch_time
+            ).total_seconds()
 
     def is_ec2_running(self, ec2_instance_id: str) -> bool:
         """
