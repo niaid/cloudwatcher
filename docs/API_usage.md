@@ -37,7 +37,7 @@ mw = MetricWatcher(
 
 ### `MetricWatcher` presets
 
-As you can see there are multiple arguments that can be passed to the `MetricWatcher` constructor. In order to improve the UX when using `MetricWatcher`. The `cloudwatcher` package provides a few presets that can be used to query the data reported by `CloudWatchAgent` within certain systems. Additionally, custom presets can be defined by the user and used in the same way.
+As you can see there are multiple arguments that can be passed to `MetricWatcher` constructor. In order to improve the UX when using `MetricWatcher` `cloudwatcher` package provides a few presets that can be used to query the data reported by `CloudWatchAgent` within certain systems. Additionally, custom presets can be defined by the user and used in the same way.
 
 Presets are JSON-formatted files that provide parameter bundles for `MetricWatcher` initialization.
 
@@ -53,7 +53,6 @@ from rich.console import Console
 
 pfi = PresetFilesInventory()
 Console().print(pfi.presets_table)
-
 ```
 
 
@@ -146,12 +145,12 @@ response["ResponseMetadata"]
 
 
 
-    {'RequestId': 'bb3880e0-17e6-45d2-a007-a7b797c6d52f',
+    {'RequestId': '52074cc6-470c-470a-a52d-5cab88fbdda0',
      'HTTPStatusCode': 200,
-     'HTTPHeaders': {'x-amzn-requestid': 'bb3880e0-17e6-45d2-a007-a7b797c6d52f',
+     'HTTPHeaders': {'x-amzn-requestid': '52074cc6-470c-470a-a52d-5cab88fbdda0',
       'content-type': 'text/xml',
-      'content-length': '33663',
-      'date': 'Tue, 08 Nov 2022 16:46:07 GMT'},
+      'content-length': '1596',
+      'date': 'Wed, 25 Jan 2023 20:53:18 GMT'},
      'RetryAttempts': 0}
 
 
@@ -174,15 +173,15 @@ timed_metric.values[1:10]
 
 
 
-    [1173819392.0,
-     1172045824.0,
-     1171132416.0,
-     1170399232.0,
-     1170014208.0,
-     1168662528.0,
-     1168093184.0,
-     2711384064.0,
-     2704683008.0]
+    [487075840.0,
+     3613966336.0,
+     5853335552.0,
+     5131206656.0,
+     5107838976.0,
+     3095851008.0,
+     2578575360.0,
+     2525331456.0,
+     2160402432.0]
 
 
 
@@ -190,4 +189,88 @@ timed_metric.values[1:10]
 
 `LogWatcher` can be used to interact with AWS CloudWatch logs.
 
-_Coming soon..._
+### `LogWatcher` initialization
+
+As described in the Login credentials section, the AWS credentials can be sourced from environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`.
+Alternatively, you can pass the values as arguments to the `LogWatcher` constructor.
+
+
+```python
+from cloudwatcher.logwatcher import LogWatcher
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+lw = LogWatcher(
+    log_group_name=os.environ.get("LOG_GROUP_NAME"),
+    log_stream_name=os.environ.get("LOG_STREAM_NAME"),
+)
+```
+
+Importantly, you can also provide the start token for the log, which will be used to determine the starting point of the log query.
+
+### Log streaming
+
+`LogWatcher` provides a convenient interface to stream the logs from AWS CloudWatch. There are 2 relevant parameters in `stream_cloudwatch_logs` method:
+
+- `events_limit` - the maximum number of events to be returned. If the value is set to `None`, 1000 events are returned
+- `max_retry_attempts` - the maximum number of retry attempts to be made if the query results with an empty log
+
+The `stream_cloudwatch_logs` method returns a generator that yields the log events, for example in a `for` loop. In the example below , we use `next` to get the first event from the generator.
+
+
+```python
+streamer = lw.stream_cloudwatch_logs(events_limit=2, max_retry_attempts=2)
+next(streamer)
+```
+
+
+
+
+    ([{'timestamp': 1673452248277,
+       'message': '[2023-01-11 10:50:47,354 - INFO] Nephele, developed by BCBB/OCICB/NIAID/NIH version: 2.21.8, tag: Nephele_2022_December_22, commit: caa66b1',
+       'ingestionTime': 1673452249530},
+      {'timestamp': 1673452248277,
+       'message': '[2023-01-11 10:50:47,354 - INFO] Python version: 3.8.13',
+       'ingestionTime': 1673452249530}],
+     'f/37319232190733584015059832158212944362474954267242725377/s')
+
+
+
+As you can see, the log events are returned as a `Tuple[List[Dict], str]`, where the first element is a list of log events and the second element is the next token. The next token can be used to get the next batch of log events. The token can be provided to the `LogWatcher` constructor to start streaming from the last event.
+
+### Retrieving all logs
+
+Alternatively, the `return_formatted_logs` method can be used to retrieve all the logs. This method returns a `Tuple[str,str]`, where the first element is the formatted log and the second element is the next token. 
+
+
+```python
+formatted_logs = lw.return_formatted_logs()
+
+print(f"Token: {formatted_logs[1]}")
+print(f"Log first 1000 characters: \n{formatted_logs[0][0:1000]}")
+
+```
+
+    Token: f/37319244494578777554547009354944727373821660766530404351/s
+    Log first 1000 characters: 
+    [11-01-2023 10:50:48 UTC] Nephele, developed by BCBB/OCICB/NIAID/NIH version: 2.21.8, tag: Nephele_2022_December_22, commit: caa66b1
+    [11-01-2023 10:50:48 UTC] Python version: 3.8.13
+    [11-01-2023 10:50:48 UTC] Current time: 2023-01-11 10:50
+    [11-01-2023 10:50:48 UTC] Pipeline name: DADA2
+    [11-01-2023 10:50:48 UTC] Job Description: test
+    [11-01-2023 10:50:48 UTC] Job parameters
+    [11-01-2023 10:50:48 UTC] job_id: d5b6be48d21e
+    [11-01-2023 10:50:48 UTC] inputs_dir: None
+    [11-01-2023 10:50:48 UTC] outputs_dir: None
+    [11-01-2023 10:50:48 UTC] map_file: <_io.TextIOWrapper name='/nephele_data/inputs/N2_16S_example_mapping_file_min_corrected.txt' mode='r' encoding='UTF-8'>
+    [11-01-2023 10:50:48 UTC] data_type: PE
+    [11-01-2023 10:50:48 UTC] wurlitzer_stdout: file
+    [11-01-2023 10:50:48 UTC] wurlitzer_stderr: file
+    [11-01-2023 10:50:48 UTC] ion_torrent: False
+    [11-01-2023 10:50:48 UTC] trimleft_fwd: 0
+    [11-01-2023 10:50:48 UTC] trimleft_rev: 0
+    [11-01-2023 10:50:48 UTC] maxee: 5
+    [11-01-2023 10:50:48 UTC] truncle
+
