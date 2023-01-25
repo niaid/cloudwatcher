@@ -100,6 +100,8 @@ class MetricWatcher(CloudWatcher):
             Dict: the response from the query, check the structure of the
             response [here](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data) # noqa: E501
         """
+        if self.namespace is None:
+            raise ValueError(f"Invalid metric namespace to watch: {self.namespace}")
         # Create CloudWatch client
         now = datetime.datetime.now(pytz.utc)
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
@@ -145,6 +147,7 @@ class MetricWatcher(CloudWatcher):
         days: int,
         hours: int,
         minutes: int,
+        period: int = 60,
     ) -> int:
         """
         Get the runtime of an EC2 instance
@@ -176,8 +179,8 @@ class MetricWatcher(CloudWatcher):
                 hours=hours,
                 minutes=minutes,
                 stat="Maximum",  # any stat works
-                period=60,  # most precise period that AWS stores for instances where
-                # start time is between 3 hours and 15 days ago
+                period=period,  # most precise period that AWS stores for instances where
+                # start time is between 3 hours and 15 days ago is 60 seconds
             )
             # extract the latest metric report time
             timed_metrics = self.timed_metric_factory(metrics_response)

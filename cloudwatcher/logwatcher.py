@@ -1,5 +1,3 @@
-# TODO: query the AWS multiple times if query json provided
-
 import logging
 import re
 from datetime import datetime

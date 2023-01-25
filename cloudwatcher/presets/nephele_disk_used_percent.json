@@ -15,7 +15,7 @@
         },
         {
             "Name": "device",
-            "Value": "nvme2n1p1"
+            "Value": "nvme0n1p1"
         }
     ],
     "metric_name": "disk_used_percent",

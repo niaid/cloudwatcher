@@ -18,7 +18,7 @@
             "Value": "md0"
         }
     ],
-    "metric_name": "disk_used_percent",
+    "metric_name": "disk_used_percent_nephele_data",
     "metric_id": "nephele_data",
     "metric_unit": "Percent",
     "metric_description": "Percentage of disk used over time. Path: <code>/nephele_data</code>"

@@ -4,7 +4,6 @@ import sys
 
 from rich.logging import RichHandler
 from rich.console import Console
-from pathlib import Path
 
 from cloudwatcher.const import LOG_CMD, METRIC_CMD
 from cloudwatcher.logwatcher import LogWatcher
