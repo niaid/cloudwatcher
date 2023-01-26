@@ -23,3 +23,11 @@
 ## Metric handlers
 
 ::: cloudwatcher.metric_handlers
+
+## `LogEvent`
+
+::: cloudwatcher.logwatcher.LogEvent
+
+## `LogEventsList`
+
+::: cloudwatcher.logwatcher.LogEventsList
