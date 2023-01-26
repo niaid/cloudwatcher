@@ -37,36 +37,27 @@ class LogEvent(BaseModel):
             timestamp=datetime.fromtimestamp(response["timestamp"] / 1000),
         )
 
-    @staticmethod
-    def _datestr(timestamp: datetime, fmt_str: str = "%d-%m-%Y %H:%M:%S") -> str:
-        """
-        Convert milliseconds after Jan 1, 1970 UTC to a string date repr
-
-        Args:
-            timestamp (int): milliseconds after Jan 1, 1970 UTC
-            fmt_str (str): format string for the date
-        Returns:
-            str: date string
-        """
-        return timestamp.strftime(fmt_str)
-
-    def format_message(self, regex: str = None, fmt_str: str = None) -> "LogEvent":
+    def format_message(
+        self, regex: str = None, fmt_str_log: str = None, fmt_str_datetime: str = None
+    ) -> "LogEvent":
         """
         Format the message by removing the embedded timestamp and adding a UTC timestamp
 
         Args:
             regex (str): regex to match the timestamp in the message
-            fmt_str (str): format string for the message
+            fmt_str_log (str): format string for the log message
+            fmt_str_datetime (str): format string for the datetime
 
         Returns:
             str: formatted message
         """
         regex = regex or r"^\[\d+-\d+-\d+\s\d+:\d+:\d+(.|,)\d+(\]|\s-\s\w+\])"
-        fmt_str = fmt_str or "[{time} UTC] {message}"
+        fmt_str_log = fmt_str_log or "[{time} UTC] {message}"
+        fmt_str_datetime = fmt_str_datetime or "%d-%m-%Y %H:%M:%S"
         m = re.search(regex, self.message)
         msg = self.message[m.end() :] if m else self.message
-        formatted_message = fmt_str.format(
-            time=self._datestr(self.timestamp), message=msg.strip()
+        formatted_message = fmt_str_log.format(
+            time=self.timestamp.strftime(fmt_str_datetime), message=msg.strip()
         )
         return LogEvent(message=formatted_message, timestamp=self.timestamp)
 
@@ -112,19 +103,25 @@ class LogEventsList(BaseModel):
         )
 
     def format_messages(
-        self, regex: str = None, fmt_str: str = None
+        self, regex: str = None, fmt_str_datetime: str = None, fmt_str_log: str = None
     ) -> "LogEventsList":
         """
         Format the messages by removing the embedded timestamp and adding a UTC timestamp
 
         Args:
             regex (str): regex to match the timestamp in the message
-            fmt_str (str): format string for the message
+            fmt_str_log (str): format string for the log message
+            fmt_str_datetime (str): format string for the datetime
 
         Returns:
             LogEventsList: The LogEventsList object, with formatted messages
         """
-        self.events = [event.format_message() for event in self.events]
+        self.events = [
+            event.format_message(
+                regex=regex, fmt_str_datetime=fmt_str_datetime, fmt_str_log=fmt_str_log
+            )
+            for event in self.events
+        ]
         return self
 
     def __bool__(self) -> bool:

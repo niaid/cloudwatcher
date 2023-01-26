@@ -308,7 +308,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the metric data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricJsonSaver,
@@ -329,7 +329,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the metric data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricCsvSaver,
@@ -338,15 +338,12 @@ class MetricWatcher(CloudWatcher):
             query_kwargs=query_kwargs,
         )
 
-    def log_metric(
-        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
-    ):
+    def log_metric(self, response: Optional[Dict] = None):
         """
         Query and log the metric data
 
         Args:
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricLogger,
@@ -366,7 +363,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the metric data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricPlotter,
@@ -382,7 +379,6 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricSummarizer,
@@ -404,7 +400,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the response data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_response_handler(
             ResponseSaver,
@@ -419,7 +415,6 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_response_handler(
             ResponseLogger,

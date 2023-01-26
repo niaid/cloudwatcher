@@ -195,7 +195,7 @@ class MetricWatcherSetup:
         Upsert the dimensions list with the dimensions specified in the environment
 
         Args:
-            dimensions_spec (List[str]): A list of strings in the format of "Name:Value"
+            dimensions_specs (List[str]): A list of strings in the format of "Name:Value"
         """
         if dimensions_specs is None:
             return
