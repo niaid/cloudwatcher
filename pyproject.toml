@@ -20,8 +20,8 @@ ipython = "7.32.0"
 ipykernel = "^6.13.0"
 nbconvert = "^6.5.0"
 black = {extras = ["jupyter"], version = "^22.3.0"}
-mkdocstrings = {extras = ["python"], version = "^0.19.0"}
-mkdocs-material = "^8.3.4"
+mkdocstrings = {extras = ["python"], version = "^0.20.0"}
+mkdocs-material = "^9.0.0"
 notebook = "^6.5.2"
 python-dotenv = "^0.21.0"
 
