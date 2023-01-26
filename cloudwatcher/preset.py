@@ -1,14 +1,13 @@
-import os
 import argparse
-import logging
-from typing import List, Dict, Union
-from dataclasses import dataclass
-from pydantic import BaseModel
-from pathlib import Path
-from rich.table import Table
-
-from typing import List
 import json
+import logging
+import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Union
+
+from pydantic import BaseModel
+from rich.table import Table
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -195,7 +194,7 @@ class MetricWatcherSetup:
         Upsert the dimensions list with the dimensions specified in the environment
 
         Args:
-            dimensions_specs (List[str]): A list of strings in the format of "Name:Value"
+            dimensions_specs (List[str]): A list of strings. Format: "Name:Value"
         """
         if dimensions_specs is None:
             return

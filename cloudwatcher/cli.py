@@ -2,15 +2,15 @@ import logging
 import os
 import sys
 
-from rich.logging import RichHandler
 from rich.console import Console
+from rich.logging import RichHandler
 
 from cloudwatcher.const import LOG_CMD, METRIC_CMD
 from cloudwatcher.logwatcher import LogWatcher
 
 from .argparser import build_argparser
 from .metricwatcher import MetricWatcher
-from .preset import get_metric_watcher_setup, PresetFilesInventory
+from .preset import PresetFilesInventory, get_metric_watcher_setup
 
 
 def main():

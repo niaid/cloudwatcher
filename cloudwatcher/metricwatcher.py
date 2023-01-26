@@ -1,12 +1,11 @@
 import datetime
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import boto3
 import pytz
 
 from cloudwatcher.cloudwatcher import CloudWatcher
-from cloudwatcher.const import DEFAULT_QUERY_KWARGS
 from cloudwatcher.metric_handlers import (
     ResponseHandler,
     ResponseLogger,
@@ -106,7 +105,14 @@ class MetricWatcher(CloudWatcher):
         now = datetime.datetime.now(pytz.utc)
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
-        _time = lambda x: x.strftime("%Y-%m-%d %H:%M:%S")
+        def _time(x: datetime.datetime):
+            """
+            Format a datetime object for logging
+
+            Args:
+                x (datetime.datetime): the datetime object to format
+            """
+            return x.strftime("%Y-%m-%d %H:%M:%S")
 
         _LOGGER.info(
             f"Querying '{self.metric_name}' for dimensions {self.dimensions_list} "
@@ -179,8 +185,8 @@ class MetricWatcher(CloudWatcher):
                 hours=hours,
                 minutes=minutes,
                 stat="Maximum",  # any stat works
-                period=period,  # most precise period that AWS stores for instances where
-                # start time is between 3 hours and 15 days ago is 60 seconds
+                period=period,  # most precise period that AWS stores for instances
+                # where start time is between 3 hours and 15 days ago is 60 seconds
             )
             # extract the latest metric report time
             timed_metrics = self.timed_metric_factory(metrics_response)

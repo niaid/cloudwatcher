@@ -21,10 +21,10 @@ class CloudWatcher:
 
         Args:
             service_name (str): The name of the service to use
-            aws_region_name (Optional[str]): The AWS region name. Defaults to 'us-east-1'
-            aws_access_key_id (Optional[str]): The AWS access key ID. Defaults to None
-            aws_secret_access_key (Optional[str]): The AWS secret access key. Defaults to None
-            aws_session_token (Optional[str]): The AWS session token. Defaults to None
+            aws_region_name (Optional[str]): The AWS region name.
+            aws_access_key_id (Optional[str]): The AWS access key ID.
+            aws_secret_access_key (Optional[str]): The AWS secret access key.
+            aws_session_token (Optional[str]): The AWS session token.
         """
         self.aws_region_name = aws_region_name or "us-east-1"
         self.service_name = service_name

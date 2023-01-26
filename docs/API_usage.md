@@ -9,7 +9,7 @@ Both of these classes inherit from the `CloudWatcher` class.
 
 ## `MetricWatcher`: convenient interface to AWS CloudWatch metrics
 
-`MetricWatcher` can be used to interact with AWS CloudWatch metrics. 
+`MetricWatcher` can be used to interact with AWS CloudWatch metrics.
 
 ### `MetricWatcher` initialization
 
@@ -119,9 +119,9 @@ mw.save_response_json(file_path=f"/tmp/{instance_id}_response.json", query_kwarg
 ```
 
 
-    
+
 ![png](API_usage_files/API_usage_10_0.png)
-    
+
 
 
 ### Manual EC2 querying
@@ -236,7 +236,7 @@ The log events are returned as a custom `LogEventsList` object, which conists of
 
 ### Retrieving all logs
 
-Alternatively, the `return_formatted_logs` method can be used to retrieve all the logs. This method returns a `Tuple[str,str]`, where the first element is the formatted log and the second element is the next token. 
+Alternatively, the `return_formatted_logs` method can be used to retrieve all the logs. This method returns a `Tuple[str,str]`, where the first element is the formatted log and the second element is the next token.
 
 
 ```python
@@ -287,8 +287,8 @@ print(formatted_logs)
     [11-01-2023 10:51:39 UTC] Matrix products: default
     [11-01-2023 10:51:39 UTC] BLAS/LAPACK: /usr/local/bin/miniconda3/envs/qiime2-2022.2/lib/libopenblasp-r0.3.20.so
     [11-01-2023 10:51:39 UTC] locale:
-     [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
-     [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+     [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8
+     [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8
      [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C
     [11-01-2023 10:51:39 UTC] [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C
     [11-01-2023 10:51:39 UTC] attached base packages:
@@ -297,10 +297,10 @@ print(formatted_logs)
     [11-01-2023 10:51:39 UTC] other attached packages:
     [11-01-2023 10:51:39 UTC] [1] dada2nephele_0.1.2
     [11-01-2023 10:51:39 UTC] loaded via a namespace (and not attached):
-     [1] Rcpp_1.0.8.3                lattice_0.20-45            
-     [3] png_0.1-7                   Rsamtools_2.10.0           
-     [5] Biostrings_2.62.0           foreach_1.5.2              
-     [7] digest_0.6.29               utf8_1.2.2                 
+     [1] Rcpp_1.0.8.3                lattice_0.20-45
+     [3] png_0.1-7                   Rsamtools_2.10.0
+     [5] Biostrings_2.62.0           foreach_1.5.2
+     [7] digest_0.6.29               utf8_1.2.2
      [9] R6_2.5.1                    GenomeInfoDb_1.30.0
     [11-01-2023 10:51:39 UTC] [11] plyr_1.8.7                  ShortRead_1.52.0
     [11-01-2023 10:51:39 UTC] [13] stats4_4.1.3                RSQLite_2.2.8
@@ -342,21 +342,21 @@ print(formatted_logs)
     [11-01-2023 10:51:39 UTC] /mnt/EFS/dbs/dada2_silva_v138.1/silva_species_assignment_v138.1.fa.gz
     [11-01-2023 10:51:39 UTC] Reading in map file  /nephele_data/outputs/N2_16S_example_mapping_file_min_corrected.txt.no_gz
     [11-01-2023 10:51:39 UTC] Printing dada algorithm options.
-                  BAND_SIZE       DETECT_SINGLETONS             GAP_PENALTY 
-                         16                   FALSE                      -8 
-                    GAPLESS                  GREEDY HOMOPOLYMER_GAP_PENALTY 
-                       TRUE                    TRUE                    NULL 
-               KDIST_CUTOFF                   MATCH               MAX_CLUST 
-                       0.42                       5                       0 
-                MAX_CONSIST           MIN_ABUNDANCE                MIN_FOLD 
-                         10                       1                       1 
-                MIN_HAMMING                MISMATCH                 OMEGA_A 
-                          1                      -4                   1e-40 
-                    OMEGA_C                 OMEGA_P        PSEUDO_ABUNDANCE 
-                      1e-40                   1e-04                     Inf 
-          PSEUDO_PREVALENCE                     SSE               USE_KMERS 
-                          2                       2                    TRUE 
-                  USE_QUALS    VECTORIZED_ALIGNMENT 
+                  BAND_SIZE       DETECT_SINGLETONS             GAP_PENALTY
+                         16                   FALSE                      -8
+                    GAPLESS                  GREEDY HOMOPOLYMER_GAP_PENALTY
+                       TRUE                    TRUE                    NULL
+               KDIST_CUTOFF                   MATCH               MAX_CLUST
+                       0.42                       5                       0
+                MAX_CONSIST           MIN_ABUNDANCE                MIN_FOLD
+                         10                       1                       1
+                MIN_HAMMING                MISMATCH                 OMEGA_A
+                          1                      -4                   1e-40
+                    OMEGA_C                 OMEGA_P        PSEUDO_ABUNDANCE
+                      1e-40                   1e-04                     Inf
+          PSEUDO_PREVALENCE                     SSE               USE_KMERS
+                          2                       2                    TRUE
+                  USE_QUALS    VECTORIZED_ALIGNMENT
                        TRUE                    TRUE
     [11-01-2023 10:51:39 UTC] Paired End
     [11-01-2023 10:51:44 UTC] out <- filterAndTrim(fwd=file.path(datadir,readslist$R1), filt=file.path(filt.dir,trimlist$R1),rev=file.path(datadir,readslist$R2), filt.rev=file.path(filt.dir,trimlist$R2),  maxEE=5L, trimLeft=list(0L, 0L), truncQ=4, truncLen = list(0L, 0L), rm.phix=TRUE, compress=TRUE, verbose=TRUE, multithread=FALSE, minLen=50, OMP = FALSE)
@@ -425,55 +425,55 @@ print(formatted_logs)
     [11-01-2023 10:55:32 UTC] other attached packages:
     [11-01-2023 10:55:32 UTC] [1] datavis16s_0.1.3   dada2nephele_0.1.2
     [11-01-2023 10:55:32 UTC] loaded via a namespace (and not attached):
-      [1] nlme_3.1-157                bitops_1.0-7               
-      [3] matrixStats_0.62.0          bit64_4.0.5                
-      [5] RColorBrewer_1.1-3          httr_1.4.3                 
-      [7] GenomeInfoDb_1.30.0         utf8_1.2.2                 
-      [9] R6_2.5.1                    vegan_2.6-2                
-     [11] mgcv_1.8-40                 DBI_1.1.2                  
-     [13] BiocGenerics_0.40.0         lazyeval_0.2.2             
-     [15] colorspace_2.0-3            permute_0.9-7              
-     [17] rhdf5filters_1.6.0          tidyselect_1.1.2           
-     [19] bit_4.0.4                   compiler_4.1.3             
-     [21] cli_3.3.0                   Biobase_2.54.0             
-     [23] DelayedArray_0.20.0         plotly_4.10.0              
-     [25] labeling_0.4.2              scales_1.2.0               
-     [27] stringr_1.4.0               digest_0.6.29              
-     [29] Rsamtools_2.10.0            dada2_1.22.0               
-     [31] XVector_0.34.0              jpeg_0.1-9                 
-     [33] pkgconfig_2.0.3             htmltools_0.5.2            
-     [35] MatrixGenerics_1.6.0        fastmap_1.1.0              
-     [37] htmlwidgets_1.5.4           rlang_1.0.2                
-     [39] RSQLite_2.2.8               farver_2.1.0               
-     [41] generics_0.1.2              hwriter_1.3.2.1            
-     [43] jsonlite_1.8.0              BiocParallel_1.28.3        
-     [45] dplyr_1.0.9                 RCurl_1.98-1.6             
-     [47] magrittr_2.0.3              GenomeInfoDbData_1.2.7     
-     [49] biomformat_1.22.0           Matrix_1.4-1               
-     [51] Rcpp_1.0.8.3                munsell_0.5.0              
-     [53] S4Vectors_0.32.3            Rhdf5lib_1.16.0            
-     [55] fansi_1.0.3                 DECIPHER_2.22.0            
-     [57] ape_5.6-2                   lifecycle_1.0.1            
-     [59] stringi_1.7.6               ampvis2_2.7.4              
+      [1] nlme_3.1-157                bitops_1.0-7
+      [3] matrixStats_0.62.0          bit64_4.0.5
+      [5] RColorBrewer_1.1-3          httr_1.4.3
+      [7] GenomeInfoDb_1.30.0         utf8_1.2.2
+      [9] R6_2.5.1                    vegan_2.6-2
+     [11] mgcv_1.8-40                 DBI_1.1.2
+     [13] BiocGenerics_0.40.0         lazyeval_0.2.2
+     [15] colorspace_2.0-3            permute_0.9-7
+     [17] rhdf5filters_1.6.0          tidyselect_1.1.2
+     [19] bit_4.0.4                   compiler_4.1.3
+     [21] cli_3.3.0                   Biobase_2.54.0
+     [23] DelayedArray_0.20.0         plotly_4.10.0
+     [25] labeling_0.4.2              scales_1.2.0
+     [27] stringr_1.4.0               digest_0.6.29
+     [29] Rsamtools_2.10.0            dada2_1.22.0
+     [31] XVector_0.34.0              jpeg_0.1-9
+     [33] pkgconfig_2.0.3             htmltools_0.5.2
+     [35] MatrixGenerics_1.6.0        fastmap_1.1.0
+     [37] htmlwidgets_1.5.4           rlang_1.0.2
+     [39] RSQLite_2.2.8               farver_2.1.0
+     [41] generics_0.1.2              hwriter_1.3.2.1
+     [43] jsonlite_1.8.0              BiocParallel_1.28.3
+     [45] dplyr_1.0.9                 RCurl_1.98-1.6
+     [47] magrittr_2.0.3              GenomeInfoDbData_1.2.7
+     [49] biomformat_1.22.0           Matrix_1.4-1
+     [51] Rcpp_1.0.8.3                munsell_0.5.0
+     [53] S4Vectors_0.32.3            Rhdf5lib_1.16.0
+     [55] fansi_1.0.3                 DECIPHER_2.22.0
+     [57] ape_5.6-2                   lifecycle_1.0.1
+     [59] stringi_1.7.6               ampvis2_2.7.4
      [61] MASS_7.3-57                 SummarizedExperiment_1.24.0
-     [63] zlibbioc_1.40.0             rhdf5_2.38.0               
-     [65] plyr_1.8.7                  grid_4.1.3                 
-     [67] blob_1.2.3                  parallel_4.1.3             
-     [69] ggrepel_0.9.1               crayon_1.5.1               
-     [71] lattice_0.20-45             splines_4.1.3              
-     [73] Biostrings_2.62.0           pillar_1.7.0               
-     [75] GenomicRanges_1.46.1        reshape2_1.4.4             
-     [77] codetools_0.2-18            stats4_4.1.3               
-     [79] glue_1.6.2                  ShortRead_1.52.0           
-     [81] latticeExtra_0.6-29         data.table_1.14.2          
-     [83] RcppParallel_5.1.5          png_0.1-7                  
-     [85] vctrs_0.4.1                 foreach_1.5.2              
-     [87] gtable_0.3.0                purrr_0.3.4                
-     [89] tidyr_1.2.0                 morpheus_0.1.1.1           
-     [91] cachem_1.0.6                ggplot2_3.3.6              
-     [93] viridisLite_0.4.0           tibble_3.1.7               
-     [95] iterators_1.0.14            GenomicAlignments_1.30.0   
-     [97] memoise_2.0.1               IRanges_2.28.0             
+     [63] zlibbioc_1.40.0             rhdf5_2.38.0
+     [65] plyr_1.8.7                  grid_4.1.3
+     [67] blob_1.2.3                  parallel_4.1.3
+     [69] ggrepel_0.9.1               crayon_1.5.1
+     [71] lattice_0.20-45             splines_4.1.3
+     [73] Biostrings_2.62.0           pillar_1.7.0
+     [75] GenomicRanges_1.46.1        reshape2_1.4.4
+     [77] codetools_0.2-18            stats4_4.1.3
+     [79] glue_1.6.2                  ShortRead_1.52.0
+     [81] latticeExtra_0.6-29         data.table_1.14.2
+     [83] RcppParallel_5.1.5          png_0.1-7
+     [85] vctrs_0.4.1                 foreach_1.5.2
+     [87] gtable_0.3.0                purrr_0.3.4
+     [89] tidyr_1.2.0                 morpheus_0.1.1.1
+     [91] cachem_1.0.6                ggplot2_3.3.6
+     [93] viridisLite_0.4.0           tibble_3.1.7
+     [95] iterators_1.0.14            GenomicAlignments_1.30.0
+     [97] memoise_2.0.1               IRanges_2.28.0
      [99] cluster_2.1.3               ellipsis_0.3.2
     [11-01-2023 10:55:32 UTC] "allgraphs"(datafile="/nephele_data/outputs/OTU_table.txt", outdir="/nephele_data/outputs//graphs", mapfile="/nephele_data/outputs/N2_16S_example_mapping_file_min_corrected.txt.no_gz",tsvfile=TRUE, ...)
     [11-01-2023 10:55:32 UTC] Reading in map file /nephele_data/outputs/N2_16S_example_mapping_file_min_corrected.txt.no_gz
@@ -485,16 +485,16 @@ print(formatted_logs)
     [11-01-2023 10:55:32 UTC] amp <- amp_load(otu, map)
     [11-01-2023 10:55:32 UTC] ampvis2 object with 3 elements.
     [11-01-2023 10:55:32 UTC] Summary of OTU table:
-         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads 
-               2          214        24224        11885        12339        12112 
-       Avg#Reads 
+         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads
+               2          214        24224        11885        12339        12112
+       Avg#Reads
            12112
     [11-01-2023 10:55:32 UTC] Assigned taxonomy:
-        Kingdom      Phylum       Class       Order      Family       Genus 
-      214(100%) 212(99.07%)  211(98.6%) 210(98.13%) 193(90.19%) 140(65.42%) 
-        Species 
+        Kingdom      Phylum       Class       Order      Family       Genus
+      214(100%) 212(99.07%)  211(98.6%) 210(98.13%) 193(90.19%) 140(65.42%)
+        Species
           0(0%)
-    [11-01-2023 10:55:33 UTC] Metadata variables: 7 
+    [11-01-2023 10:55:33 UTC] Metadata variables: 7
      SampleID, ForwardFastqFile, ReverseFastqFile, TreatmentGroup, Animal, Day, Description
     [11-01-2023 10:55:33 UTC] Rarefaction curve
     [11-01-2023 10:55:34 UTC] rarefactioncurve(outdir = outdir, amp = amp, colors = allcols)
@@ -514,19 +514,18 @@ print(formatted_logs)
     [11-01-2023 10:55:37 UTC] amp <- amp_subset_samples(amp, minreads = 10000, ...)
     [11-01-2023 10:55:37 UTC] ampvis2 object with 3 elements.
     [11-01-2023 10:55:37 UTC] Summary of OTU table:
-         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads 
-               2          214        24224        11885        12339        12112 
-       Avg#Reads 
+         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads
+               2          214        24224        11885        12339        12112
+       Avg#Reads
            12112
     [11-01-2023 10:55:37 UTC] Assigned taxonomy:
-        Kingdom      Phylum       Class       Order      Family       Genus 
-      214(100%) 212(99.07%)  211(98.6%) 210(98.13%) 193(90.19%) 140(65.42%) 
-        Species 
+        Kingdom      Phylum       Class       Order      Family       Genus
+      214(100%) 212(99.07%)  211(98.6%) 210(98.13%) 193(90.19%) 140(65.42%)
+        Species
           0(0%)
-    [11-01-2023 10:55:37 UTC] Metadata variables: 7 
+    [11-01-2023 10:55:37 UTC] Metadata variables: 7
      SampleID, ForwardFastqFile, ReverseFastqFile, TreatmentGroup, Animal, Day, Description
     [11-01-2023 10:55:37 UTC] Alpha diversity and PCoA plots will not be made, as they require at least 3 samples.  Only 2 remain after filtering.
     [11-01-2023 10:55:37 UTC] "allgraphs" complete.
     [11-01-2023 10:55:37 UTC] DADA2 pipeline complete.
     [11-01-2023 10:55:42 UTC] 0
-

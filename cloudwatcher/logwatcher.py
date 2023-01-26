@@ -2,6 +2,7 @@ import logging
 import re
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
+
 from pydantic import BaseModel
 
 from cloudwatcher.cloudwatcher import CloudWatcher
@@ -106,7 +107,8 @@ class LogEventsList(BaseModel):
         self, regex: str = None, fmt_str_datetime: str = None, fmt_str_log: str = None
     ) -> "LogEventsList":
         """
-        Format the messages by removing the embedded timestamp and adding a UTC timestamp
+        Format the messages by removing the embedded timestamp
+        and adding a UTC timestamp
 
         Args:
             regex (str): regex to match the timestamp in the message
@@ -155,11 +157,11 @@ class LogWatcher(CloudWatcher):
         Args:
             log_group_name (str): The name of the log group
             log_stream_name (str): The name of the log stream
-            start_token (Optional[str]): The token to use for the next query. Defaults to None
-            aws_access_key_id (Optional[str]): The AWS access key ID. Defaults to None
-            aws_secret_access_key (Optional[str]): The AWS secret access key. Defaults to None
-            aws_session_token (Optional[str]): The AWS session token. Defaults to None
-            aws_region_name (Optional[str]): The AWS region name. Defaults to 'us-east-1'
+            start_token (Optional[str]): The token to use for the next query
+            aws_access_key_id (Optional[str]): The AWS access key ID
+            aws_secret_access_key (Optional[str]): The AWS secret access key
+            aws_session_token (Optional[str]): The AWS session token
+            aws_region_name (Optional[str]): The AWS region name
         """
         super().__init__(
             service_name="logs",

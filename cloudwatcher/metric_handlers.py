@@ -198,7 +198,8 @@ class TimedMetricSummarizer(TimedMetricHandler):
         Args:
             target (str): The target file to save the summary to
             metric_unit (str): The unit of the metric
-            summarizer (Tuple[str, callable]): The summarizer to use and the function to use
+            summarizer (Tuple[str, callable]): The summarizer to use
+                and the function to use
         """
         if target is not None:
             raise NotImplementedError("Logging to a file is not yet implemented.")
