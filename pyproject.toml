@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cloudwatcher"
-version = "0.1.2"
+version = "0.2.0"
 description = "A tool for monitoring AWS CloudWatch metrics"
 authors = ["Michal Stolarczyk <stolarczyk.michal93@gmail.com>"]
 
@@ -24,6 +24,7 @@ mkdocstrings = {extras = ["python"], version = "^0.20.0"}
 mkdocs-material = "^9.0.0"
 notebook = "^6.5.2"
 python-dotenv = "^0.21.0"
+mypy = "^1.4.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
