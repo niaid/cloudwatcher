@@ -1,7 +1,7 @@
 import logging
 import re
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Generator, List, Optional, Tuple
 
 from pydantic import BaseModel
 
@@ -39,7 +39,10 @@ class LogEvent(BaseModel):
         )
 
     def format_message(
-        self, regex: str = None, fmt_str_log: str = None, fmt_str_datetime: str = None
+        self,
+        regex: Optional[str] = None,
+        fmt_str_log: Optional[str] = None,
+        fmt_str_datetime: Optional[str] = None,
     ) -> "LogEvent":
         """
         Format the message by removing the embedded timestamp and adding a UTC timestamp
@@ -104,7 +107,10 @@ class LogEventsList(BaseModel):
         )
 
     def format_messages(
-        self, regex: str = None, fmt_str_datetime: str = None, fmt_str_log: str = None
+        self,
+        regex: Optional[str] = None,
+        fmt_str_datetime: Optional[str] = None,
+        fmt_str_log: Optional[str] = None,
     ) -> "LogEventsList":
         """
         Format the messages by removing the embedded timestamp
@@ -217,7 +223,7 @@ class LogWatcher(CloudWatcher):
 
     def stream_cloudwatch_logs(
         self, events_limit: int = 1000, max_retry_attempts: int = 5
-    ) -> LogEventsList:
+    ) -> Generator[LogEventsList, None, None]:
         """
         A generator that retrieves desired number of log events per iteration
 
@@ -256,7 +262,7 @@ class LogWatcher(CloudWatcher):
         events_limit: int = 1000,
         max_retry_attempts: int = 5,
         sep: str = "<br>",
-    ) -> Tuple[List[str], str]:
+    ) -> Generator[Tuple[str, Optional[str]], None, None]:
         """
         A generator that yields formatted log events
 
@@ -278,7 +284,7 @@ class LogWatcher(CloudWatcher):
 
     def return_formatted_logs(
         self, events_limit: int = 1000, max_retry_attempts: int = 5
-    ) -> Tuple[str, str]:
+    ) -> Tuple[str, Optional[str]]:
         """
         A generator that yields formatted log events
 

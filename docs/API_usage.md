@@ -9,7 +9,7 @@ Both of these classes inherit from the `CloudWatcher` class.
 
 ## `MetricWatcher`: convenient interface to AWS CloudWatch metrics
 
-`MetricWatcher` can be used to interact with AWS CloudWatch metrics.
+`MetricWatcher` can be used to interact with AWS CloudWatch metrics. 
 
 ### `MetricWatcher` initialization
 
@@ -89,8 +89,12 @@ query_kwargs = {
     "period": 60,
 }
 response = mw.query_ec2_metrics(**query_kwargs)
+print(response)
 
 ```
+
+    {'MetricDataResults': [{'Id': 'nephele', 'Label': 'mem_used', 'Timestamps': [datetime.datetime(2023, 7, 19, 16, 45, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 44, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 43, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 42, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 41, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 40, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 39, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 38, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 37, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 36, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 35, tzinfo=tzutc()), datetime.datetime(2023, 7, 19, 16, 34, tzinfo=tzutc())], 'Values': [486064128.0, 485814272.0, 4685066240.0, 6207594496.0, 4992217088.0, 4720185344.0, 2435854336.0, 2444738560.0, 2400739328.0, 11007488000.0, 2191474688.0, 576376832.0], 'StatusCode': 'Complete'}], 'Messages': [], 'ResponseMetadata': {'RequestId': 'bbc8d20e-7879-447e-87e5-019b3769220f', 'HTTPStatusCode': 200, 'HTTPHeaders': {'x-amzn-requestid': 'bbc8d20e-7879-447e-87e5-019b3769220f', 'content-type': 'text/xml', 'content-length': '1596', 'date': 'Wed, 19 Jul 2023 18:35:02 GMT'}, 'RetryAttempts': 0}}
+
 
 
 
@@ -119,9 +123,9 @@ mw.save_response_json(file_path=f"/tmp/{instance_id}_response.json", query_kwarg
 ```
 
 
-
+    
 ![png](API_usage_files/API_usage_10_0.png)
-
+    
 
 
 ### Manual EC2 querying
@@ -145,12 +149,12 @@ response["ResponseMetadata"]
 
 
 
-    {'RequestId': '08c7f5b1-bc0f-4f0f-bcb0-54f868e5639f',
+    {'RequestId': '256d262e-488a-42bc-9197-2fcd4df82e98',
      'HTTPStatusCode': 200,
-     'HTTPHeaders': {'x-amzn-requestid': '08c7f5b1-bc0f-4f0f-bcb0-54f868e5639f',
+     'HTTPHeaders': {'x-amzn-requestid': '256d262e-488a-42bc-9197-2fcd4df82e98',
       'content-type': 'text/xml',
       'content-length': '1596',
-      'date': 'Thu, 26 Jan 2023 17:04:58 GMT'},
+      'date': 'Wed, 19 Jul 2023 18:35:04 GMT'},
      'RetryAttempts': 0}
 
 
@@ -173,15 +177,15 @@ timed_metric.values[1:10]
 
 
 
-    [487075840.0,
-     3613966336.0,
-     5853335552.0,
-     5131206656.0,
-     5107838976.0,
-     3095851008.0,
-     2578575360.0,
-     2525331456.0,
-     2160402432.0]
+    [485814272.0,
+     4685066240.0,
+     6207594496.0,
+     4992217088.0,
+     4720185344.0,
+     2435854336.0,
+     2444738560.0,
+     2400739328.0,
+     11007488000.0]
 
 
 
@@ -228,7 +232,7 @@ next(streamer)
 
 
 
-    LogEventsList(events=[LogEvent(message='[2023-01-11 10:50:47,354 - INFO] Nephele, developed by BCBB/OCICB/NIAID/NIH version: 2.21.8, tag: Nephele_2022_December_22, commit: caa66b1', timestamp=datetime.datetime(2023, 1, 11, 10, 50, 48, 277000)), LogEvent(message='[2023-01-11 10:50:47,354 - INFO] Python version: 3.8.13', timestamp=datetime.datetime(2023, 1, 11, 10, 50, 48, 277000))], next_forward_token='f/37319232190733584015059832158212944362474954267242725377/s', next_backward_token='b/37319232190733584015059832158212944362474954267242725376/s')
+    LogEventsList(events=[LogEvent(message='[2023-07-19 12:34:48,735 - INFO] Nephele, developed by BCBB/OCICB/NIAID/NIH version: 2.27.1, tag: Nephele_2023_July_19, commit: dce18e5', timestamp=datetime.datetime(2023, 7, 19, 12, 34, 48, 833000)), LogEvent(message='[2023-07-19 12:34:48,736 - INFO] Python version: 3.9.2', timestamp=datetime.datetime(2023, 7, 19, 12, 34, 48, 833000))], next_forward_token='f/37683453325894048129959718411585392236426944928309968897/s', next_backward_token='b/37683453325894048129959718411585392236426944928309968896/s')
 
 
 
@@ -236,7 +240,7 @@ The log events are returned as a custom `LogEventsList` object, which conists of
 
 ### Retrieving all logs
 
-Alternatively, the `return_formatted_logs` method can be used to retrieve all the logs. This method returns a `Tuple[str,str]`, where the first element is the formatted log and the second element is the next token.
+Alternatively, the `return_formatted_logs` method can be used to retrieve all the logs. This method returns a `Tuple[str,str]`, where the first element is the formatted log and the second element is the next token. 
 
 
 ```python
@@ -246,286 +250,480 @@ print(formatted_logs)
 
 ```
 
-    [11-01-2023 10:50:48 UTC] Nephele, developed by BCBB/OCICB/NIAID/NIH version: 2.21.8, tag: Nephele_2022_December_22, commit: caa66b1
-    [11-01-2023 10:50:48 UTC] Python version: 3.8.13
-    [11-01-2023 10:50:48 UTC] Current time: 2023-01-11 10:50
-    [11-01-2023 10:50:48 UTC] Pipeline name: DADA2
-    [11-01-2023 10:50:48 UTC] Job Description: test
-    [11-01-2023 10:50:48 UTC] Job parameters
-    [11-01-2023 10:50:48 UTC] job_id: d5b6be48d21e
-    [11-01-2023 10:50:48 UTC] inputs_dir: None
-    [11-01-2023 10:50:48 UTC] outputs_dir: None
-    [11-01-2023 10:50:48 UTC] map_file: <_io.TextIOWrapper name='/nephele_data/inputs/N2_16S_example_mapping_file_min_corrected.txt' mode='r' encoding='UTF-8'>
-    [11-01-2023 10:50:48 UTC] data_type: PE
-    [11-01-2023 10:50:48 UTC] wurlitzer_stdout: file
-    [11-01-2023 10:50:48 UTC] wurlitzer_stderr: file
-    [11-01-2023 10:50:48 UTC] ion_torrent: False
-    [11-01-2023 10:50:48 UTC] trimleft_fwd: 0
-    [11-01-2023 10:50:48 UTC] trimleft_rev: 0
-    [11-01-2023 10:50:48 UTC] maxee: 5
-    [11-01-2023 10:50:48 UTC] trunclen_fwd: 0
-    [11-01-2023 10:50:48 UTC] trunclen_rev: 0
-    [11-01-2023 10:50:48 UTC] truncq: 4
-    [11-01-2023 10:50:48 UTC] just_concatenate: False
-    [11-01-2023 10:50:48 UTC] maxmismatch: 0
-    [11-01-2023 10:50:48 UTC] trim_overhang: False
-    [11-01-2023 10:50:48 UTC] chimera: True
-    [11-01-2023 10:50:48 UTC] ref_db: sv138.1
-    [11-01-2023 10:50:48 UTC] taxmethod: rdp
-    [11-01-2023 10:50:48 UTC] sampling_depth: None
-    [11-01-2023 10:50:48 UTC] Checking Mapfile for Gzipped inputs.
-    [11-01-2023 10:50:48 UTC] Gzipped files listed in map file, attempting to rm .gz extension.
-    [11-01-2023 10:50:48 UTC] Done. Attempting file decompression.
-    [11-01-2023 10:50:53 UTC] Finished decompression.
-    [11-01-2023 10:51:02 UTC] Reference DB (sv138.1) checksum: 6b41db7139834c71171f8ce5b5918fc6
-    [11-01-2023 10:51:04 UTC] Taxonomy assignemnt DB checksum: f21c2d97c79ff07c17949a9622371a4c
-    [11-01-2023 10:51:09 UTC] Loading R module: DADA2/dada2nephele.
-    [11-01-2023 10:51:36 UTC] Running DADA2.
-    [11-01-2023 10:51:39 UTC] R version 4.1.3 (2022-03-10)
-    [11-01-2023 10:51:39 UTC] Platform: x86_64-conda-linux-gnu (64-bit)
-    [11-01-2023 10:51:39 UTC] Running under: Debian GNU/Linux 11 (bullseye)
-    [11-01-2023 10:51:39 UTC] Matrix products: default
-    [11-01-2023 10:51:39 UTC] BLAS/LAPACK: /usr/local/bin/miniconda3/envs/qiime2-2022.2/lib/libopenblasp-r0.3.20.so
-    [11-01-2023 10:51:39 UTC] locale:
-     [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8
-     [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8
+    [19-07-2023 12:34:48 UTC] Nephele, developed by BCBB/OCICB/NIAID/NIH version: 2.27.1, tag: Nephele_2023_July_19, commit: dce18e5
+    [19-07-2023 12:34:48 UTC] Python version: 3.9.2
+    [19-07-2023 12:34:48 UTC] Current time: 2023-07-19 12:34
+    [19-07-2023 12:34:49 UTC] Pipeline name: DADA2
+    [19-07-2023 12:34:49 UTC] Job Description:
+    [19-07-2023 12:34:49 UTC] Job parameters
+    [19-07-2023 12:34:49 UTC] job_id: b73de8bfdd22
+    [19-07-2023 12:34:49 UTC] inputs_dir: None
+    [19-07-2023 12:34:49 UTC] outputs_dir: None
+    [19-07-2023 12:34:49 UTC] map_file: <_io.TextIOWrapper name='/nephele_data/inputs/N2_16S_example_mapping_file_3_corrected.txt' mode='r' encoding='UTF-8'>
+    [19-07-2023 12:34:49 UTC] data_type: PE
+    [19-07-2023 12:34:49 UTC] wurlitzer_stdout: file
+    [19-07-2023 12:34:49 UTC] wurlitzer_stderr: file
+    [19-07-2023 12:34:49 UTC] ion_torrent: False
+    [19-07-2023 12:34:49 UTC] trimleft_fwd: 0
+    [19-07-2023 12:34:49 UTC] trimleft_rev: 0
+    [19-07-2023 12:34:49 UTC] maxee: 5
+    [19-07-2023 12:34:49 UTC] trunclen_fwd: 0
+    [19-07-2023 12:34:49 UTC] trunclen_rev: 0
+    [19-07-2023 12:34:49 UTC] truncq: 4
+    [19-07-2023 12:34:49 UTC] just_concatenate: False
+    [19-07-2023 12:34:49 UTC] maxmismatch: 0
+    [19-07-2023 12:34:49 UTC] trim_overhang: False
+    [19-07-2023 12:34:49 UTC] chimera: True
+    [19-07-2023 12:34:49 UTC] ref_db: sv138.1
+    [19-07-2023 12:34:49 UTC] taxmethod: rdp
+    [19-07-2023 12:34:49 UTC] sampling_depth: None
+    [19-07-2023 12:34:49 UTC] pseudopool: False
+    [19-07-2023 12:34:49 UTC] minboot: 80
+    [19-07-2023 12:34:49 UTC] allowmultiplespecies: False
+    [19-07-2023 12:34:49 UTC] Results manager initialized. Results registry path: /mnt/EFS/user_uploads/b73de8bfdd22/outputs/b73de8bfdd22_results_registry.json
+    [19-07-2023 12:34:49 UTC] Checking Mapfile for Gzipped inputs.
+    [19-07-2023 12:34:49 UTC] Gzipped files listed in map file, attempting to rm .gz extension.
+    [19-07-2023 12:34:51 UTC] Done. Attempting file decompression.
+    [19-07-2023 12:34:51 UTC] Finished decompression.
+    [19-07-2023 12:34:55 UTC] Skipping FASTQ file validation
+    [19-07-2023 12:35:04 UTC] Reference DB (sv138.1) checksum: 6b41db7139834c71171f8ce5b5918fc6
+    [19-07-2023 12:35:05 UTC] Taxonomy assignemnt DB checksum: f21c2d97c79ff07c17949a9622371a4c
+    [19-07-2023 12:35:05 UTC] Running dada2nephele.R with command:
+    [19-07-2023 12:35:09 UTC] Rscript /usr/local/src/nephele2/pipelines/DADA2/dada2nephele/R/dada2nephele.R  --datadir /nephele_data/inputs/ --outdir /nephele_data/outputs/ --mapfile /nephele_data/outputs/N2_16S_example_mapping_file_3_corrected.txt.no_gz --logfilename /var/log/job.log --nthread 12 --maxEE 5 --truncQ 4 --maxMismatch 0 --chimera --data_type PE --minBoot 80 --no_MultipleSpecies --trimLeft_R1 0 --trimLeft_R2 0 --truncLen_R1 0 --truncLen_R2 0 --taxmethod rdp --refdb /mnt/EFS/dbs/dada2_silva_v138.1/silva_nr99_v138.1_train_set.fa.gz --refdb_species /mnt/EFS/dbs/dada2_silva_v138.1/silva_species_assignment_v138.1.fa.gz
+    [19-07-2023 12:35:16 UTC] R version 4.3.1 (2023-06-16)
+    [19-07-2023 12:35:16 UTC] Platform: x86_64-pc-linux-gnu (64-bit)
+    [19-07-2023 12:35:16 UTC] Running under: Debian GNU/Linux 11 (bullseye)
+    [19-07-2023 12:35:16 UTC] Matrix products: default
+    [19-07-2023 12:35:16 UTC] BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+    [19-07-2023 12:35:16 UTC] LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+    [19-07-2023 12:35:16 UTC] locale:
+     [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+     [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
      [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C
-    [11-01-2023 10:51:39 UTC] [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C
-    [11-01-2023 10:51:39 UTC] attached base packages:
-    [11-01-2023 10:51:39 UTC] [1] tools     stats     graphics  grDevices utils     datasets  methods
-    [11-01-2023 10:51:39 UTC] [8] base
-    [11-01-2023 10:51:39 UTC] other attached packages:
-    [11-01-2023 10:51:39 UTC] [1] dada2nephele_0.1.2
-    [11-01-2023 10:51:39 UTC] loaded via a namespace (and not attached):
-     [1] Rcpp_1.0.8.3                lattice_0.20-45
-     [3] png_0.1-7                   Rsamtools_2.10.0
-     [5] Biostrings_2.62.0           foreach_1.5.2
-     [7] digest_0.6.29               utf8_1.2.2
-     [9] R6_2.5.1                    GenomeInfoDb_1.30.0
-    [11-01-2023 10:51:39 UTC] [11] plyr_1.8.7                  ShortRead_1.52.0
-    [11-01-2023 10:51:39 UTC] [13] stats4_4.1.3                RSQLite_2.2.8
-    [11-01-2023 10:51:39 UTC] [15] ggplot2_3.3.6               pillar_1.7.0
-    [11-01-2023 10:51:39 UTC] [17] zlibbioc_1.40.0             rlang_1.0.2
-    [11-01-2023 10:51:39 UTC] [19] blob_1.2.3                  S4Vectors_0.32.3
-    [11-01-2023 10:51:39 UTC] [21] Matrix_1.4-1                BiocParallel_1.28.3
-    [11-01-2023 10:51:39 UTC] [23] stringr_1.4.0               dada2_1.22.0
-    [11-01-2023 10:51:39 UTC] [25] RCurl_1.98-1.6              bit_4.0.4
-    [11-01-2023 10:51:39 UTC] [27] munsell_0.5.0               DelayedArray_0.20.0
-    [11-01-2023 10:51:39 UTC] [29] compiler_4.1.3              pkgconfig_2.0.3
-    [11-01-2023 10:51:39 UTC] [31] BiocGenerics_0.40.0         biomformat_1.22.0
-    [11-01-2023 10:51:39 UTC] [33] tidyselect_1.1.2            SummarizedExperiment_1.24.0
-    [11-01-2023 10:51:39 UTC] [35] tibble_3.1.7                GenomeInfoDbData_1.2.7
-    [11-01-2023 10:51:39 UTC] [37] codetools_0.2-18            IRanges_2.28.0
-    [11-01-2023 10:51:39 UTC] [39] matrixStats_0.62.0          fansi_1.0.3
-    [11-01-2023 10:51:39 UTC] [41] crayon_1.5.1                dplyr_1.0.9
-    [11-01-2023 10:51:39 UTC] [43] rhdf5filters_1.6.0          GenomicAlignments_1.30.0
-    [11-01-2023 10:51:39 UTC] [45] bitops_1.0-7                grid_4.1.3
-    [11-01-2023 10:51:39 UTC] [47] jsonlite_1.8.0              gtable_0.3.0
-    [11-01-2023 10:51:39 UTC] [49] lifecycle_1.0.1             DBI_1.1.2
-    [11-01-2023 10:51:39 UTC] [51] magrittr_2.0.3              scales_1.2.0
-    [11-01-2023 10:51:39 UTC] [53] RcppParallel_5.1.5          cachem_1.0.6
-    [11-01-2023 10:51:39 UTC] [55] cli_3.3.0                   stringi_1.7.6
-    [11-01-2023 10:51:39 UTC] [57] XVector_0.34.0              hwriter_1.3.2.1
-    [11-01-2023 10:51:39 UTC] [59] reshape2_1.4.4              latticeExtra_0.6-29
-    [11-01-2023 10:51:39 UTC] [61] ellipsis_0.3.2              generics_0.1.2
-    [11-01-2023 10:51:39 UTC] [63] vctrs_0.4.1                 Rhdf5lib_1.16.0
-    [11-01-2023 10:51:39 UTC] [65] RColorBrewer_1.1-3          DECIPHER_2.22.0
-    [11-01-2023 10:51:39 UTC] [67] iterators_1.0.14            bit64_4.0.5
-    [11-01-2023 10:51:39 UTC] [69] Biobase_2.54.0              glue_1.6.2
-    [11-01-2023 10:51:39 UTC] [71] purrr_0.3.4                 MatrixGenerics_1.6.0
-    [11-01-2023 10:51:39 UTC] [73] jpeg_0.1-9                  fastmap_1.1.0
-    [11-01-2023 10:51:39 UTC] [75] parallel_4.1.3              rhdf5_2.38.0
-    [11-01-2023 10:51:39 UTC] [77] colorspace_2.0-3            GenomicRanges_1.46.1
-    [11-01-2023 10:51:39 UTC] [79] memoise_2.0.1
-    [11-01-2023 10:51:39 UTC] Taxonomic Reference Database
-    [11-01-2023 10:51:39 UTC] /mnt/EFS/dbs/dada2_silva_v138.1/silva_nr99_v138.1_train_set.fa.gz
-    [11-01-2023 10:51:39 UTC] /mnt/EFS/dbs/dada2_silva_v138.1/silva_species_assignment_v138.1.fa.gz
-    [11-01-2023 10:51:39 UTC] Reading in map file  /nephele_data/outputs/N2_16S_example_mapping_file_min_corrected.txt.no_gz
-    [11-01-2023 10:51:39 UTC] Printing dada algorithm options.
-                  BAND_SIZE       DETECT_SINGLETONS             GAP_PENALTY
-                         16                   FALSE                      -8
-                    GAPLESS                  GREEDY HOMOPOLYMER_GAP_PENALTY
-                       TRUE                    TRUE                    NULL
-               KDIST_CUTOFF                   MATCH               MAX_CLUST
-                       0.42                       5                       0
-                MAX_CONSIST           MIN_ABUNDANCE                MIN_FOLD
-                         10                       1                       1
-                MIN_HAMMING                MISMATCH                 OMEGA_A
-                          1                      -4                   1e-40
-                    OMEGA_C                 OMEGA_P        PSEUDO_ABUNDANCE
-                      1e-40                   1e-04                     Inf
-          PSEUDO_PREVALENCE                     SSE               USE_KMERS
-                          2                       2                    TRUE
-                  USE_QUALS    VECTORIZED_ALIGNMENT
-                       TRUE                    TRUE
-    [11-01-2023 10:51:39 UTC] Paired End
-    [11-01-2023 10:51:44 UTC] out <- filterAndTrim(fwd=file.path(datadir,readslist$R1), filt=file.path(filt.dir,trimlist$R1),rev=file.path(datadir,readslist$R2), filt.rev=file.path(filt.dir,trimlist$R2),  maxEE=5L, trimLeft=list(0L, 0L), truncQ=4, truncLen = list(0L, 0L), rm.phix=TRUE, compress=TRUE, verbose=TRUE, multithread=FALSE, minLen=50, OMP = FALSE)
-    [11-01-2023 10:51:49 UTC] reads.in reads.out
-    [11-01-2023 10:51:49 UTC] 22061_S5_R1_subsample.fastq    25000     20200
-    [11-01-2023 10:51:49 UTC] 22057_S2_R1_subsample.fastq    25000     20969
-    [11-01-2023 10:51:49 UTC] Checking that trimmed files exist.
-    [11-01-2023 10:51:49 UTC] list2env(checktrimfiles(A, filt.dir, trimlist), envir = environment())
-    [11-01-2023 10:51:50 UTC] err <- lapply(trimlist, function(x) learnErrors(x, multithread=nthread, nbases=100000000,randomize=FALSE))
-    [11-01-2023 10:51:55 UTC] 10744514 total bases in 41169 reads from 2 samples will be used for learning the error rates.
-    [11-01-2023 10:52:05 UTC] 10716719 total bases in 41169 reads from 2 samples will be used for learning the error rates.
-    [11-01-2023 10:52:19 UTC] pe <- lapply(err, function(x) plotErrors(x, nominalQ=TRUE))
-    [11-01-2023 10:52:20 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
-    [11-01-2023 10:52:22 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=nthread, verbose=F), USE.NAMES=TRUE, simplify=FALSE)
-    [11-01-2023 10:52:22 UTC] R1: 191 sequence variants were inferred from 11283 input unique sequences. R2: 78 sequence variants were inferred from 17350 input unique sequences.
-    [11-01-2023 10:52:22 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
-    [11-01-2023 10:52:24 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
-    [11-01-2023 10:52:25 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=nthread, verbose=F), USE.NAMES=TRUE, simplify=FALSE)
-    [11-01-2023 10:52:25 UTC] R1: 145 sequence variants were inferred from 9268 input unique sequences. R2: 132 sequence variants were inferred from 15736 input unique sequences.
-    [11-01-2023 10:52:26 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
-    [11-01-2023 10:52:26 UTC] seqtab <- makeSequenceTable(sampleVariants$sv)
-    [11-01-2023 10:52:26 UTC] Removing sequences of length less than 75bp
-    [11-01-2023 10:52:26 UTC] seqlengths <- nchar(colnames(seqtab))
-    [11-01-2023 10:52:26 UTC] seqtab <- seqtab[,which(seqlengths >=75), drop=F]
-    [11-01-2023 10:52:26 UTC] saveRDS(seqtab, file.path(interm.dir,"seqtab_min75.rds"))
-    [11-01-2023 10:52:26 UTC] seqtabnochimera <- removeBimeraDenovo(seqtab, verbose=TRUE, multithread=nthread)
-    [11-01-2023 10:52:26 UTC] % Reads remaining after chimera removal: 73.7906665042037
-    [11-01-2023 10:52:26 UTC] seqtab <- seqtabnochimera
-    [11-01-2023 10:52:26 UTC] Track Reads
-           denoisedF denoisedR merged filter75 nochim
-    [11-01-2023 10:52:26 UTC] A22061     18991     17776  14559    14559  12339
-    [11-01-2023 10:52:26 UTC] A22057     20661     20123  18269    18269  11885
-    [11-01-2023 10:52:26 UTC] rep_seq_names <- make_seq_names(seqtab)
-    [11-01-2023 10:52:26 UTC] writeFasta(seqs, file=file.path(outdir, "seq.fasta"))
-    [11-01-2023 10:52:26 UTC] Taxonomic assignment with rdp
-    [11-01-2023 10:52:31 UTC] taxa <- assignTaxonomy(seqtab, refdb, multithread=nthread, minBoot=80, tryRC=TRUE, verbose=TRUE)
-    [11-01-2023 10:54:30 UTC] Finished processing reference fasta.
-    [11-01-2023 10:54:34 UTC] taxa.species <- addSpecies(taxa, refdb_species, verbose=TRUE, tryRC=TRUE, n=4000)
-    [11-01-2023 10:55:19 UTC] 0 out of 214 were assigned to the species level.
-    [11-01-2023 10:55:19 UTC] Of which 0 had genera consistent with the input table.
-    [11-01-2023 10:55:19 UTC] otu_tab <- seqtab; colnames(otu_tab) <- replace_names(colnames(otu_tab), rep_seq_names)
-    [11-01-2023 10:55:19 UTC] row.names(taxa.species) <- replace_names(row.names(taxa.species), rep_seq_names)
-    [11-01-2023 10:55:19 UTC] write_biom(dada2biom(otu_tab,taxa.species, metadata = A), file.path(outdir, "taxa.biom"))
-    [11-01-2023 10:55:19 UTC] dada2text(otu_tab, taxa.species, file.path(outdir, "OTU_table.txt"))
-    [11-01-2023 10:55:20 UTC] dada2taxonomy(taxa.species, file.path(outdir, "taxonomy_table.txt"))
-    [11-01-2023 10:55:20 UTC] Summarizing biom file to /nephele_data/outputs/otu_summary_table.txt.
-    [11-01-2023 10:55:20 UTC] Creating a phylogenetic tree with 12 threads
-    [11-01-2023 10:55:20 UTC] phylogeny version 2022.2.0. This QIIME 2 plugin supports generating and manipulating phylogenetic trees.
-    [11-01-2023 10:55:20 UTC] Artifact.import_data(type='FeatureData[Sequence]', view=/nephele_data/outputs/seq.fasta)
-    [11-01-2023 10:55:23 UTC] align_to_tree_mafft_fasttree(sequences=seqs, n_threads=num_threads)
-    [11-01-2023 10:55:23 UTC] Saving trees to /nephele_data/outputs/phylo
-    [11-01-2023 10:55:23 UTC] Checking output file from dada2 pipeline required by data visualization pipeline.
-    [11-01-2023 10:55:23 UTC] 2 samples are above the sampling depth of 10000, which is insufficient.  At least 3 are needed.
-    [11-01-2023 10:55:27 UTC] Loading R module: datavis16s.
-    [11-01-2023 10:55:32 UTC] Running data visualization pipeline.
-    [11-01-2023 10:55:32 UTC] R version 4.1.3 (2022-03-10)
-    [11-01-2023 10:55:32 UTC] Platform: x86_64-conda-linux-gnu (64-bit)
-    [11-01-2023 10:55:32 UTC] Running under: Debian GNU/Linux 11 (bullseye)
-    [11-01-2023 10:55:32 UTC] Matrix products: default
-    [11-01-2023 10:55:32 UTC] BLAS/LAPACK: /usr/local/bin/miniconda3/envs/qiime2-2022.2/lib/libopenblasp-r0.3.20.so
-    [11-01-2023 10:55:32 UTC] locale:
-    [11-01-2023 10:55:32 UTC] [1] C.UTF-8
-    [11-01-2023 10:55:32 UTC] attached base packages:
-    [11-01-2023 10:55:32 UTC] [1] tools     stats     graphics  grDevices utils     datasets  methods
-    [11-01-2023 10:55:32 UTC] [8] base
-    [11-01-2023 10:55:32 UTC] other attached packages:
-    [11-01-2023 10:55:32 UTC] [1] datavis16s_0.1.3   dada2nephele_0.1.2
-    [11-01-2023 10:55:32 UTC] loaded via a namespace (and not attached):
-      [1] nlme_3.1-157                bitops_1.0-7
-      [3] matrixStats_0.62.0          bit64_4.0.5
-      [5] RColorBrewer_1.1-3          httr_1.4.3
-      [7] GenomeInfoDb_1.30.0         utf8_1.2.2
-      [9] R6_2.5.1                    vegan_2.6-2
-     [11] mgcv_1.8-40                 DBI_1.1.2
-     [13] BiocGenerics_0.40.0         lazyeval_0.2.2
-     [15] colorspace_2.0-3            permute_0.9-7
-     [17] rhdf5filters_1.6.0          tidyselect_1.1.2
-     [19] bit_4.0.4                   compiler_4.1.3
-     [21] cli_3.3.0                   Biobase_2.54.0
-     [23] DelayedArray_0.20.0         plotly_4.10.0
-     [25] labeling_0.4.2              scales_1.2.0
-     [27] stringr_1.4.0               digest_0.6.29
-     [29] Rsamtools_2.10.0            dada2_1.22.0
-     [31] XVector_0.34.0              jpeg_0.1-9
-     [33] pkgconfig_2.0.3             htmltools_0.5.2
-     [35] MatrixGenerics_1.6.0        fastmap_1.1.0
-     [37] htmlwidgets_1.5.4           rlang_1.0.2
-     [39] RSQLite_2.2.8               farver_2.1.0
-     [41] generics_0.1.2              hwriter_1.3.2.1
-     [43] jsonlite_1.8.0              BiocParallel_1.28.3
-     [45] dplyr_1.0.9                 RCurl_1.98-1.6
-     [47] magrittr_2.0.3              GenomeInfoDbData_1.2.7
-     [49] biomformat_1.22.0           Matrix_1.4-1
-     [51] Rcpp_1.0.8.3                munsell_0.5.0
-     [53] S4Vectors_0.32.3            Rhdf5lib_1.16.0
-     [55] fansi_1.0.3                 DECIPHER_2.22.0
-     [57] ape_5.6-2                   lifecycle_1.0.1
-     [59] stringi_1.7.6               ampvis2_2.7.4
-     [61] MASS_7.3-57                 SummarizedExperiment_1.24.0
-     [63] zlibbioc_1.40.0             rhdf5_2.38.0
-     [65] plyr_1.8.7                  grid_4.1.3
-     [67] blob_1.2.3                  parallel_4.1.3
-     [69] ggrepel_0.9.1               crayon_1.5.1
-     [71] lattice_0.20-45             splines_4.1.3
-     [73] Biostrings_2.62.0           pillar_1.7.0
-     [75] GenomicRanges_1.46.1        reshape2_1.4.4
-     [77] codetools_0.2-18            stats4_4.1.3
-     [79] glue_1.6.2                  ShortRead_1.52.0
-     [81] latticeExtra_0.6-29         data.table_1.14.2
-     [83] RcppParallel_5.1.5          png_0.1-7
-     [85] vctrs_0.4.1                 foreach_1.5.2
-     [87] gtable_0.3.0                purrr_0.3.4
-     [89] tidyr_1.2.0                 morpheus_0.1.1.1
-     [91] cachem_1.0.6                ggplot2_3.3.6
-     [93] viridisLite_0.4.0           tibble_3.1.7
-     [95] iterators_1.0.14            GenomicAlignments_1.30.0
-     [97] memoise_2.0.1               IRanges_2.28.0
-     [99] cluster_2.1.3               ellipsis_0.3.2
-    [11-01-2023 10:55:32 UTC] "allgraphs"(datafile="/nephele_data/outputs/OTU_table.txt", outdir="/nephele_data/outputs//graphs", mapfile="/nephele_data/outputs/N2_16S_example_mapping_file_min_corrected.txt.no_gz",tsvfile=TRUE, ...)
-    [11-01-2023 10:55:32 UTC] Reading in map file /nephele_data/outputs/N2_16S_example_mapping_file_min_corrected.txt.no_gz
-    [11-01-2023 10:55:32 UTC] Reading in OTU file /nephele_data/outputs/OTU_table.txt
-    [11-01-2023 10:55:32 UTC] otu <- read.delim(datafile, check.names = FALSE, na.strings = '', row.names = 1)
-    [11-01-2023 10:55:32 UTC] tax <- otu[,!names(otu) %in% map$SampleID]
-    [11-01-2023 10:55:32 UTC] otu <- otu[, names(otu) %in% map$SampleID, drop=F]
-    [11-01-2023 10:55:32 UTC] otu <- cbind(otu, tax)
-    [11-01-2023 10:55:32 UTC] amp <- amp_load(otu, map)
-    [11-01-2023 10:55:32 UTC] ampvis2 object with 3 elements.
-    [11-01-2023 10:55:32 UTC] Summary of OTU table:
-         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads
-               2          214        24224        11885        12339        12112
-       Avg#Reads
-           12112
-    [11-01-2023 10:55:32 UTC] Assigned taxonomy:
-        Kingdom      Phylum       Class       Order      Family       Genus
-      214(100%) 212(99.07%)  211(98.6%) 210(98.13%) 193(90.19%) 140(65.42%)
-        Species
-          0(0%)
-    [11-01-2023 10:55:33 UTC] Metadata variables: 7
+    [19-07-2023 12:35:16 UTC] [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C
+    [19-07-2023 12:35:16 UTC] time zone: America/New_York
+    [19-07-2023 12:35:16 UTC] tzcode source: system (glibc)
+    [19-07-2023 12:35:16 UTC] attached base packages:
+    [19-07-2023 12:35:16 UTC] [1] stats     graphics  grDevices utils     datasets  methods   base
+    [19-07-2023 12:35:16 UTC] other attached packages:
+    [19-07-2023 12:35:16 UTC] [1] dada2_1.28.0 Rcpp_1.0.11  docopt_0.7.1
+    [19-07-2023 12:35:16 UTC] loaded via a namespace (and not attached):
+     [1] utf8_1.2.3                  generics_0.1.3             
+     [3] bitops_1.0-7                stringi_1.7.12             
+     [5] jpeg_0.1-10                 lattice_0.20-45            
+     [7] magrittr_2.0.3              grid_4.3.1                 
+     [9] RColorBrewer_1.1-3          iterators_1.0.14
+    [19-07-2023 12:35:16 UTC] [11] foreach_1.5.2               plyr_1.8.8
+    [19-07-2023 12:35:16 UTC] [13] Matrix_1.5-3                GenomeInfoDb_1.36.1
+    [19-07-2023 12:35:16 UTC] [15] fansi_1.0.4                 scales_1.2.1
+    [19-07-2023 12:35:16 UTC] [17] Biostrings_2.68.1           codetools_0.2-19
+    [19-07-2023 12:35:16 UTC] [19] cli_3.6.1                   ShortRead_1.58.0
+    [19-07-2023 12:35:16 UTC] [21] rlang_1.1.1                 crayon_1.5.2
+    [19-07-2023 12:35:16 UTC] [23] XVector_0.40.0              Biobase_2.60.0
+    [19-07-2023 12:35:16 UTC] [25] munsell_0.5.0               DelayedArray_0.26.6
+    [19-07-2023 12:35:16 UTC] [27] S4Arrays_1.0.4              tools_4.3.1
+    [19-07-2023 12:35:16 UTC] [29] parallel_4.3.1              reshape2_1.4.4
+    [19-07-2023 12:35:16 UTC] [31] deldir_1.0-9                BiocParallel_1.34.2
+    [19-07-2023 12:35:16 UTC] [33] dplyr_1.1.2                 interp_1.1-4
+    [19-07-2023 12:35:16 UTC] [35] colorspace_2.1-0            ggplot2_3.4.2
+    [19-07-2023 12:35:16 UTC] [37] GenomeInfoDbData_1.2.10     Rsamtools_2.16.0
+    [19-07-2023 12:35:16 UTC] [39] hwriter_1.3.2.1             SummarizedExperiment_1.30.2
+    [19-07-2023 12:35:16 UTC] [41] BiocGenerics_0.46.0         png_0.1-8
+    [19-07-2023 12:35:16 UTC] [43] vctrs_0.6.3                 R6_2.5.1
+    [19-07-2023 12:35:16 UTC] [45] matrixStats_1.0.0           stats4_4.3.1
+    [19-07-2023 12:35:16 UTC] [47] lifecycle_1.0.3             stringr_1.5.0
+    [19-07-2023 12:35:16 UTC] [49] zlibbioc_1.46.0             S4Vectors_0.38.1
+    [19-07-2023 12:35:16 UTC] [51] IRanges_2.34.1              pkgconfig_2.0.3
+    [19-07-2023 12:35:16 UTC] [53] RcppParallel_5.1.7          pillar_1.9.0
+    [19-07-2023 12:35:16 UTC] [55] gtable_0.3.3                glue_1.6.2
+    [19-07-2023 12:35:16 UTC] [57] tibble_3.2.1                GenomicAlignments_1.36.0
+    [19-07-2023 12:35:16 UTC] [59] GenomicRanges_1.52.0        tidyselect_1.2.0
+    [19-07-2023 12:35:16 UTC] [61] MatrixGenerics_1.12.2       latticeExtra_0.6-30
+    [19-07-2023 12:35:16 UTC] [63] compiler_4.3.1              import_1.3.0
+    [19-07-2023 12:35:16 UTC] [65] RCurl_1.98-1.12
+    [19-07-2023 12:35:16 UTC] Taxonomic Reference Database
+    [19-07-2023 12:35:16 UTC] /mnt/EFS/dbs/dada2_silva_v138.1/silva_nr99_v138.1_train_set.fa.gz
+    [19-07-2023 12:35:16 UTC] /mnt/EFS/dbs/dada2_silva_v138.1/silva_species_assignment_v138.1.fa.gz
+    [19-07-2023 12:35:16 UTC] Reading in map file  /nephele_data/outputs/N2_16S_example_mapping_file_3_corrected.txt.no_gz
+    [19-07-2023 12:35:16 UTC] Printing dada algorithm options.
+     [1]           16        FALSE           -8         TRUE         TRUE
+     [6]                      0.42            5            0           10
+    [19-07-2023 12:35:16 UTC] [11]            1            1            1           -4 0.000000....
+    [19-07-2023 12:35:16 UTC] [16] 0.000000....       0.0001          Inf            2            2
+    [19-07-2023 12:35:16 UTC] [21]         TRUE         TRUE         TRUE
+    [19-07-2023 12:35:16 UTC] Paired End
+    [19-07-2023 12:35:20 UTC] pqp <- lapply(readslist, FUN = function(x) { ppp <- plotQualityProfile(file.path(datadir, x)); ppp$facet$params$ncol <- 4; ppp })
+    [19-07-2023 12:35:53 UTC] Saving quality profile plots to quality_Profile_R*.pdf
+    [19-07-2023 12:35:57 UTC] out <- filterAndTrim(fwd=file.path(datadir,readslist$R1), filt=file.path(filt.dir,trimlist$R1),rev=file.path(datadir,readslist$R2), filt.rev=file.path(filt.dir,trimlist$R2),  maxEE=5, trimLeft=c(0, 0), truncQ=4, truncLen = c(0, 0), rm.phix=TRUE, compress=TRUE, verbose=TRUE, multithread=12, minLen=50)
+    [19-07-2023 12:36:01 UTC] Creating output directory: /nephele_data/outputs/filtered_data
+    [19-07-2023 12:36:03 UTC] reads.in reads.out
+    [19-07-2023 12:36:03 UTC] 22831_S41_R1_subsample.fastq     25000     20511
+    [19-07-2023 12:36:03 UTC] 22833_S45_R1_subsample.fastq     25000     20346
+    [19-07-2023 12:36:03 UTC] 22349_S26_R1_subsample.fastq     25000     20929
+    [19-07-2023 12:36:03 UTC] 22192_S22_R1_subsample.fastq     25000     21446
+    [19-07-2023 12:36:03 UTC] 22187_S19_R1_subsample.fastq     25000     20753
+    [19-07-2023 12:36:03 UTC] 22061_S5_R1_subsample.fastq      25000     20200
+    [19-07-2023 12:36:03 UTC] 22057_S2_R1_subsample.fastq      25000     20969
+    [19-07-2023 12:36:03 UTC] 22145_S14_R1_subsample.fastq     25000     18613
+    [19-07-2023 12:36:03 UTC] 22350_S27_R1_subsample.fastq     25000     19778
+    [19-07-2023 12:36:03 UTC] 23572_S307_R1_subsample.fastq    25000     17656
+    [19-07-2023 12:36:03 UTC] Saved Vega-Lite data to: /nephele_data/outputs/readsInReadsOutVegaJSON.json
+    [19-07-2023 12:36:03 UTC] Checking that trimmed files exist.
+    [19-07-2023 12:36:04 UTC] list2env(checktrimfiles(A, filt.dir, trimlist), envir = environment())
+    [19-07-2023 12:36:08 UTC] err <- lapply(trimlist, function(x) learnErrors(x, multithread=12, nbases=100000000,randomize=FALSE))
+    [19-07-2023 12:36:14 UTC] 52511424 total bases in 201201 reads from 10 samples will be used for learning the error rates.
+    [19-07-2023 12:37:36 UTC] 52366403 total bases in 201201 reads from 10 samples will be used for learning the error rates.
+    [19-07-2023 12:39:31 UTC] pe <- lapply(err, function(x) plotErrors(x, nominalQ=TRUE))
+    [19-07-2023 12:39:31 UTC] Saving 7 x 7 in image
+    [19-07-2023 12:39:32 UTC] Warning: Transformation introduced infinite values in continuous y-axis
+    [19-07-2023 12:39:32 UTC] Saving 7 x 7 in image
+    [19-07-2023 12:39:33 UTC] Warning: Transformation introduced infinite values in continuous y-axis
+    [19-07-2023 12:39:33 UTC] Saving 7 x 7 in image
+    [19-07-2023 12:39:34 UTC] Warning: Transformation introduced infinite values in continuous y-axis
+    [19-07-2023 12:39:34 UTC] Saving 7 x 7 in image
+    [19-07-2023 12:39:35 UTC] Warning: Transformation introduced infinite values in continuous y-axis
+    [19-07-2023 12:39:35 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:39:35 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22831_S41_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:39:35 UTC] Encountered 10011 unique sequences from 20511 total sequences read.
+    [19-07-2023 12:39:36 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22831_S41_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:39:36 UTC] Encountered 16353 unique sequences from 20511 total sequences read.
+    [19-07-2023 12:39:38 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:39:38 UTC] R1: 132 sequence variants were inferred from 10011 input unique sequences. R2: 106 sequence variants were inferred from 16353 input unique sequences.
+    [19-07-2023 12:39:39 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:39:39 UTC] 14245 paired-reads (in 245 unique pairings) successfully merged out of 19342 (in 799 pairings) input.
+    [19-07-2023 12:39:39 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:39:40 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22833_S45_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:39:40 UTC] Encountered 12613 unique sequences from 20346 total sequences read.
+    [19-07-2023 12:39:40 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22833_S45_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:39:40 UTC] Encountered 18675 unique sequences from 20346 total sequences read.
+    [19-07-2023 12:39:44 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:39:44 UTC] R1: 268 sequence variants were inferred from 12613 input unique sequences. R2: 82 sequence variants were inferred from 18675 input unique sequences.
+    [19-07-2023 12:39:44 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:39:44 UTC] 10806 paired-reads (in 98 unique pairings) successfully merged out of 16476 (in 400 pairings) input.
+    [19-07-2023 12:39:44 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:39:44 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22349_S26_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:39:44 UTC] Encountered 11655 unique sequences from 20929 total sequences read.
+    [19-07-2023 12:39:45 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22349_S26_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:39:45 UTC] Encountered 17146 unique sequences from 20929 total sequences read.
+    [19-07-2023 12:39:48 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:39:48 UTC] R1: 175 sequence variants were inferred from 11655 input unique sequences. R2: 95 sequence variants were inferred from 17146 input unique sequences.
+    [19-07-2023 12:39:48 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:39:49 UTC] 12735 paired-reads (in 161 unique pairings) successfully merged out of 18253 (in 738 pairings) input.
+    [19-07-2023 12:39:49 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:39:49 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22192_S22_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:39:49 UTC] Encountered 10687 unique sequences from 21446 total sequences read.
+    [19-07-2023 12:39:49 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22192_S22_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:39:49 UTC] Encountered 16476 unique sequences from 21446 total sequences read.
+    [19-07-2023 12:39:52 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:39:52 UTC] R1: 130 sequence variants were inferred from 10687 input unique sequences. R2: 95 sequence variants were inferred from 16476 input unique sequences.
+    [19-07-2023 12:39:53 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:39:53 UTC] 17599 paired-reads (in 177 unique pairings) successfully merged out of 19561 (in 513 pairings) input.
+    [19-07-2023 12:39:53 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:39:53 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22187_S19_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:39:53 UTC] Encountered 10100 unique sequences from 20753 total sequences read.
+    [19-07-2023 12:39:53 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22187_S19_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:39:53 UTC] Encountered 16901 unique sequences from 20753 total sequences read.
+    [19-07-2023 12:39:56 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:39:56 UTC] R1: 140 sequence variants were inferred from 10100 input unique sequences. R2: 99 sequence variants were inferred from 16901 input unique sequences.
+    [19-07-2023 12:39:56 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:39:56 UTC] 17011 paired-reads (in 183 unique pairings) successfully merged out of 18987 (in 418 pairings) input.
+    [19-07-2023 12:39:56 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:39:56 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22061_S5_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:39:56 UTC] Encountered 11283 unique sequences from 20200 total sequences read.
+    [19-07-2023 12:39:57 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22061_S5_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:39:57 UTC] Encountered 17350 unique sequences from 20200 total sequences read.
+    [19-07-2023 12:39:59 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:39:59 UTC] R1: 186 sequence variants were inferred from 11283 input unique sequences. R2: 83 sequence variants were inferred from 17350 input unique sequences.
+    [19-07-2023 12:39:59 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:39:59 UTC] 14630 paired-reads (in 133 unique pairings) successfully merged out of 17632 (in 343 pairings) input.
+    [19-07-2023 12:39:59 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:40:00 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22057_S2_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:40:00 UTC] Encountered 9268 unique sequences from 20969 total sequences read.
+    [19-07-2023 12:40:00 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22057_S2_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:40:00 UTC] Encountered 15736 unique sequences from 20969 total sequences read.
+    [19-07-2023 12:40:02 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:40:02 UTC] R1: 151 sequence variants were inferred from 9268 input unique sequences. R2: 148 sequence variants were inferred from 15736 input unique sequences.
+    [19-07-2023 12:40:03 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:40:03 UTC] 16865 paired-reads (in 269 unique pairings) successfully merged out of 20052 (in 475 pairings) input.
+    [19-07-2023 12:40:03 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:40:03 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22145_S14_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:40:03 UTC] Encountered 9540 unique sequences from 18613 total sequences read.
+    [19-07-2023 12:40:03 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22145_S14_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:40:03 UTC] Encountered 16815 unique sequences from 18613 total sequences read.
+    [19-07-2023 12:40:05 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:40:05 UTC] R1: 222 sequence variants were inferred from 9540 input unique sequences. R2: 79 sequence variants were inferred from 16815 input unique sequences.
+    [19-07-2023 12:40:06 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:40:06 UTC] 12534 paired-reads (in 144 unique pairings) successfully merged out of 15578 (in 352 pairings) input.
+    [19-07-2023 12:40:06 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:40:07 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22350_S27_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:40:07 UTC] Encountered 12092 unique sequences from 19778 total sequences read.
+    [19-07-2023 12:40:07 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/22350_S27_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:40:07 UTC] Encountered 17357 unique sequences from 19778 total sequences read.
+    [19-07-2023 12:40:10 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:40:10 UTC] R1: 214 sequence variants were inferred from 12092 input unique sequences. R2: 94 sequence variants were inferred from 17357 input unique sequences.
+    [19-07-2023 12:40:10 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:40:10 UTC] 12376 paired-reads (in 128 unique pairings) successfully merged out of 16356 (in 470 pairings) input.
+    [19-07-2023 12:40:10 UTC] derep <- lapply(trimlist, function(x) derepFastq(x[sample], verbose=TRUE))
+    [19-07-2023 12:40:10 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/23572_S307_R1_subsample_trim.fastq.gz
+    [19-07-2023 12:40:10 UTC] Encountered 9005 unique sequences from 17656 total sequences read.
+    [19-07-2023 12:40:11 UTC] Dereplicating sequence entries in Fastq file: /nephele_data/outputs/filtered_data/23572_S307_R2_subsample_trim.fastq.gz
+    [19-07-2023 12:40:11 UTC] Encountered 16088 unique sequences from 17656 total sequences read.
+    [19-07-2023 12:40:12 UTC] dd <- sapply(nameslist, function(x) dada(derep[[x]], err=err[[x]], multithread=12, verbose=F, priors = pseudo_priors[[x]]), USE.NAMES=TRUE, simplify=FALSE)
+    [19-07-2023 12:40:12 UTC] R1: 162 sequence variants were inferred from 9005 input unique sequences. R2: 47 sequence variants were inferred from 16088 input unique sequences.
+    [19-07-2023 12:40:13 UTC] mergePairs(dd$R1, derep$R1, dd$R2, derep$R2, verbose=TRUE, minOverlap=12, trimOverhang=FALSE, maxMismatch=0, justConcatenate=FALSE)
+    [19-07-2023 12:40:13 UTC] 11701 paired-reads (in 85 unique pairings) successfully merged out of 15018 (in 267 pairings) input.
+    [19-07-2023 12:40:13 UTC] seqtab <- makeSequenceTable(sampleVariants$sv)
+    [19-07-2023 12:40:13 UTC] Removing sequences of length less than 75bp
+    [19-07-2023 12:40:13 UTC] seqlengths <- nchar(colnames(seqtab))
+    [19-07-2023 12:40:13 UTC] seqtab <- seqtab[,which(seqlengths >=75), drop=F]
+    [19-07-2023 12:40:13 UTC] saveRDS(seqtab, file.path(interm.dir,"seqtab_min75.rds"))
+    [19-07-2023 12:40:13 UTC] seqtabnochimera <- removeBimeraDenovo(seqtab, verbose=TRUE, multithread=12)
+    [19-07-2023 12:40:13 UTC] Identified 568 bimeras out of 1349 input sequences.
+    [19-07-2023 12:40:13 UTC] % Reads remaining after chimera removal: 71.4808330130532
+    [19-07-2023 12:40:13 UTC] seqtab <- seqtabnochimera
+    [19-07-2023 12:40:13 UTC] Track Reads
+                 denoisedF denoisedR merged filter75 nochim
+    [19-07-2023 12:40:13 UTC] A22831           20093     19494  14245    14245   7921
+    [19-07-2023 12:40:13 UTC] A22833           18688     16924  10806    10806  10054
+    [19-07-2023 12:40:13 UTC] A22349           19980     18528  12735    12735   8165
+    [19-07-2023 12:40:13 UTC] A22192           20688     19840  17599    17599  13051
+    [19-07-2023 12:40:13 UTC] A22187           20173     19243  17011    17011  10509
+    [19-07-2023 12:40:13 UTC] A22061           19115     17917  14630    14630  12260
+    [19-07-2023 12:40:13 UTC] A22057           20673     20147  16865    16865   9998
+    [19-07-2023 12:40:13 UTC] A22145           17757     15789  12534    12534   9239
+    [19-07-2023 12:40:13 UTC] A22350           18350     16709  12376    12376   9838
+    [19-07-2023 12:40:13 UTC] 7pRecSw478.1     16806     15202  11701    11701   9397
+    [19-07-2023 12:40:13 UTC] Saved Vega-Lite data to: /nephele_data/outputs/trackReadsVegaJSON.json
+    [19-07-2023 12:40:13 UTC] rep_seq_names <- dada2fasta(seqtab, filename="/nephele_data/outputs/seq.fasta")
+    [19-07-2023 12:40:13 UTC] rep_seq_names <- make_seq_names(seqtab, nametype)
+    [19-07-2023 12:40:13 UTC] writeFasta(seqs, file="/nephele_data/outputs/seq.fasta")
+    [19-07-2023 12:40:13 UTC] Taxonomic assignment with rdp
+    [19-07-2023 12:40:17 UTC] taxa <- assignTaxonomy(seqtab, refdb, multithread=12, minBoot=80, tryRC=TRUE, verbose=TRUE)
+    [19-07-2023 12:42:09 UTC] Finished processing reference fasta.
+    [19-07-2023 12:42:09 UTC] Species assignment with dada2::addSpecies
+    [19-07-2023 12:42:09 UTC] taxa.genus <- taxa; rm(taxa);
+    [19-07-2023 12:42:13 UTC] taxa <- addSpecies(taxa.genus, refdb_species, verbose=TRUE, tryRC=TRUE, n=4000, allowMultiple =FALSE)
+    [19-07-2023 12:43:28 UTC] 3 out of 781 were assigned to the species level.
+    [19-07-2023 12:43:28 UTC] Of which 2 had genera consistent with the input table.Garbage collection 247 = 164+40+43 (level 2) ...
+    [19-07-2023 12:43:28 UTC] 432.3 Mbytes of cons cells used (56%)
+    [19-07-2023 12:43:28 UTC] 175.0 Mbytes of vectors used (5%)
+    [19-07-2023 12:43:28 UTC] rep_seq_names <- make_seq_names(seqtab, nametype)
+    [19-07-2023 12:43:28 UTC] writeFasta(seqs, file="/nephele_data/outputs/seq.fasta")
+    [19-07-2023 12:43:28 UTC] colnames(seqtab) <- replace_names(colnames(seqtab), rep_seq_names)
+    [19-07-2023 12:43:28 UTC] row.names(taxtab) <- replace_names(row.names(taxtab), rep_seq_names)
+    [19-07-2023 12:43:30 UTC] write_biom(dada2biom(seqtab,taxtab, metadata = metadata), file.path(outdir, "taxa.biom"))
+    [19-07-2023 12:43:30 UTC] dada2text(seqtab, taxtab, file.path(outdir, "OTU_table.txt"))
+    [19-07-2023 12:43:30 UTC] dada2taxonomy(taxtab, file.path(outdir, "taxonomy_table.txt"))
+    [19-07-2023 12:43:30 UTC] Garbage collection 248 = 164+40+44 (level 2) ...
+    [19-07-2023 12:43:30 UTC] 432.1 Mbytes of cons cells used (56%)
+    [19-07-2023 12:43:31 UTC] 111.6 Mbytes of vectors used (4%)
+    [19-07-2023 12:43:31 UTC] Summarizing biom file to /nephele_data/outputs/otu_summary_table.txt.
+    [19-07-2023 12:43:31 UTC] Creating phylogenetic trees
+    [19-07-2023 12:43:33 UTC] Running command: mafft --preservecase --inputorder --thread 12 /nephele_data/outputs/seq.fasta > /nephele_data/outputs/phylo/aligned_seq.fasta
+    [19-07-2023 12:43:37 UTC] Running command: FastTreeMP -quote -nt /nephele_data/outputs/phylo/aligned_seq.fasta > /nephele_data/outputs/phylo/unrooted_tree.nwk
+    [19-07-2023 12:43:39 UTC] Finished creating trees: /nephele_data/outputs/phylo/rooted_tree.nwk, /nephele_data/outputs/phylo/unrooted_tree.nwk
+    [19-07-2023 12:43:39 UTC] Checking output file from dada2 pipeline required by data visualization pipeline.
+    [19-07-2023 12:43:39 UTC] Running data visualization pipeline
+    [19-07-2023 12:43:43 UTC] Running with args: {'datafile': '/nephele_data/outputs/OTU_table.txt', 'outdir': '/nephele_data/outputs/', 'logfilename': '/var/log/job.log', 'sampdepth': 10054, 'mapfile': '/nephele_data/outputs/N2_16S_example_mapping_file_3_corrected.txt.no_gz', 'tsvfile': True}
+    [19-07-2023 12:43:44 UTC] R version 4.3.1 (2023-06-16)
+    [19-07-2023 12:43:44 UTC] Platform: x86_64-pc-linux-gnu (64-bit)
+    [19-07-2023 12:43:44 UTC] Running under: Debian GNU/Linux 11 (bullseye)
+    [19-07-2023 12:43:44 UTC] Matrix products: default
+    [19-07-2023 12:43:44 UTC] BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+    [19-07-2023 12:43:44 UTC] LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+    [19-07-2023 12:43:44 UTC] locale:
+     [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+     [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+     [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C
+    [19-07-2023 12:43:44 UTC] [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C
+    [19-07-2023 12:43:44 UTC] time zone: America/New_York
+    [19-07-2023 12:43:44 UTC] tzcode source: system (glibc)
+    [19-07-2023 12:43:44 UTC] attached base packages:
+    [19-07-2023 12:43:44 UTC] [1] stats     graphics  grDevices utils     datasets  methods   base
+    [19-07-2023 12:43:44 UTC] other attached packages:
+     [1] htmlwidgets_1.6.2 jsonlite_1.8.7    plotly_4.10.2     ampvis2_2.7.4    
+     [5] ggplot2_3.4.2     vegan_2.6-4       lattice_0.20-45   permute_0.9-7    
+     [9] htmltools_0.5.5   morpheus_0.1.1.1
+    [19-07-2023 12:43:44 UTC] loaded via a namespace (and not attached):
+     [1] Matrix_1.5-3       gtable_0.3.3       crayon_1.5.2       dplyr_1.1.2       
+     [5] compiler_4.3.1     tidyselect_1.2.0   Rcpp_1.0.11        stringr_1.5.0     
+     [9] parallel_4.3.1     tidyr_1.3.0        cluster_2.1.3      splines_4.3.1
+    [19-07-2023 12:43:44 UTC] [13] scales_1.2.1       fastmap_1.1.1      plyr_1.8.8         R6_2.5.1
+    [19-07-2023 12:43:44 UTC] [17] generics_0.1.3     MASS_7.3-58.3      ggrepel_0.9.3      tibble_3.2.1
+    [19-07-2023 12:43:44 UTC] [21] munsell_0.5.0      pillar_1.9.0       RColorBrewer_1.1-3 rlang_1.1.1
+    [19-07-2023 12:43:44 UTC] [25] utf8_1.2.3         stringi_1.7.12     lazyeval_0.2.2     viridisLite_0.4.2
+    [19-07-2023 12:43:44 UTC] [29] cli_3.6.1          withr_2.5.0        magrittr_2.0.3     mgcv_1.8-42
+    [19-07-2023 12:43:44 UTC] [33] digest_0.6.33      grid_4.3.1         lifecycle_1.0.3    nlme_3.1-162
+    [19-07-2023 12:43:44 UTC] [37] vctrs_0.6.3        data.table_1.14.8  glue_1.6.2         ape_5.7-1
+    [19-07-2023 12:43:44 UTC] [41] fansi_1.0.4        colorspace_2.1-0   purrr_1.0.1        httr_1.4.6
+    [19-07-2023 12:43:44 UTC] [45] tools_4.3.1        pkgconfig_2.0.3
+    [19-07-2023 12:43:44 UTC] "allgraphs"(datafile="/nephele_data/outputs/OTU_table.txt", outdir="/nephele_data/outputs//graphs", mapfile="/nephele_data/outputs/N2_16S_example_mapping_file_3_corrected.txt.no_gz",tsvfile=TRUE, ...)
+    [19-07-2023 12:43:44 UTC] Reading in map file /nephele_data/outputs/N2_16S_example_mapping_file_3_corrected.txt.no_gz
+    [19-07-2023 12:43:44 UTC] Reading in OTU file /nephele_data/outputs/OTU_table.txt
+    [19-07-2023 12:43:44 UTC] otu <- read.delim(datafile, check.names = FALSE, na.strings = '', row.names = 1)
+    [19-07-2023 12:43:44 UTC] tax <- otu[,!names(otu) %in% map$SampleID]
+    [19-07-2023 12:43:44 UTC] otu <- otu[, names(otu) %in% map$SampleID, drop=F]
+    [19-07-2023 12:43:44 UTC] otu <- cbind(otu, tax)
+    [19-07-2023 12:43:44 UTC] amp <- amp_load(otu, map)
+    [19-07-2023 12:43:45 UTC] Warning: Could not find a column named OTU/ASV in otutable, using rownames as sample ID's
+    [19-07-2023 12:43:45 UTC] ampvis2 object with 3 elements.
+    [19-07-2023 12:43:45 UTC] Summary of OTU table:
+         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads 
+              10          781       100432         7921        13051         9918 
+       Avg#Reads 
+         10043.2
+    [19-07-2023 12:43:45 UTC] Assigned taxonomy:
+        Kingdom      Phylum       Class       Order      Family       Genus 
+      781(100%) 771(98.72%) 770(98.59%) 760(97.31%) 702(89.88%) 527(67.48%) 
+        Species 
+       2(0.26%)
+    [19-07-2023 12:43:45 UTC] Metadata variables: 7 
      SampleID, ForwardFastqFile, ReverseFastqFile, TreatmentGroup, Animal, Day, Description
-    [11-01-2023 10:55:33 UTC] Rarefaction curve
-    [11-01-2023 10:55:34 UTC] rarefactioncurve(outdir = outdir, amp = amp, colors = allcols)
-    [11-01-2023 10:55:35 UTC] Saving plot to /nephele_data/outputs/graphs/rarecurve.html
-    [11-01-2023 10:55:35 UTC] Saving rarefaction curve table to /nephele_data/outputs//graphs/rarecurve.txt
-    [11-01-2023 10:55:35 UTC] Relative abundance heatmaps
-    [11-01-2023 10:55:35 UTC] morphheatmap(outdir = outdir, amp = amp, colors=allcols, filter_level = 5)
-    [11-01-2023 10:55:35 UTC] Filter taxa below 5 counts/abundance.
-    [11-01-2023 10:55:35 UTC] amp <- filterlowabund(amp, level = 5, abs=T)
-    [11-01-2023 10:55:35 UTC] Calculate relative abundance.
-    [11-01-2023 10:55:35 UTC] amp <- subsetamp(amp, sampdepth = NULL, rarefy=FALSE, normalise = TRUE, printsummary = FALSE)
-    [11-01-2023 10:55:35 UTC] makeheatmap("seq", amp)
-    [11-01-2023 10:55:36 UTC] heatmap <- morpheus(mat, columns=columns, columnAnnotations = amptax$metadata, columnColorModel = list(type=as.list(colors)), colorScheme = list(scalingMode="fixed", values=values, colors=hmapcolors, stepped=FALSE), rowAnnotations = amptax$tax, rows = rows, dendrogram="none")
-    [11-01-2023 10:55:37 UTC] Saving plot to /nephele_data/outputs/graphs/seq_heatmap.html
-    [11-01-2023 10:55:37 UTC] Sampling depth: 10000
-    [11-01-2023 10:55:37 UTC] Filter samples below 10000 counts.
-    [11-01-2023 10:55:37 UTC] amp <- amp_subset_samples(amp, minreads = 10000, ...)
-    [11-01-2023 10:55:37 UTC] ampvis2 object with 3 elements.
-    [11-01-2023 10:55:37 UTC] Summary of OTU table:
-         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads
-               2          214        24224        11885        12339        12112
-       Avg#Reads
-           12112
-    [11-01-2023 10:55:37 UTC] Assigned taxonomy:
-        Kingdom      Phylum       Class       Order      Family       Genus
-      214(100%) 212(99.07%)  211(98.6%) 210(98.13%) 193(90.19%) 140(65.42%)
-        Species
-          0(0%)
-    [11-01-2023 10:55:37 UTC] Metadata variables: 7
+    [19-07-2023 12:43:45 UTC] Rarefaction curve
+    [19-07-2023 12:43:45 UTC] rarefactioncurve(outdir = outdir, amp = amp, colors = allcols, pipeline=TRUE)
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 8
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 9
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 4
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 4
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 24
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 9
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 6
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 7
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 2
+    [19-07-2023 12:43:45 UTC] Warning in vegan::rarefy(abund[i, ], n) :
+      most observed count data have counts 1, but smallest count is 30
+    [19-07-2023 12:43:45 UTC] Saving plot to /nephele_data/outputs/graphs/rarecurve.html
+    [19-07-2023 12:43:46 UTC] Warning in plotly::config(pp, cloud = T, edits = list(titleText = T, legendText = T,  :
+      The `cloud` argument is deprecated. Use `showSendToCloud` instead.
+    [19-07-2023 12:43:46 UTC] Saving rarefaction curve table to /nephele_data/outputs//graphs/rarecurve.txt
+    [19-07-2023 12:43:46 UTC] Relative abundance heatmaps
+    [19-07-2023 12:43:46 UTC] morphheatmap(outdir = outdir, amp = amp, colors=allcols, filter_level = 5)
+    [19-07-2023 12:43:46 UTC] Filter taxa below 5 counts/abundance.
+    [19-07-2023 12:43:46 UTC] amp <- filterlowabund(amp, level = 5, abs=T)
+    [19-07-2023 12:43:46 UTC] Calculate relative abundance.
+    [19-07-2023 12:43:46 UTC] amp <- subsetamp(amp, sampdepth = NULL, rarefy=FALSE, normalise = TRUE, printsummary = FALSE)
+    [19-07-2023 12:43:46 UTC] 0 samples have been filtered.
+    [19-07-2023 12:43:46 UTC] makeheatmap("seq", amp)
+    [19-07-2023 12:43:48 UTC] heatmap <- morpheus(mat, columns=columns, columnAnnotations = amptax$metadata, columnColorModel = list(type=as.list(colors)), colorScheme = list(scalingMode="fixed", values=values, colors=hmapcolors, stepped=FALSE), rowAnnotations = amptax$tax, rows = rows, dendrogram="none")
+    [19-07-2023 12:43:48 UTC] Saving plot to /nephele_data/outputs/graphs/seq_heatmap.html
+    [19-07-2023 12:43:48 UTC] Sampling depth: 10054
+    [19-07-2023 12:43:48 UTC] Filter samples below 10054 counts.
+    [19-07-2023 12:43:48 UTC] amp <- amp_subset_samples(amp, minreads = 10054, ...)
+    [19-07-2023 12:43:48 UTC] 6 samples and 448 OTUs have been filtered
+    [19-07-2023 12:43:48 UTC] Before: 10 samples and 781 OTUs
+    [19-07-2023 12:43:48 UTC] After: 4 samples and 333 OTUs
+    [19-07-2023 12:43:48 UTC] Saving excluded sample ids to /nephele_data/outputs//graphs/samples_being_ignored.txt
+    [19-07-2023 12:43:48 UTC] ampvis2 object with 3 elements.
+    [19-07-2023 12:43:48 UTC] Summary of OTU table:
+         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads 
+               4          333        45874        10054        13051      11384.5 
+       Avg#Reads 
+         11468.5
+    [19-07-2023 12:43:48 UTC] Assigned taxonomy:
+        Kingdom      Phylum       Class       Order      Family       Genus 
+      333(100%)  330(99.1%)  330(99.1%)  320(96.1%) 296(88.89%) 227(68.17%) 
+        Species 
+        2(0.6%)
+    [19-07-2023 12:43:48 UTC] Metadata variables: 7 
      SampleID, ForwardFastqFile, ReverseFastqFile, TreatmentGroup, Animal, Day, Description
-    [11-01-2023 10:55:37 UTC] Alpha diversity and PCoA plots will not be made, as they require at least 3 samples.  Only 2 remain after filtering.
-    [11-01-2023 10:55:37 UTC] "allgraphs" complete.
-    [11-01-2023 10:55:37 UTC] DADA2 pipeline complete.
-    [11-01-2023 10:55:42 UTC] 0
+    [19-07-2023 12:43:48 UTC] PCoA plot with binomial distance
+    [19-07-2023 12:43:48 UTC] pcoaplot(outdir = outdir, amp = ampsub, distm = "binomial", colors = allcols)
+    [19-07-2023 12:43:49 UTC] pcoa <- amp_ordinate(amp, filter_species =0.1,type="PCOA", distmeasure ="binomial",sample_color_by = "TreatmentGroup", detailed_output = TRUE, transform="none")
+    [19-07-2023 12:43:49 UTC] Saving plot to /nephele_data/outputs/graphs/pcoa_binomial.html
+    [19-07-2023 12:43:49 UTC] Warning in plotly::config(pp, cloud = T, edits = list(titleText = T, legendText = T,  :
+      The `cloud` argument is deprecated. Use `showSendToCloud` instead.
+    [19-07-2023 12:43:49 UTC] Saving binomial PCoA table to /nephele_data/outputs//graphs/pcoa_binomial.txt
+    [19-07-2023 12:43:49 UTC] Making top species table.
+    [19-07-2023 12:43:49 UTC] Saving table to /nephele_data/outputs//graphs/top_85_species_table.txt
+    [19-07-2023 12:43:49 UTC] Rarefying OTU Table to  10054 reads.
+    [19-07-2023 12:43:49 UTC] set.seed(500)
+    [19-07-2023 12:43:49 UTC] otu <- rrarefy(t(amp$abund), sampdepth)
+    [19-07-2023 12:43:49 UTC] Warning in rrarefy(t(amp$abund), sampdepth) :
+      function should be used for observed counts, but smallest count is 4
+    [19-07-2023 12:43:49 UTC] amp <- amp_subset_samples(amp, minreads = 10054, ...)
+    [19-07-2023 12:43:49 UTC] 0 samples have been filtered.
+    [19-07-2023 12:43:49 UTC] ampvis2 object with 3 elements.
+    [19-07-2023 12:43:49 UTC] Summary of OTU table:
+         Samples         OTUs  Total#Reads    Min#Reads    Max#Reads Median#Reads 
+               4          333        40216        10054        10054        10054 
+       Avg#Reads 
+           10054
+    [19-07-2023 12:43:49 UTC] Assigned taxonomy:
+        Kingdom      Phylum       Class       Order      Family       Genus 
+      333(100%)  330(99.1%)  330(99.1%)  320(96.1%) 296(88.89%) 227(68.17%) 
+        Species 
+        2(0.6%)
+    [19-07-2023 12:43:49 UTC] Metadata variables: 7 
+     SampleID, ForwardFastqFile, ReverseFastqFile, TreatmentGroup, Animal, Day, Description
+    [19-07-2023 12:43:49 UTC] Saving rarefied OTU Table to  /nephele_data/outputs//graphs/rarefied_OTU_table_10054.txt
+    [19-07-2023 12:43:49 UTC] Making heatmap from rarefied counts.
+    [19-07-2023 12:43:49 UTC] morphheatmap(outdir = outdir, amp = amprare, colors=allcols, filter_level = 5, filesuffix = "_rarefied")
+    [19-07-2023 12:43:49 UTC] Filter taxa below 5 counts/abundance.
+    [19-07-2023 12:43:49 UTC] amp <- filterlowabund(amp, level = 5, abs=T)
+    [19-07-2023 12:43:49 UTC] Calculate relative abundance.
+    [19-07-2023 12:43:49 UTC] amp <- subsetamp(amp, sampdepth = NULL, rarefy=FALSE, normalise = TRUE, printsummary = FALSE)
+    [19-07-2023 12:43:49 UTC] 0 samples have been filtered.
+    [19-07-2023 12:43:49 UTC] makeheatmap("seq", amp)
+    [19-07-2023 12:43:49 UTC] heatmap <- morpheus(mat, columns=columns, columnAnnotations = amptax$metadata, columnColorModel = list(type=as.list(colors)), colorScheme = list(scalingMode="fixed", values=values, colors=hmapcolors, stepped=FALSE), rowAnnotations = amptax$tax, rows = rows, dendrogram="none")
+    [19-07-2023 12:43:49 UTC] Saving plot to /nephele_data/outputs/graphs/seq_heatmap_rarefied.html
+    [19-07-2023 12:43:49 UTC] Normalizing rarefied OTU table to 100 for Bray-Curtis distance.
+    [19-07-2023 12:43:49 UTC] 0 samples have been filtered.
+    [19-07-2023 12:43:49 UTC] pcoaplot(outdir = outdir, amp = ampbc, distm = "bray", colors = allcols, filesuffix="_rarefied")
+    [19-07-2023 12:43:49 UTC] pcoa <- amp_ordinate(amp, filter_species =0.1,type="PCOA", distmeasure ="bray",sample_color_by = "TreatmentGroup", detailed_output = TRUE, transform="none")
+    [19-07-2023 12:43:49 UTC] Saving plot to /nephele_data/outputs/graphs/pcoa_bray_rarefied.html
+    [19-07-2023 12:43:49 UTC] Warning in plotly::config(pp, cloud = T, edits = list(titleText = T, legendText = T,  :
+      The `cloud` argument is deprecated. Use `showSendToCloud` instead.
+    [19-07-2023 12:43:49 UTC] Saving bray PCoA table to /nephele_data/outputs//graphs/pcoa_bray_rarefied.txt
+    [19-07-2023 12:43:49 UTC] Alpha diversity boxplot
+    [19-07-2023 12:43:49 UTC] adivboxplot(outdir = outdir, amp = amprare, sampdepth = sampdepth, colors = allcols, pipeline=TRUE)
+    [19-07-2023 12:43:49 UTC] alphadiv <- amp_alphadiv(amp, measure="shannon", richness = TRUE, rarefy = 10054)
+    [19-07-2023 12:43:49 UTC] Warning: The data you have provided does not have
+    [19-07-2023 12:43:49 UTC] any singletons. This is highly suspicious. Results of richness
+    [19-07-2023 12:43:49 UTC] estimates (for example) are probably unreliable, or wrong, if you have already
+    [19-07-2023 12:43:49 UTC] trimmed low-abundance taxa from the data.
+    [19-07-2023 12:43:49 UTC] We recommend that you find the un-trimmed data and retry.
+    [19-07-2023 12:43:50 UTC] Saving alpha diversity table to /nephele_data/outputs//graphs/alphadiv.txt
+    [19-07-2023 12:43:50 UTC] Saving plot to /nephele_data/outputs/graphs/alphadiv.html
+    [19-07-2023 12:43:50 UTC] Warning in plotly::config(pp, cloud = T, edits = list(titleText = T, legendText = T,  :
+      The `cloud` argument is deprecated. Use `showSendToCloud` instead.
+    [19-07-2023 12:43:51 UTC] "allgraphs" complete.
+    [19-07-2023 12:43:51 UTC] Result 'ref_db' reported
+    [19-07-2023 12:43:51 UTC] Result 'error_rate_r1' reported
+    [19-07-2023 12:43:51 UTC] Result 'rooted_tree' reported
+    [19-07-2023 12:43:51 UTC] Result 'top_species_table' reported
+    [19-07-2023 12:43:51 UTC] Result 'track_reads' reported
+    [19-07-2023 12:43:51 UTC] Result 'sampling_depth' reported
+    [19-07-2023 12:43:51 UTC] Result 'otu_summary_table' reported
+    [19-07-2023 12:43:51 UTC] Result 'biom' reported
+    [19-07-2023 12:43:51 UTC] Result 'alphadiv' reported
+    [19-07-2023 12:43:51 UTC] Result 'pcoa_binomial' reported
+    [19-07-2023 12:43:51 UTC] Result 'rarecurve' reported
+    [19-07-2023 12:43:51 UTC] Result 'logfile_debug' reported
+    [19-07-2023 12:43:51 UTC] Result 'quality_profile_r2' reported
+    [19-07-2023 12:43:51 UTC] Result 'error_rate_r2' reported
+    [19-07-2023 12:43:51 UTC] Result 'pcoa_bray' reported
+    [19-07-2023 12:43:51 UTC] Result 'otu_table' reported
+    [19-07-2023 12:43:51 UTC] Optional result 'species_heatmap' does not exist: /nephele_data/outputs/graphs/Species_heatmap.html
+    [19-07-2023 12:43:51 UTC] Result 'rarefied_otu_table' reported
+    [19-07-2023 12:43:51 UTC] Result 'seq_fasta' reported
+    [19-07-2023 12:43:51 UTC] Result 'quality_profile_r1' reported
+    [19-07-2023 12:43:51 UTC] Result 'taxonomy_table' reported
+    [19-07-2023 12:43:51 UTC] Result 'reads_in_reads_out' reported
+    [19-07-2023 12:43:51 UTC] Result 'seq_heatmap' reported
+    [19-07-2023 12:43:51 UTC] Result 'taxmethod' reported
+    [19-07-2023 12:43:52 UTC] Results tarball does not exist: /mnt/EFS/user_uploads/b73de8bfdd22_reported_results.tar.gz. Creating.
+    [19-07-2023 12:43:52 UTC] Created results tarball: /mnt/EFS/user_uploads/b73de8bfdd22_reported_results.tar.gz
+    [19-07-2023 12:43:52 UTC] Uploaded to S3: /mnt/EFS/user_uploads/b73de8bfdd22_reported_results.tar.gz
+    [19-07-2023 12:43:52 UTC] Uploaded to S3: /mnt/EFS/user_uploads/b73de8bfdd22/outputs/b73de8bfdd22_results_registry.json
+    [19-07-2023 12:43:52 UTC] DADA2 pipeline complete.
+    [19-07-2023 12:43:56 UTC] None
+
