@@ -72,6 +72,7 @@ class MetricWatcher(CloudWatcher):
             aws_secret_access_key=aws_secret_access_key,
             aws_session_token=aws_session_token,
         )
+        self.metric_description = metric_description
 
     def query_ec2_metrics(
         self,

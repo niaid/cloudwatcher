@@ -61,12 +61,11 @@ class TimedMetric:
         raise ValueError("The internal timed metric lengths are not equal")
 
 
-class ResponseHandler(ABC):
+class ResponseHandler:
     """
     Abstract class to establish the interface for a response handling
     """
 
-    @abstractmethod
     def __init__(self, response: dict) -> None:
         """
         Initialize the handler
@@ -76,22 +75,12 @@ class ResponseHandler(ABC):
         """
         self.response = response
 
-    @abstractmethod
-    def __call__(self, target: str) -> None:
-        """
-        Save the response to a file
 
-        Args:
-            target (str): The target file to save the response to
-        """
-
-
-class TimedMetricHandler(ABC):
+class TimedMetricHandler:
     """
     Class to establish the interface for a timed metric handling
     """
 
-    @abstractmethod
     def __init__(self, timed_metric: TimedMetric) -> None:
         """
         Initialize the handler
@@ -133,6 +122,7 @@ class ResponseLogger(ResponseHandler):
 
 
 class TimedMetricPlotter(TimedMetricHandler):
+
     def __call__(self, target: str, metric_unit: str) -> None:
         """
         Plot the timed metric
