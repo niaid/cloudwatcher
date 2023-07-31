@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 
+## [0.2.0] - 2023-07-31
+
+### Changed
+
+- internal improvements and refactoring
+
 ## [0.1.2] - 2022-11-23
 
 ### Fixed
