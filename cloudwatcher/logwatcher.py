@@ -303,3 +303,17 @@ class LogWatcher(CloudWatcher):
                 [event.message for event in formatted_log_events_list.events]
             )
         return formatted_events, formatted_log_events_list.next_forward_token
+
+    def save_log_file(self, file_path: str) -> None:
+        """
+        Save the log file to the specified path
+
+        Args:
+            file_path (str): The path to save the log file to.
+        """
+        logs, _ = self.return_formatted_logs()
+        with open(file_path, "w") as f:
+            f.write(logs)
+        _LOGGER.info(
+            f"Logs '{self.log_group_name}/{self.log_stream_name}' saved to: {file_path}"
+        )
