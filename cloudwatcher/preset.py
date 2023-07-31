@@ -122,6 +122,19 @@ class Dimension(BaseModel):
 
     def __repr__(self):
         return self.__str__()
+    
+    @classmethod
+    def from_cli(cls, cli_arg: str):
+        """
+        Create a Dimension object from a CLI argument
+
+        Args:
+            cli_arg (str): The CLI argument
+        """
+        name, value = cli_arg.split(":")
+        if name is None or value is None:
+            raise ValueError(f"Invalid dimension: {cli_arg}. Unable to parse.")
+        return cls(Name=name, Value=value)
 
 
 @dataclass
