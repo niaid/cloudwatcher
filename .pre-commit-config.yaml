@@ -17,6 +17,8 @@ repos:
             "E203,W503,E741", # ignore these rules, to comply with black. See: https://black.readthedocs.io/en/stable/faq.html#why-are-flake8-s-e203-and-w503-violated
             "--max-line-length",
             "88", # 90-ish is a good choice. See: https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#line-length
+            "--exclude",
+            "argparser.py",
           ]
   - repo: https://github.com/PyCQA/isort
     rev: 5.10.1
@@ -27,3 +29,7 @@ repos:
     rev: 21.12b0
     hooks:
       - id: black
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy

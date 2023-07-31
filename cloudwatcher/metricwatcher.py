@@ -1,24 +1,22 @@
 import datetime
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional, Type
 
 import boto3
 import pytz
 
 from cloudwatcher.cloudwatcher import CloudWatcher
-from cloudwatcher.const import DEFAULT_QUERY_KWARGS
 from cloudwatcher.metric_handlers import (
-    ResponseHandler,
     ResponseLogger,
     ResponseSaver,
     TimedMetric,
     TimedMetricCsvSaver,
-    TimedMetricHandler,
     TimedMetricJsonSaver,
     TimedMetricLogger,
     TimedMetricPlotter,
     TimedMetricSummarizer,
 )
+from cloudwatcher.preset import Dimension
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,7 +29,7 @@ class MetricWatcher(CloudWatcher):
     def __init__(
         self,
         namespace: str,
-        dimensions_list: List[Dict[str, str]],
+        dimensions_list: List[Dimension],
         metric_name: str,
         metric_id: str,
         metric_unit: Optional[str] = None,
@@ -46,7 +44,7 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             namespace (str): the namespace of the metric
-            dimensions_list (List[Dict[str, str]]): the dimensions of the metric
+            dimensions_list (List[Dimension]): the dimensions of the metric
             metric_name (str): the name of the metric
             metric_id (str): the ID of the metric
             metric_unit (Optional[str]): the unit of the metric
@@ -74,6 +72,7 @@ class MetricWatcher(CloudWatcher):
             aws_secret_access_key=aws_secret_access_key,
             aws_session_token=aws_session_token,
         )
+        self.metric_description = metric_description
 
     def query_ec2_metrics(
         self,
@@ -82,7 +81,7 @@ class MetricWatcher(CloudWatcher):
         minutes: int,
         stat: str,
         period: int,
-    ) -> Dict:
+    ) -> Optional[Dict]:
         """
         Query EC2 metrics
 
@@ -100,11 +99,20 @@ class MetricWatcher(CloudWatcher):
             Dict: the response from the query, check the structure of the
             response [here](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.get_metric_data) # noqa: E501
         """
+        if self.namespace is None:
+            raise ValueError(f"Invalid metric namespace to watch: {self.namespace}")
         # Create CloudWatch client
         now = datetime.datetime.now(pytz.utc)
         start_time = now - datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
-        _time = lambda x: x.strftime("%Y-%m-%d %H:%M:%S")
+        def _time(x: datetime.datetime):
+            """
+            Format a datetime object for logging
+
+            Args:
+                x (datetime.datetime): the datetime object to format
+            """
+            return x.strftime("%Y-%m-%d %H:%M:%S")
 
         _LOGGER.info(
             f"Querying '{self.metric_name}' for dimensions {self.dimensions_list} "
@@ -135,7 +143,7 @@ class MetricWatcher(CloudWatcher):
         resp_status = response["ResponseMetadata"]["HTTPStatusCode"]
         if resp_status != 200:
             _LOGGER.error(f"Invalid response status code: {resp_status}")
-            return
+            return None
         _LOGGER.debug(f"Response status code: {resp_status}")
         return response
 
@@ -145,7 +153,8 @@ class MetricWatcher(CloudWatcher):
         days: int,
         hours: int,
         minutes: int,
-    ) -> int:
+        period: int = 60,
+    ) -> Optional[float]:
         """
         Get the runtime of an EC2 instance
 
@@ -159,7 +168,7 @@ class MetricWatcher(CloudWatcher):
                 determine the metric collection start time
 
         Returns:
-            int: the runtime of the EC2 instance in minutes
+            float: the runtime of the EC2 instance in minutes
         """
         if not self.is_ec2_running(ec2_instance_id):
             _LOGGER.info(
@@ -176,9 +185,11 @@ class MetricWatcher(CloudWatcher):
                 hours=hours,
                 minutes=minutes,
                 stat="Maximum",  # any stat works
-                period=60,  # most precise period that AWS stores for instances where
-                # start time is between 3 hours and 15 days ago
+                period=period,  # most precise period that AWS stores for instances
+                # where start time is between 3 hours and 15 days ago is 60 seconds
             )
+            if metrics_response is None:
+                return None
             # extract the latest metric report time
             timed_metrics = self.timed_metric_factory(metrics_response)
             try:
@@ -189,18 +200,18 @@ class MetricWatcher(CloudWatcher):
                 ).total_seconds()
             except IndexError:
                 _LOGGER.warning(f"No metric data found for EC2: {ec2_instance_id}")
-                return
+                return None
         instances = self.ec2_resource.instances.filter(
             Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
         )
-        for instance in instances:
-            _LOGGER.info(
-                f"Instance '{ec2_instance_id}' is still running. "
-                f"Launch time: {instance.launch_time}"
-            )
-            return (
-                datetime.datetime.now(pytz.utc) - instance.launch_time
-            ).total_seconds()
+        if len(list(instances)) != 1:
+            raise Exception(f"Multiple EC2 instances matched by ID: {ec2_instance_id}")
+        instance = list(instances)[0]
+        _LOGGER.info(
+            f"Instance '{ec2_instance_id}' is still running. "
+            f"Launch time: {instance.launch_time}"
+        )
+        return (datetime.datetime.now(pytz.utc) - instance.launch_time).total_seconds()
 
     def is_ec2_running(self, ec2_instance_id: str) -> bool:
         """
@@ -210,13 +221,13 @@ class MetricWatcher(CloudWatcher):
             ec2_instance_id (str): the ID of the EC2 instance
 
         Returns:
-            bool: True if EC2 instance is running, False otherwise
+            bool: True if EC2 instance is running, False otherwise.
         """
         instances = self.ec2_resource.instances.filter(
             Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
         )
         if len(list(instances)) == 0:
-            return None
+            return False
         if len(list(instances)) > 1:
             raise Exception(f"Multiple EC2 instances matched by ID: {ec2_instance_id}")
         for instance in instances:
@@ -248,7 +259,7 @@ class MetricWatcher(CloudWatcher):
 
     def _exec_timed_metric_handler(
         self,
-        handler_class: TimedMetricHandler,
+        handler_class: Type,
         response: Optional[Dict] = None,
         query_kwargs: Optional[Dict] = None,
         **kwargs,
@@ -263,7 +274,13 @@ class MetricWatcher(CloudWatcher):
             **kwargs: additional kwargs to pass to the handler
         """
         _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        response = response or self.query_ec2_metrics(**query_kwargs)
+        if response is None:
+            if query_kwargs is not None:
+                response = self.query_ec2_metrics(**query_kwargs)
+            else:
+                raise ValueError("Either response or query_kwargs must be provided")
+        if response is None:
+            return None
         timed_metrics = self.timed_metric_factory(response)
         for timed_metric in timed_metrics:
             if len(timed_metric.values) < 1:
@@ -273,7 +290,7 @@ class MetricWatcher(CloudWatcher):
 
     def _exec_response_handler(
         self,
-        handler_class: ResponseHandler,
+        handler_class: Type,
         response: Optional[Dict] = None,
         query_kwargs: Optional[Dict] = None,
         **kwargs,
@@ -288,10 +305,17 @@ class MetricWatcher(CloudWatcher):
             **kwargs: additional kwargs to pass to the handler
 
         """
-        _LOGGER.debug(f"Executing '{handler_class.__name__}'")
-        response = response or self.query_ec2_metrics(**query_kwargs)
+        _LOGGER.debug(f"Executing '{handler_class.__class__.__name__}'")
+        if response is None:
+            if query_kwargs is not None:
+                response = self.query_ec2_metrics(**query_kwargs)
+            else:
+                raise ValueError("Either response or query_kwargs must be provided")
         handler = handler_class(response=response)
-        handler(**kwargs)
+        if kwargs is None:
+            handler()
+        else:
+            handler(**kwargs)
 
     def save_metric_json(
         self,
@@ -305,7 +329,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the metric data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricJsonSaver,
@@ -326,7 +350,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the metric data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricCsvSaver,
@@ -335,15 +359,12 @@ class MetricWatcher(CloudWatcher):
             query_kwargs=query_kwargs,
         )
 
-    def log_metric(
-        self, response: Optional[Dict] = None, query_preset: Optional[str] = None
-    ):
+    def log_metric(self, response: Optional[Dict] = None):
         """
         Query and log the metric data
 
         Args:
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricLogger,
@@ -363,7 +384,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the metric data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricPlotter,
@@ -379,7 +400,6 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_timed_metric_handler(
             TimedMetricSummarizer,
@@ -401,7 +421,7 @@ class MetricWatcher(CloudWatcher):
         Args:
             file_path (str): the file path to save the response data to
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
+            query_kwargs (Optional[str]): the query preset to use for the query
         """
         self._exec_response_handler(
             ResponseSaver,
@@ -416,7 +436,6 @@ class MetricWatcher(CloudWatcher):
 
         Args:
             response (Optional[Dict]): the response from the query
-            query_preset (Optional[str]): the query preset to use for the query
         """
         self._exec_response_handler(
             ResponseLogger,

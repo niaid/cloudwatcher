@@ -18,4 +18,4 @@ Full package documentation, which includes examples of usage and setup, can be f
 
 ## Authors
 
-- [Michał Stolarczyk](michal.stolarczyk@nih.gov)
+- [Michał Stolarczyk](mailto:michal.stolarczyk@nih.gov)

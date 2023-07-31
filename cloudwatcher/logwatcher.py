@@ -1,15 +1,145 @@
-# TODO: query the AWS multiple times if query json provided
-
 import logging
 import re
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Generator, List, Optional, Tuple
+
+from pydantic import BaseModel
 
 from cloudwatcher.cloudwatcher import CloudWatcher
 
-Event = Dict[str, str]
-
 _LOGGER = logging.getLogger(__name__)
+
+
+class LogEvent(BaseModel):
+    """
+    A class for AWS CloudWatch log events
+
+    Attributes:
+        message (str): The log message
+        timestamp (datetime): The log timestamp
+    """
+
+    message: str
+    timestamp: datetime
+
+    @classmethod
+    def from_response(cls, response: Dict[str, Any]) -> "LogEvent":
+        """
+        Create a LogEvent object from a response
+
+        Args:
+            response (Dict[str, Any]): The response from AWS
+
+        Returns:
+            LogEvent: The LogEvent object
+        """
+        return cls(
+            message=response["message"],
+            timestamp=datetime.fromtimestamp(response["timestamp"] / 1000),
+        )
+
+    def format_message(
+        self,
+        regex: Optional[str] = None,
+        fmt_str_log: Optional[str] = None,
+        fmt_str_datetime: Optional[str] = None,
+    ) -> "LogEvent":
+        """
+        Format the message by removing the embedded timestamp and adding a UTC timestamp
+
+        Args:
+            regex (str): regex to match the timestamp in the message
+            fmt_str_log (str): format string for the log message
+            fmt_str_datetime (str): format string for the datetime
+
+        Returns:
+            str: formatted message
+        """
+        regex = regex or r"^\[\d+-\d+-\d+\s\d+:\d+:\d+(.|,)\d+(\]|\s-\s\w+\])"
+        fmt_str_log = fmt_str_log or "[{time} UTC] {message}"
+        fmt_str_datetime = fmt_str_datetime or "%d-%m-%Y %H:%M:%S"
+        m = re.search(regex, self.message)
+        msg = self.message[m.end() :] if m else self.message
+        formatted_message = fmt_str_log.format(
+            time=self.timestamp.strftime(fmt_str_datetime), message=msg.strip()
+        )
+        return LogEvent(message=formatted_message, timestamp=self.timestamp)
+
+    def __bool__(self) -> bool:
+        """
+        Return True if the message is not empty
+
+        Returns:
+            bool: True if the message is not empty
+        """
+        return bool(self.message)
+
+
+class LogEventsList(BaseModel):
+    """
+    A class for AWS CloudWatch log events list
+
+    Attributes:
+        events (List[LogEvent]): The list of log events
+        next_forward_token (Optional[str]): The next forward token
+        next_backward_token (Optional[str]): The next backward token
+    """
+
+    events: List[LogEvent]
+    next_forward_token: Optional[str]
+    next_backward_token: Optional[str]
+
+    @classmethod
+    def from_response(cls, response: Dict[str, Any]) -> "LogEventsList":
+        """
+        Create a LogEventsList object from a response
+
+        Args:
+            response (Dict[str, Any]): The response from AWS
+
+        Returns:
+            LogEventsList: The LogEventsList object
+        """
+        return cls(
+            events=[LogEvent.from_response(event) for event in response["events"]],
+            next_forward_token=response.get("nextForwardToken"),
+            next_backward_token=response.get("nextBackwardToken"),
+        )
+
+    def format_messages(
+        self,
+        regex: Optional[str] = None,
+        fmt_str_datetime: Optional[str] = None,
+        fmt_str_log: Optional[str] = None,
+    ) -> "LogEventsList":
+        """
+        Format the messages by removing the embedded timestamp
+        and adding a UTC timestamp
+
+        Args:
+            regex (str): regex to match the timestamp in the message
+            fmt_str_log (str): format string for the log message
+            fmt_str_datetime (str): format string for the datetime
+
+        Returns:
+            LogEventsList: The LogEventsList object, with formatted messages
+        """
+        self.events = [
+            event.format_message(
+                regex=regex, fmt_str_datetime=fmt_str_datetime, fmt_str_log=fmt_str_log
+            )
+            for event in self.events
+        ]
+        return self
+
+    def __bool__(self) -> bool:
+        """
+        Return True if the events list is not empty
+
+        Returns:
+            bool: True if the events list is not empty
+        """
+        return bool(self.events)
 
 
 class LogWatcher(CloudWatcher):
@@ -33,11 +163,11 @@ class LogWatcher(CloudWatcher):
         Args:
             log_group_name (str): The name of the log group
             log_stream_name (str): The name of the log stream
-            start_token (Optional[str]): The token to use for the next query. Defaults to None
-            aws_access_key_id (Optional[str]): The AWS access key ID. Defaults to None
-            aws_secret_access_key (Optional[str]): The AWS secret access key. Defaults to None
-            aws_session_token (Optional[str]): The AWS session token. Defaults to None
-            aws_region_name (Optional[str]): The AWS region name. Defaults to 'us-east-1'
+            start_token (Optional[str]): The token to use for the next query
+            aws_access_key_id (Optional[str]): The AWS access key ID
+            aws_secret_access_key (Optional[str]): The AWS secret access key
+            aws_session_token (Optional[str]): The AWS session token
+            aws_region_name (Optional[str]): The AWS region name
         """
         super().__init__(
             service_name="logs",
@@ -76,7 +206,7 @@ class LogWatcher(CloudWatcher):
             _LOGGER.error(f"Error checking if log stream exists: {e}")
             return False
 
-    def _get_events(self, query_kwargs: Dict[str, Any]) -> List[Event]:
+    def _get_events(self, query_kwargs: Dict[str, Any]) -> LogEventsList:
         """
         Get events from CloudWatch and update the arguments
         for the next query with 'nextForwardToken'
@@ -87,12 +217,13 @@ class LogWatcher(CloudWatcher):
             List[Event]: The list of log events
         """
         response = self.client.get_log_events(**query_kwargs)
-        query_kwargs.update({"nextToken": response["nextForwardToken"]})
-        return response["events"], response["nextForwardToken"]
+        log_events_list = LogEventsList.from_response(response)
+        query_kwargs.update({"nextToken": log_events_list.next_forward_token})
+        return log_events_list
 
     def stream_cloudwatch_logs(
         self, events_limit: int = 1000, max_retry_attempts: int = 5
-    ) -> List[Event]:
+    ) -> Generator[LogEventsList, None, None]:
         """
         A generator that retrieves desired number of log events per iteration
 
@@ -113,25 +244,25 @@ class LogWatcher(CloudWatcher):
         _LOGGER.debug(
             f"Retrieving log events from: {self.log_group_name}/{self.log_stream_name}"
         )
-        events, token = self._get_events(query_kwargs)
-        yield events, token
-        while events:
-            events, token = self._get_events(query_kwargs)
+        log_events_list = self._get_events(query_kwargs)
+        yield log_events_list
+        while log_events_list:
+            log_events_list = self._get_events(query_kwargs)
             retry_attempts = 0
-            while not events and max_retry_attempts > retry_attempts:
-                events, token = self._get_events(query_kwargs)
+            while not log_events_list and max_retry_attempts > retry_attempts:
+                log_events_list = self._get_events(query_kwargs)
                 retry_attempts += 1
                 _LOGGER.debug(
                     f"Received empty log events list. Retry attempt: {retry_attempts}"
                 )
-            yield events, token
+            yield log_events_list
 
     def stream_formatted_logs(
         self,
         events_limit: int = 1000,
         max_retry_attempts: int = 5,
         sep: str = "<br>",
-    ) -> Tuple[List[str], str]:
+    ) -> Generator[Tuple[str, Optional[str]], None, None]:
         """
         A generator that yields formatted log events
 
@@ -142,15 +273,18 @@ class LogWatcher(CloudWatcher):
         Returns:
             Tuple[List[str], str]: The list of formatted log events and the next token
         """
-        for events, token in self.stream_cloudwatch_logs(
+        for log_events_list in self.stream_cloudwatch_logs(
             events_limit=events_limit,
             max_retry_attempts=max_retry_attempts,
         ):
-            yield sep.join(self.format_logs_events(log_events=events)), token
+            formatted_log_events = log_events_list.format_messages().events
+            yield sep.join(
+                [event.message for event in formatted_log_events]
+            ), log_events_list.next_forward_token
 
     def return_formatted_logs(
         self, events_limit: int = 1000, max_retry_attempts: int = 5
-    ) -> Tuple[str, str]:
+    ) -> Tuple[str, Optional[str]]:
         """
         A generator that yields formatted log events
 
@@ -161,47 +295,14 @@ class LogWatcher(CloudWatcher):
             Tuple[str, str]: The list of formatted log events and the next token
         """
         formatted_events = ""
-        for events, token in self.stream_cloudwatch_logs(
+        for log_events_list in self.stream_cloudwatch_logs(
             events_limit=events_limit, max_retry_attempts=max_retry_attempts
         ):
-            formatted_events += "\n".join(self.format_logs_events(log_events=events))
-        return formatted_events, token
-
-    def format_logs_events(
-        self,
-        log_events: List[Event],
-        regex: str = r"^\[\d+-\d+-\d+\s\d+:\d+:\d+(.|,)\d+(\]|\s-\s\w+\])",
-        fmt_str: str = "[{time} UTC] {message}",
-    ) -> List[str]:
-        """
-        Format log events
-
-        Args:
-            log_events (List[Event]): The list of log events.
-            regex (str): The regex to use to extract the time and message.
-            fmt_str (str): The format string to use to format the time and message.
-        """
-
-        def _datestr(timestamp: int, fmt_str: str = "%d-%m-%Y %H:%M:%S") -> str:
-            """
-            Convert milliseconds after Jan 1, 1970 UTC to a string date repr
-
-            Args:
-                timestamp (int): milliseconds after Jan 1, 1970 UTC
-                fmt_str (str): format string for the date
-            Returns:
-                str: date string
-            """
-            return datetime.fromtimestamp(timestamp / 1000.0).strftime(fmt_str)
-
-        formatted_log_list = []
-        for e in log_events:
-            m = re.search(regex, e["message"])
-            msg = e["message"][m.end() :] if m else e["message"]
-            formatted_log_list.append(
-                fmt_str.format(time=_datestr(e["timestamp"]), message=msg.strip())
+            formatted_log_events_list = log_events_list.format_messages()
+            formatted_events += "\n".join(
+                [event.message for event in formatted_log_events_list.events]
             )
-        return formatted_log_list
+        return formatted_events, formatted_log_events_list.next_forward_token
 
     def save_log_file(self, file_path: str) -> None:
         """

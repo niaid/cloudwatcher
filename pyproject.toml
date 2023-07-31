@@ -1,17 +1,16 @@
 [tool.poetry]
 name = "cloudwatcher"
-version = "0.1.2"
+version = "0.2.0"
 description = "A tool for monitoring AWS CloudWatch metrics"
 authors = ["Michal Stolarczyk <stolarczyk.michal93@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rich = "^12.2.0"
-black = "^22.3.0"
-matplotlib = "^3.5.1"
-pytz = "^2022.1"
-boto3 = "^1.21.46"
-pydantic = "^1.10.2"
+rich = "~12.2.0"
+matplotlib = "~3.5.1"
+pytz = "~2022.1"
+boto3 = "~1.26.62"
+pydantic = "~1.10.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.1"
@@ -20,10 +19,11 @@ ipython = "7.32.0"
 ipykernel = "^6.13.0"
 nbconvert = "^6.5.0"
 black = {extras = ["jupyter"], version = "^22.3.0"}
-mkdocstrings = {extras = ["python"], version = "^0.19.0"}
-mkdocs-material = "^8.3.4"
+mkdocstrings = {extras = ["python"], version = "^0.20.0"}
+mkdocs-material = "^9.0.0"
 notebook = "^6.5.2"
 python-dotenv = "^0.21.0"
+mypy = "^1.4.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

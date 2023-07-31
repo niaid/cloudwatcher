@@ -2,16 +2,15 @@ import logging
 import os
 import sys
 
-from rich.logging import RichHandler
 from rich.console import Console
-from pathlib import Path
+from rich.logging import RichHandler
 
 from cloudwatcher.const import LOG_CMD, METRIC_CMD
 from cloudwatcher.logwatcher import LogWatcher
 
 from .argparser import build_argparser
 from .metricwatcher import MetricWatcher
-from .preset import get_metric_watcher_setup, PresetFilesInventory
+from .preset import Dimension, PresetFilesInventory, get_metric_watcher_setup
 
 
 def main():
@@ -84,7 +83,12 @@ def main():
             )
 
         if args.uptime:
-            if not args.dimension_name == "InstanceId":
+            dimensions_list = [Dimension.from_cli(dimension_str) for dimension_str in args.dimensions]
+            for dimension in dimensions_list:
+                if dimension.Name == "InstanceId":
+                    ec2_instance_id = dimension.Value
+                    break
+            else:
                 _LOGGER.error(
                     "Uptime is only available for EC2 instances. "
                     "Please provide 'InstanceId' as dimension name and EC2 instance id"
@@ -98,7 +102,7 @@ def main():
                     ),  # metrics with a period of 60 seconds are available for 15 days
                     hours=args.hours,
                     minutes=args.minutes,
-                    ec2_instance_id=args.dimension_value,
+                    ec2_instance_id=ec2_instance_id,
                 )
                 if seconds_run is not None:
                     _LOGGER.info(f"Instance uptime is {int(seconds_run)} seconds")

@@ -1,9 +1,9 @@
 """ Computing configuration representation """
 
 import argparse
+from importlib.metadata import version
 
 from cloudwatcher.const import CLI_DEFAULTS, LOG_CMD, METRIC_CMD, SUBPARSER_MESSAGES
-from importlib.metadata import version
 
 cloudwatcher_version = version("cloudwatcher")
 

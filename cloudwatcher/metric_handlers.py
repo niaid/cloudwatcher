@@ -4,7 +4,7 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Tuple
+from typing import Callable, List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import pytz
@@ -14,7 +14,7 @@ from rich.table import Table
 _LOGGER = logging.getLogger(__name__)
 
 
-def convert_mem(value: int, force_suffix: str = None) -> Tuple[float, str]:
+def convert_mem(value: float, force_suffix: Optional[str] = None) -> Tuple[float, str]:
     """
     Convert memory in bytes to the highest possible, or desired memory unit
 
@@ -36,7 +36,7 @@ def convert_mem(value: int, force_suffix: str = None) -> Tuple[float, str]:
     suffixIndex = 0
     while value > 1024 and suffixIndex < len(suffixes) - 1:
         suffixIndex += 1
-        value = value / 1024.0
+        value /= 1024.0
     return value, suffixes[suffixIndex]
 
 
@@ -53,7 +53,7 @@ class TimedMetric:
 
     label: str
     timestamps: List[datetime]
-    values: List[str]
+    values: List[float]
 
     def __len__(self):
         if len(self.timestamps) == len(self.values):
@@ -61,34 +61,7 @@ class TimedMetric:
         raise ValueError("The internal timed metric lengths are not equal")
 
 
-class Handler(ABC):
-    """
-    Abstract class to establish the interface for data handling
-    """
-
-    @abstractmethod
-    def __init__(self, response: dict, logger: logging.Logger) -> None:
-        """
-        Initialize the handler
-
-        Args:
-            response (dict): The response from the AWS API
-            logger (logging.Logger): The logger to use
-        """
-        pass
-
-    @abstractmethod
-    def __call__(self, target: str) -> None:
-        """
-        Execute the handler
-
-        Args:
-            target (str): The target to use for the handler
-        """
-        pass
-
-
-class ResponseHandler(Handler):
+class ResponseHandler:
     """
     Abstract class to establish the interface for a response handling
     """
@@ -103,7 +76,7 @@ class ResponseHandler(Handler):
         self.response = response
 
 
-class TimedMetricHandler(Handler):
+class TimedMetricHandler:
     """
     Class to establish the interface for a timed metric handling
     """
@@ -149,6 +122,7 @@ class ResponseLogger(ResponseHandler):
 
 
 class TimedMetricPlotter(TimedMetricHandler):
+
     def __call__(self, target: str, metric_unit: str) -> None:
         """
         Plot the timed metric
@@ -190,7 +164,7 @@ class TimedMetricSummarizer(TimedMetricHandler):
         self,
         target: str,
         metric_unit: str,
-        summarizer: Tuple[str, callable],
+        summarizer: Tuple[str, Callable],
     ) -> None:
         """
         Summarize the metric
@@ -198,7 +172,8 @@ class TimedMetricSummarizer(TimedMetricHandler):
         Args:
             target (str): The target file to save the summary to
             metric_unit (str): The unit of the metric
-            summarizer (Tuple[str, callable]): The summarizer to use and the function to use
+            summarizer (Tuple[str, callable]): The summarizer to use
+                and the function to use
         """
         if target is not None:
             raise NotImplementedError("Logging to a file is not yet implemented.")
@@ -243,7 +218,7 @@ class TimedMetricLogger(TimedMetricHandler):
         console.print(table)
 
     @staticmethod
-    def mem_to_str(size: int, precision: int = 3) -> str:
+    def mem_to_str(size: float, precision: int = 3) -> str:
         """
         Convert bytes to human readable string
 

@@ -1,20 +1,19 @@
-import os
 import argparse
-import logging
-from typing import List, Dict, Union
-from dataclasses import dataclass
-from pydantic import BaseModel
-from pathlib import Path
-from rich.table import Table
-
-from typing import List
 import json
+import logging
+import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Optional, Union
+
+from pydantic import BaseModel
+from rich.table import Table
 
 _LOGGER = logging.getLogger(__name__)
 
 
 class PresetFilesInventory:
-    def __init__(self, presets_dir: Union[Path, str] = None) -> None:
+    def __init__(self, presets_dir: Optional[Union[Path, str]] = None) -> None:
         """
         Initialize the preset inventory
 
@@ -35,7 +34,7 @@ class PresetFilesInventory:
         _LOGGER.debug(f"Presets directory: {self.presets_dir}")
         self._presets = self._get_available_presets(self.presets_dir)
 
-    def _get_available_presets(self, presets_dir: Path) -> List[str]:
+    def _get_available_presets(self, presets_dir: Path) -> Dict[str, Path]:
         return {
             preset_file.stem: preset_file
             for preset_file in presets_dir.iterdir()
@@ -123,6 +122,19 @@ class Dimension(BaseModel):
 
     def __repr__(self):
         return self.__str__()
+    
+    @classmethod
+    def from_cli(cls, cli_arg: str):
+        """
+        Create a Dimension object from a CLI argument
+
+        Args:
+            cli_arg (str): The CLI argument
+        """
+        name, value = cli_arg.split(":")
+        if name is None or value is None:
+            raise ValueError(f"Invalid dimension: {cli_arg}. Unable to parse.")
+        return cls(Name=name, Value=value)
 
 
 @dataclass
@@ -136,11 +148,11 @@ class MetricWatcherSetup:
     metric_name: str
     metric_id: str
     metric_unit: str
-    aws_access_key_id: str = None
-    aws_secret_access_key: str = None
-    aws_session_token: str = None
-    aws_region_name: str = None
-    metric_description: str = None
+    aws_access_key_id: Optional[str] = None
+    aws_secret_access_key: Optional[str] = None
+    aws_session_token: Optional[str] = None
+    aws_region_name: Optional[str] = None
+    metric_description: Optional[str] = None
 
     def __post_init__(self):
         self.aws_access_key_id = self.aws_access_key_id or os.environ.get(
@@ -170,7 +182,7 @@ class MetricWatcherSetup:
         return cls(**data)
 
     @classmethod
-    def from_json(cls, file_path: str) -> "MetricWatcherSetup":
+    def from_json(cls, file_path: Path) -> "MetricWatcherSetup":
         """
         Create a MetricWatcherSetup object from a JSON file
 
@@ -190,12 +202,12 @@ class MetricWatcherSetup:
         """
         return self.__dict__
 
-    def upsert_dimensions(self, dimensions_specs: List[str] = None):
+    def upsert_dimensions(self, dimensions_specs: Optional[List[str]] = None):
         """
         Upsert the dimensions list with the dimensions specified in the environment
 
         Args:
-            dimensions_spec (List[str]): A list of strings in the format of "Name:Value"
+            dimensions_specs (List[str]): A list of strings. Format: "Name:Value"
         """
         if dimensions_specs is None:
             return
