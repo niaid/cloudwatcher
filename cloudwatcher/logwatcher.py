@@ -271,6 +271,7 @@ class LogWatcher(CloudWatcher):
             events_limit (int): The number of events to retrieve per iteration.
             max_retry_attempts (int): The number of retry attempts.
             sep (str): The separator to use between log events.
+            sep_only (bool): If True, only the separator will be used for formatting.
         Returns:
             Tuple[List[str], str]: The list of formatted log events and the next token
         """
@@ -289,7 +290,11 @@ class LogWatcher(CloudWatcher):
             )
 
     def return_formatted_logs(
-        self, events_limit: int = 1000, max_retry_attempts: int = 5
+        self,
+        events_limit: int = 1000,
+        max_retry_attempts: int = 5,
+        sep: str = "\n",
+        sep_only: bool = False,
     ) -> Tuple[str, Optional[str]]:
         """
         A generator that yields formatted log events
@@ -297,6 +302,8 @@ class LogWatcher(CloudWatcher):
         Args:
             events_limit (int): The number of events to retrieve per iteration.
             max_retry_attempts (int): The number of retry attempts.
+            sep (str): The separator to use between log events.
+            sep_only (bool): If True, only the separator will be used for formatting.
         Returns:
             Tuple[str, str]: The list of formatted log events and the next token
         """
@@ -304,8 +311,10 @@ class LogWatcher(CloudWatcher):
         for log_events_list in self.stream_cloudwatch_logs(
             events_limit=events_limit, max_retry_attempts=max_retry_attempts
         ):
-            formatted_log_events_list = log_events_list.format_messages()
-            formatted_events += "\n".join(
+            formatted_log_events_list = (
+                log_events_list if sep_only else log_events_list.format_messages()
+            )
+            formatted_events += sep.join(
                 [event.message for event in formatted_log_events_list.events]
             )
         return formatted_events, formatted_log_events_list.next_forward_token
