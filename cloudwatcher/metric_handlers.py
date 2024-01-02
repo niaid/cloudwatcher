@@ -122,7 +122,6 @@ class ResponseLogger(ResponseHandler):
 
 
 class TimedMetricPlotter(TimedMetricHandler):
-
     def __call__(self, target: str, metric_unit: str) -> None:
         """
         Plot the timed metric

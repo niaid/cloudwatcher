@@ -35,7 +35,6 @@ def main():
     _LOGGER.debug(f"CLI arguments: {args}")
 
     if args.command == METRIC_CMD:
-
         if args.preset_list:
             Console().print(
                 PresetFilesInventory(presets_dir=args.preset_dir).presets_table
@@ -83,7 +82,9 @@ def main():
             )
 
         if args.uptime:
-            dimensions_list = [Dimension.from_cli(dimension_str) for dimension_str in args.dimensions]
+            dimensions_list = [
+                Dimension.from_cli(dimension_str) for dimension_str in args.dimensions
+            ]
             for dimension in dimensions_list:
                 if dimension.Name == "InstanceId":
                     ec2_instance_id = dimension.Value
@@ -110,7 +111,6 @@ def main():
                 _LOGGER.warning(f"Failed to get instance uptime ({e})")
 
     if args.command == LOG_CMD:
-
         log_watcher = LogWatcher(
             log_group_name=args.log_group_name,
             log_stream_name=args.log_stream_name,

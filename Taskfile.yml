@@ -19,3 +19,6 @@ tasks:
       - jupyter
     cmds:
       - poetry run mkdocs gh-deploy
+  publish:
+    cmds:
+      - poetry publish --build

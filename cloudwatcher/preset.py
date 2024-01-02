@@ -122,7 +122,7 @@ class Dimension(BaseModel):
 
     def __repr__(self):
         return self.__str__()
-    
+
     @classmethod
     def from_cli(cls, cli_arg: str):
         """

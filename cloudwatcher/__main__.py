@@ -4,7 +4,6 @@ import sys
 from cloudwatcher.cli import main
 
 if __name__ == "__main__":
-
     _LOGGER = logging.getLogger(__name__)
 
     try:

@@ -147,6 +147,83 @@ class MetricWatcher(CloudWatcher):
         _LOGGER.debug(f"Response status code: {resp_status}")
         return response
 
+    def estimate_ec2_launch_time(
+        self,
+        ec2_instance_id: str,
+        days: int,
+        hours: int,
+        minutes: int,
+        period: int = 60,
+    ) -> Optional[datetime.datetime]:
+        """
+        Either return an exact launch time of an EC2 instance or an estimate based on
+        the latest reported metric.
+
+        """
+        if self.is_ec2_running(ec2_instance_id):
+            instances = self.ec2_resource.instances.filter(
+                Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
+            )
+            if len(list(instances)) != 1:
+                raise Exception(
+                    f"Multiple EC2 instances matched by ID: {ec2_instance_id}"
+                )
+            instance = list(instances)[0]
+            _LOGGER.info(
+                f"Instance '{ec2_instance_id}' is still running. "
+                f"Launch time: {instance.launch_time}"
+            )
+            return instance.launch_time
+        metrics_response = self.query_ec2_metrics(
+            days=days,
+            hours=hours,
+            minutes=minutes,
+            stat="Maximum",  # any stat works
+            period=period,  # most precise period that AWS stores for instances
+            # where start time is between 3 hours and 15 days ago is 60 seconds
+        )
+        if metrics_response is None:
+            _LOGGER.info(
+                f"Could not estimate launch time for EC2 ({ec2_instance_id})."
+                f"No metrics reported in the last {days=}, {hours=}, {minutes=}"
+            )
+            return None
+        timed_metrics = self.timed_metric_factory(metrics_response)
+        return timed_metrics[-1].timestamps[0]
+
+    def estimate_ec2_termination_time(
+        self,
+        ec2_instance_id: str,
+        days: int,
+        hours: int,
+        minutes: int,
+        period: int = 60,
+    ) -> Optional[datetime.datetime]:
+        """
+        Either return an exact termination time of an EC2 instance or an estimate based on
+        the latest reported metric.
+
+        """
+        if self.is_ec2_running(ec2_instance_id):
+            _LOGGER.warning(f"Instance '{ec2_instance_id}' is still running. ")
+            return None
+        metrics_response = self.query_ec2_metrics(
+            days=days,
+            hours=hours,
+            minutes=minutes,
+            stat="Maximum",  # any stat works
+            period=period,  # most precise period that AWS stores for instances
+            # where start time is between 3 hours and 15 days ago is 60 seconds
+        )
+        if metrics_response is None:
+            _LOGGER.warning(
+                f"Could not estimate termination time for EC2 ({ec2_instance_id})."
+                f"No metrics reported in the last {days=}, {hours=}, {minutes=}"
+            )
+            return None
+        timed_metrics = self.timed_metric_factory(metrics_response)
+        return timed_metrics[-1].timestamps[-1]
+
     def get_ec2_uptime(
         self,
         ec2_instance_id: str,
@@ -170,33 +247,29 @@ class MetricWatcher(CloudWatcher):
         Returns:
             float: the runtime of the EC2 instance in minutes
         """
+        estimated_launch_time = self.estimate_ec2_launch_time(
+            ec2_instance_id=ec2_instance_id,
+            days=days,
+            hours=hours,
+            minutes=minutes,
+            period=period,
+        )
         if not self.is_ec2_running(ec2_instance_id):
             _LOGGER.info(
                 f"Instance '{ec2_instance_id}' is not running anymore. "
                 f"Uptime will be estimated based on reported metrics in "
                 f"the last {days} days"
             )
-            instances = self.ec2_resource.instances.filter(
-                Filters=[{"Name": "instance-id", "Values": [ec2_instance_id]}]
-            )
-            # get the latest reported metric
-            metrics_response = self.query_ec2_metrics(
-                days=days,
-                hours=hours,
-                minutes=minutes,
-                stat="Maximum",  # any stat works
-                period=period,  # most precise period that AWS stores for instances
-                # where start time is between 3 hours and 15 days ago is 60 seconds
-            )
-            if metrics_response is None:
-                return None
-            # extract the latest metric report time
-            timed_metrics = self.timed_metric_factory(metrics_response)
             try:
-                earliest_metric_report_time = timed_metrics[-1].timestamps[0]
-                latest_metric_report_time = timed_metrics[-1].timestamps[-1]
+                latest_metric_report_time = self.estimate_ec2_termination_time(
+                    ec2_instance_id=ec2_instance_id,
+                    days=days,
+                    hours=hours,
+                    minutes=minutes,
+                    period=period,
+                )
                 return (
-                    earliest_metric_report_time - latest_metric_report_time
+                    estimated_launch_time - latest_metric_report_time
                 ).total_seconds()
             except IndexError:
                 _LOGGER.warning(f"No metric data found for EC2: {ec2_instance_id}")
@@ -211,7 +284,7 @@ class MetricWatcher(CloudWatcher):
             f"Instance '{ec2_instance_id}' is still running. "
             f"Launch time: {instance.launch_time}"
         )
-        return (datetime.datetime.now(pytz.utc) - instance.launch_time).total_seconds()
+        return (datetime.datetime.now(pytz.utc) - estimated_launch_time).total_seconds()
 
     def is_ec2_running(self, ec2_instance_id: str) -> bool:
         """
