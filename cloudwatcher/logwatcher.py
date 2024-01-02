@@ -262,6 +262,7 @@ class LogWatcher(CloudWatcher):
         events_limit: int = 1000,
         max_retry_attempts: int = 5,
         sep: str = "<br>",
+        sep_only: bool = False,
     ) -> Generator[Tuple[str, Optional[str]], None, None]:
         """
         A generator that yields formatted log events
@@ -277,10 +278,15 @@ class LogWatcher(CloudWatcher):
             events_limit=events_limit,
             max_retry_attempts=max_retry_attempts,
         ):
-            formatted_log_events = log_events_list.format_messages().events
-            yield sep.join(
-                [event.message for event in formatted_log_events]
-            ), log_events_list.next_forward_token
+            formatted_log_events = (
+                log_events_list.events
+                if sep_only
+                else log_events_list.format_messages().events
+            )
+            yield (
+                sep.join([event.message for event in formatted_log_events]),
+                log_events_list.next_forward_token,
+            )
 
     def return_formatted_logs(
         self, events_limit: int = 1000, max_retry_attempts: int = 5
